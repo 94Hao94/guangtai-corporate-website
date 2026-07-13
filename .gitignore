@@ -7,6 +7,8 @@ dist/
 node_modules/
 .worktrees/
 coverage/
+playwright-report/
+test-results/
 
 # logs
 npm-debug.log*

@@ -15,7 +15,16 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
+      - run: npx playwright install --with-deps chromium
       - run: npm run verify
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: responsive-acceptance
+          path: |
+            playwright-report
+            test-results
+          if-no-files-found: ignore
       - run: docker build --build-arg SITE_URL=https://www.example.com -t guangtai-site:test .
       - run: docker run -d --name guangtai-site-test --read-only --tmpfs /tmp:rw,noexec,nosuid,size=64m --cap-drop ALL --security-opt no-new-privileges -p 8080:8080 guangtai-site:test
       - run: npm run verify:container

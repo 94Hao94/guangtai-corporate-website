@@ -15,10 +15,12 @@
     "test:watch": "vitest",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "verify": "npm run format:check && npm run check && npm test && npm run build && npm run test:rendered",
+    "verify": "npm run format:check && npm run check && npm test && npm run build && npm run test:rendered && npm run test:e2e:run",
     "import:mvp-content": "tsx scripts/import-mvp-content.ts",
     "import:mvp-assets": "node scripts/import-mvp-assets.mjs",
     "test:rendered": "vitest run tests/rendered-site.test.ts",
+    "test:e2e": "npm run build && npm run test:e2e:run",
+    "test:e2e:run": "playwright test",
     "verify:container": "node scripts/verify-container.mjs"
   },
   "dependencies": {
@@ -29,6 +31,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "@playwright/test": "^1.61.1",
     "prettier": "^3.9.5",
     "prettier-plugin-astro": "^0.14.1",
     "tsx": "^4.23.1",
