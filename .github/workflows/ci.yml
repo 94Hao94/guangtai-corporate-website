@@ -16,3 +16,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run verify
+      - run: docker build --build-arg SITE_URL=https://www.example.com -t guangtai-site:test .
+      - run: docker run -d --name guangtai-site-test --read-only --tmpfs /tmp:rw,noexec,nosuid,size=64m --cap-drop ALL --security-opt no-new-privileges -p 8080:8080 guangtai-site:test
+      - run: npm run verify:container
+      - if: always()
+        run: docker rm -f guangtai-site-test || true

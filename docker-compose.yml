@@ -1,0 +1,17 @@
+services:
+  website:
+    build:
+      context: .
+      args:
+        SITE_URL: ${SITE_URL:?Set SITE_URL to the production origin}
+    image: guangtai-site:local
+    ports:
+      - '${PORT:-8080}:8080'
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped

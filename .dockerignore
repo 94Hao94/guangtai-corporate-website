@@ -1,0 +1,12 @@
+.git
+.github
+.worktrees
+.astro
+dist
+node_modules
+coverage
+docs
+tests
+网站
+*.log
+.DS_Store
