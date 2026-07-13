@@ -9,7 +9,7 @@
   "heroFit": "contain",
   "intro": "面向校园、园区、政企、会议、安防、机房和定制开发等共性需求，组合AI、具身智能与系统集成能力。",
   "positioning": "通用方案不从设备清单出发，而是先建立统一智能入口，再连接空间、安全、基础设施、软件与运营流程，形成可持续交付的整体能力。",
-  "hero": "/assets/visual-v2/home-common-engineering.png",
+  "hero": "/assets/visual-v2/common-delivery.jpg",
   "images": [
     "/assets/solution-common-scenario-cards.jpg",
     "/assets/visual-v2/common-meeting.jpg"
@@ -36,5 +36,5 @@
   "draft": false,
   "seoTitle": "通用解决方案 | 天津光泰科技集团",
   "seoDescription": "面向校园、园区、政企、会议、安防、机房和定制开发等共性需求，组合AI、具身智能与系统集成能力。",
-  "ogImage": "/assets/visual-v2/home-common-engineering.png"
+  "ogImage": "/assets/visual-v2/common-delivery.jpg"
 }

@@ -46,14 +46,25 @@ const pages = [...sourceModule.sitePages].sort((a, b) =>
   a.path.localeCompare(b.path),
 );
 for (const page of pages) {
+  const migratedPage = structuredClone(page);
+  if (page.path === '/solutions/common') {
+    migratedPage.hero = '/assets/visual-v2/common-delivery.jpg';
+  }
+  if (page.path === '/solutions/common/ai') {
+    migratedPage.hero = '/assets/hero-humanoid-ai-campus.png';
+    migratedPage.images[1] = '/assets/hero-humanoid-ai-campus.png';
+  }
+  if (page.path === '/about') {
+    migratedPage.images[1] = '/assets/visual-v2/common-delivery.jpg';
+  }
   const id = page.path.slice(1).replaceAll('/', '--');
   const output = {
-    ...page,
+    ...migratedPage,
     id,
     draft: false,
     seoTitle: `${page.title} | 天津光泰科技集团`,
     seoDescription: page.intro,
-    ogImage: page.hero,
+    ogImage: migratedPage.hero,
   };
   await writeFile(
     resolve(outputDirectory, `${id}.json`),

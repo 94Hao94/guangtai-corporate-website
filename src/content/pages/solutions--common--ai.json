@@ -8,10 +8,10 @@
   "visualFamily": "common",
   "intro": "以智能体、大模型、知识库与AI编程为每一类数智化项目建立统一智能入口。",
   "positioning": "光泰将AI能力嵌入会议、安防、运维、软件和项目交付流程，用平台化生成、场景化适配和工程化交付解决“能演示、难使用”的问题。",
-  "hero": "/assets/visual-v2/home-common-engineering.png",
+  "hero": "/assets/hero-humanoid-ai-campus.png",
   "images": [
     "/assets/ai-application-factory.jpg",
-    "/assets/visual-v2/home-common-engineering.png"
+    "/assets/hero-humanoid-ai-campus.png"
   ],
   "capabilities": [
     "多模型适配与路由",
@@ -35,5 +35,5 @@
   "draft": false,
   "seoTitle": "AI能力 | 天津光泰科技集团",
   "seoDescription": "以智能体、大模型、知识库与AI编程为每一类数智化项目建立统一智能入口。",
-  "ogImage": "/assets/visual-v2/home-common-engineering.png"
+  "ogImage": "/assets/hero-humanoid-ai-campus.png"
 }

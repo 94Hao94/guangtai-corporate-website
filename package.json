@@ -16,7 +16,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "verify": "npm run format:check && npm run check && npm test && npm run build",
-    "import:mvp-content": "tsx scripts/import-mvp-content.ts"
+    "import:mvp-content": "tsx scripts/import-mvp-content.ts",
+    "import:mvp-assets": "node scripts/import-mvp-assets.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
