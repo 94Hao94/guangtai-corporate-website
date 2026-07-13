@@ -11,7 +11,9 @@ async function readPages(): Promise<SitePage[]> {
     .sort();
   return Promise.all(
     files.map(async (file) =>
-      pageSchema.parse(JSON.parse(await readFile(resolve(directory, file), 'utf8'))),
+      pageSchema.parse(
+        JSON.parse(await readFile(resolve(directory, file), 'utf8')),
+      ),
     ),
   );
 }

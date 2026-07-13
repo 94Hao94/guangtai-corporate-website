@@ -80,4 +80,6 @@ if (sources) {
   );
 }
 
-console.log(`Imported ${manifest.length} audited assets into ${outputDirectory}`);
+console.log(
+  `Imported ${manifest.length} audited assets into ${outputDirectory}`,
+);
