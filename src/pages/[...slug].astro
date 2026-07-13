@@ -1,0 +1,76 @@
+---
+import { getCollection } from 'astro:content';
+import BrandPage from '../components/pages/BrandPage.astro';
+import DetailPage from '../components/pages/DetailPage.astro';
+import OverviewPage from '../components/pages/OverviewPage.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import {
+  buildContentTree,
+  getAncestors,
+  getChildren,
+  getSiblings,
+} from '../lib/content-tree';
+import { resolveImage } from '../lib/images';
+import type { SitePage } from '../lib/page-schema';
+
+interface Props {
+  page: SitePage;
+  pages: SitePage[];
+}
+export async function getStaticPaths() {
+  const entries = await getCollection('pages', ({ data }) => !data.draft);
+  const pages = entries.map((entry) => entry.data);
+  return pages.map((page) => ({
+    params: { slug: page.path.slice(1) },
+    props: { page, pages },
+  }));
+}
+const { page, pages } = Astro.props;
+const tree = buildContentTree(pages);
+const ancestors = getAncestors(tree, page);
+const children = getChildren(tree, page.path);
+const related = getSiblings(tree, page);
+const Template =
+  page.template === 'overview'
+    ? OverviewPage
+    : page.template === 'detail'
+      ? DetailPage
+      : BrandPage;
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: '首页',
+      item: new URL('/', Astro.site ?? Astro.url.origin).href,
+    },
+    ...ancestors.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 2,
+      name: item.title,
+      item: new URL(item.path, Astro.site ?? Astro.url.origin).href,
+    })),
+    {
+      '@type': 'ListItem',
+      position: ancestors.length + 2,
+      name: page.title,
+      item: new URL(page.path, Astro.site ?? Astro.url.origin).href,
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title={page.seoTitle}
+  description={page.seoDescription}
+  ogImage={resolveImage(page.ogImage).src}
+  breadcrumbJsonLd={breadcrumbJsonLd}
+  ><Template
+    page={page}
+    ancestors={ancestors}
+    children={children}
+    related={related}
+  /></BaseLayout
+>

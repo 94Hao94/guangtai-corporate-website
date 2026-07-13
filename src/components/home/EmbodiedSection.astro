@@ -1,0 +1,40 @@
+---
+import { Image } from 'astro:assets';
+import { embodiedItems } from '../../data/home';
+import { resolveImage } from '../../lib/images';
+---
+
+<section class="embodied section-pad">
+  <div class="embodied-image" data-reveal>
+    <Image
+      src={resolveImage('/assets/embodied-intelligence.png')}
+      alt="人形、四足和轮式机器人具身智能场景"
+      widths={[720, 1100]}
+      sizes="(max-width: 900px) 100vw, 48vw"
+    />
+  </div><div>
+    <div class="section-heading" data-reveal>
+      <p class="eyebrow">EMBODIED INTELLIGENCE</p><h2>
+        让AI走进真实空间，感知、决策并执行任务
+      </h2><p>
+        光泰AI应用工厂与机器人、无人机、空间设备建立闭环，将软件智能延伸到现场巡检、展示交互、教学实训和运维服务。
+      </p>
+    </div><div class="embodied-list">
+      {
+        embodiedItems.map(([title, text], index) => (
+          <article data-reveal>
+            <>
+              <span>0{index + 1}</span>
+              <div>
+                <>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                </>
+              </div>
+            </>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

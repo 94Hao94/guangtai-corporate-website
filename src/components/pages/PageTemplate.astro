@@ -1,0 +1,112 @@
+---
+import { Image } from 'astro:assets';
+import ChapterNav from '../site/ChapterNav.astro';
+import ContactCta from '../site/ContactCta.astro';
+import type { SitePage } from '../../lib/page-schema';
+import { resolveImage } from '../../lib/images';
+import CapabilityCanvas from './CapabilityCanvas.astro';
+import DeliverySection from './DeliverySection.astro';
+import InnerHero from './InnerHero.astro';
+import RelatedPages from './RelatedPages.astro';
+import ScenarioSection from './ScenarioSection.astro';
+interface Props {
+  page: SitePage;
+  ancestors: SitePage[];
+  children: SitePage[];
+  related: SitePage[];
+}
+const { page, ancestors, children, related } = Astro.props;
+---
+
+<main
+  class:list={[
+    'inner-page',
+    `template-${page.template}`,
+    `family-${page.visualFamily}`,
+  ]}
+>
+  <InnerHero page={page} ancestors={ancestors} /><ChapterNav
+    showMatrix={children.length > 0}
+  />
+  <section id="overview" class="inner-intro inner-section">
+    <div class="section-kicker">
+      <span>01</span><div>
+        <b>定位与价值</b><small>POSITIONING & VALUE</small><p>
+          从业务目标出发，形成可建设、可交付、可持续运营的能力组合。
+        </p>
+      </div><div class="value-tags">
+        {
+          page.capabilities.slice(0, 3).map((item, index) => (
+            <div>
+              <>
+                <i>{String(index + 1).padStart(2, '0')}</i>
+                <span>{item}</span>
+              </>
+            </div>
+          ))
+        }
+      </div>
+    </div><div class="inner-intro-copy">
+      <h2>{page.intro}</h2><p>{page.positioning}</p>
+    </div>
+  </section>
+  {
+    children.length > 0 && (
+      <section id="matrix" class="inner-matrix inner-section">
+        <>
+          <div class="inner-heading">
+            <>
+              <p>SCENARIO MATRIX</p>
+              <h2>从一个统一入口，进入具体能力与场景</h2>
+            </>
+          </div>
+          <div class="matrix-grid">
+            {children.map((child, index) => (
+              <a href={child.path} class="matrix-card">
+                <Image
+                  src={resolveImage(child.hero)}
+                  alt={`${child.title}场景`}
+                  widths={[480, 720]}
+                  sizes="(max-width: 760px) 100vw, 33vw"
+                />
+                <span>
+                  {String(index + 1).padStart(2, '0')} / {child.english}
+                </span>
+                <h3>{child.title}</h3>
+                <p>{child.intro}</p>
+                <b>查看详情 →</b>
+              </a>
+            ))}
+          </div>
+        </>
+      </section>
+    )
+  }
+  <section id="capabilities" class="inner-feature inner-section">
+    <CapabilityCanvas page={page} /><div class="feature-copy">
+      <div class="inner-heading">
+        <p>CORE CAPABILITIES</p><h2>
+          {
+            page.path === '/contact'
+              ? '让第一次沟通更聚焦'
+              : '面向落地的核心能力'
+          }
+        </h2>
+      </div><div class="inner-numbered-list">
+        {
+          page.capabilities.map((item, index) => (
+            <article>
+              <>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <p>{item}</p>
+              </>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+  <ScenarioSection page={page} /><DeliverySection page={page} /><RelatedPages
+    pages={related}
+  /><ContactCta contact={page.path === '/contact'} />
+</main>

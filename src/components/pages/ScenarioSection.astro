@@ -1,0 +1,44 @@
+---
+import { Image } from 'astro:assets';
+import type { SitePage } from '../../lib/page-schema';
+import { resolveImage } from '../../lib/images';
+interface Props {
+  page: SitePage;
+}
+const { page } = Astro.props;
+---
+
+<section id="scenarios" class="inner-scenarios inner-section">
+  <div class="inner-heading">
+    <p>APPLICATION SCENARIOS</p><h2>
+      {
+        page.path === '/cases'
+          ? '可以被真实材料支撑的项目实践'
+          : '能力最终进入的业务现场'
+      }
+    </h2>
+  </div><div class="scenario-layout">
+    <div class="scenario-image">
+      <Image
+        src={resolveImage(page.images[1])}
+        alt={`${page.title}应用场景`}
+        widths={[720, 1100]}
+        sizes="(max-width: 900px) 100vw, 50vw"
+      /><div><span>SCENE VIEW</span><b>{page.category}</b></div>
+    </div><div class="scenario-grid">
+      {
+        page.scenarios.map((item, index) => (
+          <article>
+            <>
+              <span>0{index + 1}</span>
+              <h3>{item}</h3>
+              <p>
+                围绕目标、使用角色与既有基础进行场景化设计，并与整体平台和运营体系协同。
+              </p>
+            </>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

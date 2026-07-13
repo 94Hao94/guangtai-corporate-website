@@ -1,0 +1,34 @@
+---
+import type { SitePage } from '../../lib/page-schema';
+interface Props {
+  page: SitePage;
+}
+const { page } = Astro.props;
+const descriptions = [
+  '明确目标、范围与成功标准。',
+  '形成能够评审和验证的方案。',
+  '完成实施、联调与阶段验收。',
+  '用真实使用反馈推动持续迭代。',
+];
+---
+
+<section id="delivery" class="inner-delivery inner-section">
+  <div class="inner-heading light">
+    <p>DELIVERY PATH</p><h2>
+      {page.path === '/contact' ? '建议准备这些信息' : '从场景蓝图到持续运营'}
+    </h2>
+  </div><div class="delivery-steps">
+    {
+      page.delivery.map((item, index) => (
+        <article>
+          <>
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <i />
+            <h3>{item}</h3>
+            <p>{descriptions[index] ?? descriptions.at(-1)}</p>
+          </>
+        </article>
+      ))
+    }
+  </div>
+</section>

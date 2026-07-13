@@ -1,0 +1,32 @@
+---
+import type { SitePage } from '../../lib/page-schema';
+interface Props {
+  pages: SitePage[];
+}
+const { pages } = Astro.props;
+---
+
+{
+  pages.length > 0 && (
+    <section class="related-pages inner-section">
+      <>
+        <div class="inner-heading">
+          <>
+            <p>EXPLORE MORE</p>
+            <h2>继续了解相关方案</h2>
+          </>
+        </div>
+        <div class="related-grid">
+          {pages.slice(0, 3).map((page) => (
+            <a href={page.path}>
+              <span>{page.category}</span>
+              <h3>{page.title}</h3>
+              <p>{page.intro}</p>
+              <b>查看页面 →</b>
+            </a>
+          ))}
+        </div>
+      </>
+    </section>
+  )
+}

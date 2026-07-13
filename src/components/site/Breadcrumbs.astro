@@ -1,0 +1,21 @@
+---
+import type { SitePage } from '../../lib/page-schema';
+interface Props {
+  page: SitePage;
+  ancestors: SitePage[];
+}
+const { page, ancestors } = Astro.props;
+---
+
+<nav class="breadcrumbs" aria-label="面包屑导航">
+  <a href="/">首页</a><span>/</span>{
+    ancestors.map((item) => (
+      <>
+        <>
+          <a href={item.path}>{item.title}</a>
+          <span>/</span>
+        </>
+      </>
+    ))
+  }<b>{page.title}</b>
+</nav>

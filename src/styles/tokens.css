@@ -1,0 +1,42 @@
+:root {
+  --blue-950: #031f39;
+  --blue-900: #052f53;
+  --blue-800: #074f87;
+  --blue-700: #0b63ad;
+  --blue-600: #087ec3;
+  --cyan: #22c7eb;
+  --ice: #edf7fc;
+  --surface: #ffffff;
+  --text: #09243b;
+  --muted: #526b7d;
+  --line: #cfe0e9;
+  --page: min(1440px, calc(100vw - 96px));
+  --section-space: clamp(5rem, 9vw, 9rem);
+  --font-sans: 'Noto Sans SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  color: var(--text);
+  background: #fff;
+  font-family: var(--font-sans);
+  font-synthesis: none;
+}
+
+.family-platform {
+  --family: #0b72bc;
+  --family-soft: #e9f8ff;
+}
+.family-common {
+  --family: #075d99;
+  --family-soft: #edf5f8;
+}
+.family-higher {
+  --family: #204f82;
+  --family-soft: #f2f5f7;
+}
+.family-k12 {
+  --family: #008c91;
+  --family-soft: #e9f8f4;
+}
+.family-brand {
+  --family: #123d61;
+  --family-soft: #f2f6f8;
+}

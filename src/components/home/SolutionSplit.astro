@@ -1,0 +1,41 @@
+---
+import { Image } from 'astro:assets';
+import { resolveImage } from '../../lib/images';
+const common = resolveImage('/assets/visual-v2/common-delivery.jpg');
+const education = resolveImage('/assets/visual-v2/higher-campus-students.jpg');
+---
+
+<section id="solutions" class="solutions section-pad">
+  <div class="section-heading light" data-reveal>
+    <p class="eyebrow">SOLUTIONS</p><h2>从平台能力，走向每一个真实场景</h2><p>
+      解决方案只分两大入口：通用能力与行业场景。内容始终按 AI
+      能力、具身智能、业务落地的顺序展开。
+    </p>
+  </div>
+  <div class="solution-split">
+    <a class="solution-panel" href="/solutions/common" data-reveal
+      ><Image
+        src={common}
+        alt="通用工程交付与系统集成场景"
+        widths={[720, 1100]}
+        sizes="(max-width: 760px) 100vw, 50vw"
+      /><div class="panel-shade"></div><div class="panel-copy">
+        <span>01 / COMMON</span><h3>通用解决方案</h3><p>
+          AI、具身智能、音视频空间、安全治理、基础设施与系统集成。
+        </p><b>进入方案 →</b>
+      </div></a
+    >
+    <a class="solution-panel" href="/solutions/industries" data-reveal
+      ><Image
+        src={education}
+        alt="真实校园教育行业场景"
+        widths={[720, 1100]}
+        sizes="(max-width: 760px) 100vw, 50vw"
+      /><div class="panel-shade"></div><div class="panel-copy">
+        <span>02 / EDUCATION</span><h3>行业解决方案</h3><p>
+          面向高校与中小学，围绕教学、科研、管理、服务与安全落地。
+        </p><b>进入方案 →</b>
+      </div></a
+    >
+  </div>
+</section>

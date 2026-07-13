@@ -1,0 +1,13 @@
+---
+interface Props {
+  showMatrix?: boolean;
+}
+const { showMatrix = false } = Astro.props;
+---
+
+<nav class="chapter-nav" aria-label="页内导航">
+  <a href="#overview">方案概述</a>{
+    showMatrix && <a href="#matrix">场景矩阵</a>
+  }<a href="#capabilities">核心能力</a><a href="#scenarios">应用场景</a><a
+    href="#delivery">实施路径</a>
+</nav>

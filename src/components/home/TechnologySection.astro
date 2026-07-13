@@ -1,0 +1,23 @@
+---
+import { technologyItems } from '../../data/home';
+---
+
+<section class="technology section-pad">
+  <div class="section-heading light" data-reveal>
+    <p class="eyebrow">TECHNOLOGY & ENGINEERING</p><h2>
+      从原型验证到持续运营，把技术能力变成工程交付
+    </h2>
+  </div><div class="tech-grid">
+    {
+      technologyItems.map(([title, text], index) => (
+        <article data-reveal>
+          <>
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </>
+        </article>
+      ))
+    }
+  </div>
+</section>

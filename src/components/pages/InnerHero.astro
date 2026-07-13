@@ -1,0 +1,32 @@
+---
+import { Image } from 'astro:assets';
+import Breadcrumbs from '../site/Breadcrumbs.astro';
+import type { SitePage } from '../../lib/page-schema';
+import { resolveImage } from '../../lib/images';
+interface Props {
+  page: SitePage;
+  ancestors: SitePage[];
+}
+const { page, ancestors } = Astro.props;
+---
+
+<section class="inner-hero">
+  <Image
+    src={resolveImage(page.hero)}
+    alt={`${page.title}场景`}
+    widths={[768, 1280, 1920]}
+    sizes="100vw"
+    style={`object-position:${page.heroPosition ?? 'center'};object-fit:${page.heroFit ?? 'cover'}`}
+  />
+  <div class="inner-hero-overlay"></div>
+  <div class="inner-hero-copy">
+    <Breadcrumbs page={page} ancestors={ancestors} /><p class="inner-eyebrow">
+      {page.english}
+    </p><h1>{page.title}</h1><p class="inner-lead">{page.intro}</p><a
+      class="inner-hero-button"
+      href="#overview">查看方案内容 ↓</a>
+  </div>
+  <div class="inner-hero-index">
+    <span>GUANGTAI</span><b>{page.category}</b>
+  </div>
+</section>

@@ -11,13 +11,14 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
-    "test": "vitest run",
+    "test": "vitest run --exclude tests/rendered-site.test.ts --exclude tests/docker-contract.test.ts",
     "test:watch": "vitest",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "verify": "npm run format:check && npm run check && npm test && npm run build",
+    "verify": "npm run format:check && npm run check && npm test && npm run build && npm run test:rendered",
     "import:mvp-content": "tsx scripts/import-mvp-content.ts",
-    "import:mvp-assets": "node scripts/import-mvp-assets.mjs"
+    "import:mvp-assets": "node scripts/import-mvp-assets.mjs",
+    "test:rendered": "vitest run tests/rendered-site.test.ts"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

@@ -1,0 +1,120 @@
+---
+import type { SitePage } from '../../lib/page-schema';
+
+interface Props {
+  pages: SitePage[];
+}
+const { pages } = Astro.props;
+const children = (path: string) =>
+  pages.filter((page) => page.parentPath === path);
+const common = children('/solutions/common');
+const higher = children('/solutions/industries/higher-education');
+const k12 = children('/solutions/industries/k12');
+---
+
+<header class="site-header" data-site-header>
+  <a class="brand" href="/" aria-label="天津光泰科技集团首页">
+    <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span><b>天津光泰科技集团</b><small>GUANGTAI TECHNOLOGY GROUP</small></span>
+  </a>
+  <nav class="primary-nav" aria-label="主导航" data-primary-nav>
+    <a href="/guangtai-ai-factory">AI应用工厂</a>
+    <div class="solutions-menu" data-solutions-menu>
+      <button
+        class="solutions-trigger"
+        type="button"
+        aria-expanded="false"
+        aria-controls="solutions-mega-menu"
+        data-solutions-trigger
+        >解决方案 <span aria-hidden="true">⌄</span></button
+      >
+      <div class="mega-menu" id="solutions-mega-menu">
+        <section class="mega-column">
+          <a href="/solutions/common">通用解决方案 →</a><ul>
+            {
+              common.map((page) => (
+                <li>
+                  <a href={page.path}>{page.title}</a>
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+        <section class="mega-column">
+          <a href="/solutions/industries/higher-education">高校场景 →</a><ul>
+            {
+              higher.map((page) => (
+                <li>
+                  <a href={page.path}>{page.title}</a>
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+        <section class="mega-column">
+          <a href="/solutions/industries/k12">中小学场景 →</a><ul>
+            {
+              k12.map((page) => (
+                <li>
+                  <a href={page.path}>{page.title}</a>
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+      </div>
+    </div>
+    <a href="/cases">案例与客户</a><a href="/about">关于光泰</a><a
+      href="/contact">联系我们</a
+    >
+  </nav>
+  <a class="header-contact" href="/contact"
+    >项目咨询 <span aria-hidden="true">↗</span></a
+  >
+  <button
+    class="menu-toggle"
+    type="button"
+    aria-label="打开导航"
+    aria-expanded="false"
+    data-menu-toggle><span></span><span></span></button
+  >
+</header>
+<script>
+  const header = document.querySelector('[data-site-header]');
+  const nav = header?.querySelector('[data-primary-nav]');
+  const menuToggle = header?.querySelector('[data-menu-toggle]');
+  const solutions = header?.querySelector('[data-solutions-menu]');
+  const solutionsTrigger = header?.querySelector('[data-solutions-trigger]');
+  let lastFocused: HTMLElement | null = null;
+  const setMainMenu = (open: boolean) => {
+    nav?.classList.toggle('is-open', open);
+    document.body.classList.toggle('menu-open', open);
+    menuToggle?.setAttribute('aria-expanded', String(open));
+    menuToggle?.setAttribute('aria-label', open ? '关闭导航' : '打开导航');
+    if (!open) lastFocused?.focus();
+  };
+  const setSolutions = (open: boolean) => {
+    solutions?.classList.toggle('is-open', open);
+    solutionsTrigger?.setAttribute('aria-expanded', String(open));
+  };
+  menuToggle?.addEventListener('click', () => {
+    const open = menuToggle.getAttribute('aria-expanded') !== 'true';
+    if (open) lastFocused = document.activeElement as HTMLElement;
+    setMainMenu(open);
+  });
+  solutionsTrigger?.addEventListener('click', () =>
+    setSolutions(solutionsTrigger.getAttribute('aria-expanded') !== 'true'),
+  );
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      setSolutions(false);
+      setMainMenu(false);
+    }
+  });
+  document.addEventListener('click', (event) => {
+    if (header && !header.contains(event.target as Node)) {
+      setSolutions(false);
+      setMainMenu(false);
+    }
+  });
+</script>

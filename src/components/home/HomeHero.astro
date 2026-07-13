@@ -1,0 +1,35 @@
+---
+import { Image } from 'astro:assets';
+import { resolveImage } from '../../lib/images';
+import DataNetwork from './DataNetwork.astro';
+const hero = resolveImage('/assets/hero-humanoid-ai-campus.png');
+---
+
+<section id="home" class="home-hero">
+  <Image
+    class="hero-image"
+    src={hero}
+    alt=""
+    widths={[768, 1280, 1920]}
+    sizes="100vw"
+    loading="eager"
+  />
+  <div class="hero-wash" aria-hidden="true"></div><DataNetwork />
+  <div class="hero-copy">
+    <p class="eyebrow">AI APPLICATION FACTORY</p>
+    <h1>光泰AI应用工厂<br />与数智化解决方案</h1>
+    <p class="hero-lead">
+      以光泰AI应用工厂为平台底座，将模型、知识、智能体与具身设备编排为能够真正运行的业务系统。
+    </p>
+    <div class="hero-actions">
+      <a class="button button-primary" href="/guangtai-ai-factory"
+        >了解AI应用工厂 <span>→</span></a
+      ><a class="button button-ghost" href="/solutions/common">查看解决方案</a>
+    </div>
+    <div class="hero-proof">
+      <span><b>MODEL</b>多模型适配</span><span><b>AGENT</b>智能体编排</span
+      ><span><b>ROBOT</b>具身设备协同</span>
+    </div>
+  </div>
+  <div class="factory-status"><span></span> AI FACTORY ONLINE</div>
+</section>

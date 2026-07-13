@@ -1,28 +1,78 @@
 ---
+import { getCollection } from 'astro:content';
+import SiteFooter from '../components/site/SiteFooter.astro';
+import SiteHeader from '../components/site/SiteHeader.astro';
 import '../styles/global.css';
 
 interface Props {
   title: string;
   description: string;
   canonical?: URL | string;
+  ogImage?: string;
+  breadcrumbJsonLd?: object;
 }
-
-const { title, description, canonical } = Astro.props;
+const { title, description, canonical, ogImage, breadcrumbJsonLd } =
+  Astro.props;
 const canonicalUrl =
   canonical ?? new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
+const pages = (await getCollection('pages', ({ data }) => !data.draft)).map(
+  (entry) => entry.data,
+);
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: '天津光泰科技集团',
+  url: new URL('/', Astro.site ?? Astro.url.origin).href,
+};
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="no-js">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalUrl} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta charset="UTF-8" /><meta
+      name="viewport"
+      content="width=device-width"
+    /><meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} /><link
+      rel="icon"
+      href="/favicon.svg"
+      type="image/svg+xml"
+    />
+    <meta property="og:type" content="website" /><meta
+      property="og:title"
+      content={title}
+    /><meta property="og:description" content={description} /><meta
+      property="og:url"
+      content={canonicalUrl}
+    />
+    {
+      ogImage && (
+        <meta
+          property="og:image"
+          content={new URL(ogImage, Astro.site ?? Astro.url.origin)}
+        />
+      )
+    }
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(organization)}
+    />
+    {
+      breadcrumbJsonLd && (
+        <script
+          is:inline
+          type="application/ld+json"
+          set:html={JSON.stringify(breadcrumbJsonLd)}
+        />
+      )
+    }
     <title>{title}</title>
+    <script is:inline>
+      document.documentElement.classList.remove('no-js');
+    </script>
   </head>
   <body>
-    <slot />
+    <SiteHeader pages={pages} /><slot /><SiteFooter />
   </body>
 </html>

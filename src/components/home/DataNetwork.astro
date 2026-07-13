@@ -1,0 +1,6 @@
+<canvas id="ai-canvas" aria-hidden="true"></canvas>
+<script>
+  import { initDataNetwork } from '../../scripts/data-network';
+  const canvas = document.querySelector<HTMLCanvasElement>('#ai-canvas');
+  if (canvas) initDataNetwork(canvas);
+</script>

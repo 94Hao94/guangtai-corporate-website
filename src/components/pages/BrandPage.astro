@@ -1,0 +1,13 @@
+---
+import PageTemplate from './PageTemplate.astro';
+import type { SitePage } from '../../lib/page-schema';
+interface Props {
+  page: SitePage;
+  ancestors: SitePage[];
+  children: SitePage[];
+  related: SitePage[];
+}
+const props = Astro.props;
+---
+
+<PageTemplate {...props} />

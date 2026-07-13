@@ -1,0 +1,51 @@
+---
+import { Image } from 'astro:assets';
+import { resolveImage } from '../../lib/images';
+const cards = [
+  {
+    image: '/assets/higher-teaching.png',
+    english: 'HIGHER EDUCATION',
+    title: '高校场景解决方案',
+    text: '围绕教学、科研、管理和服务，以AI应用工厂统一连接数据、空间、系统与设备。',
+    href: '/solutions/industries/higher-education',
+  },
+  {
+    image: '/assets/k12-campus.png',
+    english: 'K12 EDUCATION',
+    title: '中小学场景解决方案',
+    text: '围绕教学、安全、管理、生活服务与特色空间，构建稳定、可管、可持续运营的校园能力。',
+    href: '/solutions/industries/k12',
+  },
+];
+---
+
+<section class="education section-pad">
+  <div class="section-heading" data-reveal>
+    <p class="eyebrow">EDUCATION SCENARIOS</p><h2>
+      面向不同学段，让数智能力落到教学现场
+    </h2>
+  </div><div class="education-grid">
+    {
+      cards.map((card) => (
+        <article class="education-card" data-reveal>
+          <>
+            <Image
+              src={resolveImage(card.image)}
+              alt={card.title}
+              widths={[720, 1100]}
+              sizes="(max-width: 760px) 100vw, 50vw"
+            />
+            <div>
+              <>
+                <span>{card.english}</span>
+                <h3>{card.title}</h3>
+                <p>{card.text}</p>
+                <a href={card.href}>查看场景 →</a>
+              </>
+            </div>
+          </>
+        </article>
+      ))
+    }
+  </div>
+</section>

@@ -1,0 +1,36 @@
+---
+import type { SitePage } from '../../lib/page-schema';
+interface Props {
+  page: SitePage;
+}
+const { page } = Astro.props;
+---
+
+<div class="capability-canvas" aria-label={`${page.title}能力架构`}>
+  <div class="canvas-meta">
+    <span>SYSTEM MAP</span><b>04 CAPABILITY NODES</b>
+  </div><svg
+    class="canvas-lines"
+    viewBox="0 0 1200 560"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+    ><path
+      d="M600 280 L260 145 M600 280 L940 145 M600 280 L260 415 M600 280 L940 415"
+    ></path><circle cx="600" cy="280" r="96"></circle><circle
+      cx="600"
+      cy="280"
+      r="128"></circle></svg
+  ><div class="canvas-core">
+    <span>GUANGTAI</span><h3>{page.title}</h3><p>统一能力中枢</p>
+  </div>{
+    page.capabilities.slice(0, 4).map((item, index) => (
+      <article class:list={['canvas-node', `node-${index + 1}`]}>
+        <>
+          <span>{String(index + 1).padStart(2, '0')}</span>
+          <h4>{item}</h4>
+          <p>能力模块</p>
+        </>
+      </article>
+    ))
+  }<div class="canvas-caption">AI · DATA · SYSTEM · SCENE</div>
+</div>
