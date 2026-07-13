@@ -13,13 +13,14 @@
 ### Task 1: Scaffold the Astro project
 
 **Files:**
+
 - Create: `package.json`
 - Create: `package-lock.json`
 - Create: `astro.config.mjs`
 - Create: `tsconfig.json`
 - Create: `src/pages/index.astro`
 
-- [ ] **Step 1: Generate the minimal project**
+- [x] **Step 1: Generate the minimal project**
 
 Run:
 
@@ -29,7 +30,7 @@ npx create-astro@latest . --template minimal --add tailwind sitemap --install --
 
 Expected: the current directory contains an installable Astro project and keeps the existing `docs/` directory.
 
-- [ ] **Step 2: Add quality dependencies**
+- [x] **Step 2: Add quality dependencies**
 
 Run:
 
@@ -39,7 +40,7 @@ npm install --save-dev @astrojs/check typescript vitest prettier prettier-plugin
 
 Expected: the dependencies are present in `package.json` and locked in `package-lock.json`.
 
-- [ ] **Step 3: Add project scripts**
+- [x] **Step 3: Add project scripts**
 
 Run:
 
@@ -54,7 +55,7 @@ npm pkg set scripts.verify="npm run format:check && npm run check && npm test &&
 
 Expected: `npm run` lists `check`, `test`, `format:check`, and `verify`.
 
-- [ ] **Step 4: Configure a deployment-neutral site URL**
+- [x] **Step 4: Configure a deployment-neutral site URL**
 
 Set `astro.config.mjs` to:
 
@@ -72,7 +73,7 @@ export default defineConfig({
 });
 ```
 
-- [ ] **Step 5: Verify the untouched scaffold**
+- [x] **Step 5: Verify the untouched scaffold**
 
 Run: `npm run build`
 
@@ -81,12 +82,13 @@ Expected: exit code 0 and a generated `dist/` directory.
 ### Task 2: Add typed content with a tested formatter
 
 **Files:**
+
 - Create: `src/content.config.ts`
 - Create: `src/content/news/welcome.md`
 - Create: `src/utils/formatDate.ts`
 - Test: `tests/formatDate.test.ts`
 
-- [ ] **Step 1: Write the failing formatter test**
+- [x] **Step 1: Write the failing formatter test**
 
 Create `tests/formatDate.test.ts`:
 
@@ -105,13 +107,13 @@ describe('formatDate', () => {
 });
 ```
 
-- [ ] **Step 2: Verify that the test fails**
+- [x] **Step 2: Verify that the test fails**
 
 Run: `npm test`
 
 Expected: FAIL because `src/utils/formatDate.ts` does not exist.
 
-- [ ] **Step 3: Implement the formatter**
+- [x] **Step 3: Implement the formatter**
 
 Create `src/utils/formatDate.ts`:
 
@@ -130,19 +132,20 @@ export function formatDate(date: Date): string {
 }
 ```
 
-- [ ] **Step 4: Verify that the formatter passes**
+- [x] **Step 4: Verify that the formatter passes**
 
 Run: `npm test`
 
 Expected: 2 tests pass.
 
-- [ ] **Step 5: Define the news collection**
+- [x] **Step 5: Define the news collection**
 
 Create `src/content.config.ts`:
 
 ```ts
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
 
 const news = defineCollection({
   loader: glob({ base: './src/content/news', pattern: '**/*.{md,mdx}' }),
@@ -173,6 +176,7 @@ draft: false
 ### Task 3: Build the design foundation and homepage
 
 **Files:**
+
 - Create: `src/styles/global.css`
 - Create: `src/layouts/BaseLayout.astro`
 - Create: `src/components/Container.astro`
@@ -182,7 +186,7 @@ draft: false
 - Modify: `src/pages/index.astro`
 - Create: `public/robots.txt`
 
-- [ ] **Step 1: Add global tokens and accessibility defaults**
+- [x] **Step 1: Add global tokens and accessibility defaults**
 
 Create `src/styles/global.css`:
 
@@ -201,7 +205,12 @@ Create `src/styles/global.css`:
   color: var(--color-text);
   background: var(--color-bg);
   font-family:
-    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
     sans-serif;
   font-synthesis: none;
 }
@@ -248,7 +257,7 @@ img {
 }
 ```
 
-- [ ] **Step 2: Create the base layout**
+- [x] **Step 2: Create the base layout**
 
 Create `src/layouts/BaseLayout.astro`:
 
@@ -283,7 +292,7 @@ const canonicalUrl =
 </html>
 ```
 
-- [ ] **Step 3: Create focused presentation components**
+- [x] **Step 3: Create focused presentation components**
 
 Create `src/components/Container.astro`:
 
@@ -332,7 +341,13 @@ const { brand, items } = Astro.props;
     <a class="brand" href="/">{brand}</a>
     <nav aria-label="主要导航">
       <ul>
-        {items.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        {
+          items.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
       </ul>
     </nav>
   </Container>
@@ -459,7 +474,7 @@ const { eyebrow, title, description } = Astro.props;
 </style>
 ```
 
-- [ ] **Step 4: Compose the homepage**
+- [x] **Step 4: Compose the homepage**
 
 Replace `src/pages/index.astro`:
 
@@ -572,7 +587,7 @@ const navigation = [
 </style>
 ```
 
-- [ ] **Step 5: Add crawler defaults**
+- [x] **Step 5: Add crawler defaults**
 
 Create `public/robots.txt`:
 
@@ -581,7 +596,7 @@ User-agent: *
 Allow: /
 ```
 
-- [ ] **Step 6: Validate the page layer**
+- [x] **Step 6: Validate the page layer**
 
 Run: `npm run check`
 
@@ -590,12 +605,13 @@ Expected: exit code 0 with no Astro or TypeScript errors.
 ### Task 4: Add formatting, documentation, and CI
 
 **Files:**
+
 - Create: `.prettierrc.mjs`
 - Create: `.prettierignore`
 - Create: `.github/workflows/ci.yml`
 - Modify: `README.md`
 
-- [ ] **Step 1: Configure Astro-aware formatting**
+- [x] **Step 1: Configure Astro-aware formatting**
 
 Create `.prettierrc.mjs`:
 
@@ -618,13 +634,13 @@ node_modules
 coverage
 ```
 
-- [ ] **Step 2: Format the repository**
+- [x] **Step 2: Format the repository**
 
 Run: `npm run format`
 
 Expected: source and configuration files are formatted without errors.
 
-- [ ] **Step 3: Add CI**
+- [x] **Step 3: Add CI**
 
 Create `.github/workflows/ci.yml`:
 
@@ -649,7 +665,7 @@ jobs:
       - run: npm run verify
 ```
 
-- [ ] **Step 4: Document local development**
+- [x] **Step 4: Document local development**
 
 Replace `README.md`:
 
@@ -695,15 +711,16 @@ npm run verify
 ### Task 5: Complete verification
 
 **Files:**
+
 - Verify: all project files
 
-- [ ] **Step 1: Run the complete quality gate**
+- [x] **Step 1: Run the complete quality gate**
 
 Run: `npm run verify`
 
 Expected: formatting check, Astro Check, 2 Vitest tests, and production build all pass.
 
-- [ ] **Step 2: Inspect the production output**
+- [x] **Step 2: Inspect the production output**
 
 Run:
 
@@ -714,7 +731,7 @@ rg -n '<script' dist/index.html
 
 Expected: `dist/index.html`, sitemap output, and static assets exist; the script search returns no nonessential homepage client bundle.
 
-- [ ] **Step 3: Review repository state**
+- [x] **Step 3: Review repository state**
 
 Run:
 

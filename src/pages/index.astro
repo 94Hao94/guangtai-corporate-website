@@ -1,0 +1,106 @@
+---
+import { getCollection } from 'astro:content';
+import Container from '../components/Container.astro';
+import Hero from '../components/Hero.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { formatDate } from '../utils/formatDate';
+
+const news = (await getCollection('news', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime(),
+);
+
+const navigation = [
+  { label: '关于我们', href: '#about' },
+  { label: '新闻动态', href: '#news' },
+  { label: '联系我们', href: '#contact' },
+];
+---
+
+<BaseLayout
+  title="Astro 企业官网基础框架"
+  description="一个静态优先、类型安全、便于长期演进的企业官网技术底座。"
+>
+  <SiteHeader brand="企业品牌" items={navigation} />
+  <main>
+    <Container>
+      <Hero
+        eyebrow="Astro Foundation"
+        title="为长期演进而设计的企业官网"
+        description="静态优先、局部交互，并用清晰的组件和内容边界保持速度、安全与可维护性。"
+      />
+    </Container>
+
+    <section id="about" class="section">
+      <Container>
+        <p class="kicker">基础能力</p>
+        <h2>先建立可靠底座，再进入品牌设计</h2>
+        <p>当前版本验证页面结构、内容模型、SEO 基线与自动化质量检查。</p>
+      </Container>
+    </section>
+
+    <section id="news" class="section">
+      <Container>
+        <p class="kicker">新闻动态</p>
+        <div class="news-grid">
+          {
+            news.map((entry) => (
+              <article>
+                <time datetime={entry.data.publishedAt.toISOString()}>
+                  {formatDate(entry.data.publishedAt)}
+                </time>
+                <h2>{entry.data.title}</h2>
+                <p>{entry.data.summary}</p>
+              </article>
+            ))
+          }
+        </div>
+      </Container>
+    </section>
+
+    <section id="contact" class="section">
+      <Container>
+        <p class="kicker">下一阶段</p>
+        <h2>替换为真实品牌、业务内容和联系方式</h2>
+      </Container>
+    </section>
+  </main>
+  <SiteFooter company="企业品牌" />
+</BaseLayout>
+
+<style>
+  .section {
+    padding-block: 4rem;
+  }
+
+  .section:nth-child(even) {
+    background: var(--color-surface);
+  }
+
+  .kicker,
+  time {
+    color: var(--color-brand);
+    font-weight: 700;
+  }
+
+  h2 {
+    max-width: 28ch;
+    margin: 0.5rem 0;
+    font-size: clamp(1.75rem, 4vw, 3rem);
+    line-height: 1.15;
+  }
+
+  .news-grid {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  article {
+    padding: 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+</style>
