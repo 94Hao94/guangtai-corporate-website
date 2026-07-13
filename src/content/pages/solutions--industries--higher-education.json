@@ -1,0 +1,40 @@
+{
+  "path": "/solutions/industries/higher-education",
+  "template": "overview",
+  "title": "高校场景解决方案",
+  "english": "HIGHER EDUCATION",
+  "category": "行业解决方案",
+  "parentPath": "/solutions/industries",
+  "visualFamily": "higher",
+  "heroPosition": "center 42%",
+  "intro": "围绕教学、科研、管理与服务四类核心场景，构建可扩展、可运营的数智校园能力。",
+  "positioning": "高校方案将大模型、校本知识、智能体、具身设备和校园业务系统统一纳入AI应用工厂，让不同部门从自己的场景出发使用数智能力。",
+  "hero": "/assets/visual-v2/higher-campus-students.jpg",
+  "images": [
+    "/assets/higher-ed-architecture.jpg",
+    "/assets/visual-v2/higher-campus-modern.jpg"
+  ],
+  "capabilities": [
+    "教学、学习与质量分析",
+    "科研知识、算力与实验支持",
+    "一网通办、数据治理与管理决策",
+    "师生服务、空间运营与安全保障"
+  ],
+  "scenarios": [
+    "课堂与课程建设",
+    "科研项目与实验实训",
+    "学校管理与跨部门协同",
+    "生活服务与空间运营"
+  ],
+  "delivery": [
+    "学校战略与场景优先级评估",
+    "数据、平台和系统集成设计",
+    "场景原型、试点和分期建设",
+    "使用评估、培训和持续运营"
+  ],
+  "id": "solutions--industries--higher-education",
+  "draft": false,
+  "seoTitle": "高校场景解决方案 | 天津光泰科技集团",
+  "seoDescription": "围绕教学、科研、管理与服务四类核心场景，构建可扩展、可运营的数智校园能力。",
+  "ogImage": "/assets/visual-v2/higher-campus-students.jpg"
+}

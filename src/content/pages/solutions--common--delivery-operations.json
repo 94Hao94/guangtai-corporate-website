@@ -1,0 +1,39 @@
+{
+  "path": "/solutions/common/delivery-operations",
+  "template": "detail",
+  "title": "整体定制与持续运营",
+  "english": "CUSTOM DELIVERY & OPERATIONS",
+  "category": "通用解决方案",
+  "parentPath": "/solutions/common",
+  "visualFamily": "common",
+  "intro": "从规划、设计、建设到运维和迭代，为复合项目建立完整交付闭环。",
+  "positioning": "面对跨专业、跨系统和分阶段建设的项目，光泰用统一蓝图协调AI、软件、音视频、安防、基础设施和现场交付，避免系统建成后无人持续使用。",
+  "hero": "/assets/visual-v2/common-delivery.jpg",
+  "images": [
+    "/assets/solution-common-scenario-cards.jpg",
+    "/assets/visual-v2/common-delivery.jpg"
+  ],
+  "capabilities": [
+    "咨询规划与总体架构",
+    "跨专业设计与项目管理",
+    "软硬件集成、联调与验收",
+    "运维、数据运营与持续迭代"
+  ],
+  "scenarios": [
+    "校园和园区整体建设",
+    "新旧系统融合与分期升级",
+    "展示、指挥与运营中心",
+    "长期运维与业务持续改进"
+  ],
+  "delivery": [
+    "现状诊断、蓝图和投资边界",
+    "分期建设路径与详细设计",
+    "过程质量、联调和资料交付",
+    "运维SLA、使用评估与优化计划"
+  ],
+  "id": "solutions--common--delivery-operations",
+  "draft": false,
+  "seoTitle": "整体定制与持续运营 | 天津光泰科技集团",
+  "seoDescription": "从规划、设计、建设到运维和迭代，为复合项目建立完整交付闭环。",
+  "ogImage": "/assets/visual-v2/common-delivery.jpg"
+}

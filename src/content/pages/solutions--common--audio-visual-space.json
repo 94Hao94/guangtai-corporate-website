@@ -1,0 +1,39 @@
+{
+  "path": "/solutions/common/audio-visual-space",
+  "template": "detail",
+  "title": "音视频与空间智能",
+  "english": "AUDIOVISUAL & SPATIAL INTELLIGENCE",
+  "category": "通用解决方案",
+  "parentPath": "/solutions/common",
+  "visualFamily": "common",
+  "intro": "让会议、报告、展示、录播与指挥空间可视、可协同、可管控。",
+  "positioning": "光泰将显示、扩声、会议、录播、中控、灯光、信息发布和远程协同统一设计，并通过AI助手与运维系统提升空间使用效率。",
+  "hero": "/assets/visual-v2/common-meeting.jpg",
+  "images": [
+    "/assets/solution-common-scenario-snapshots.jpg",
+    "/assets/visual-v2/common-meeting.jpg"
+  ],
+  "capabilities": [
+    "音视频系统与建声设计",
+    "中控、灯光和环境联动",
+    "远程会议、录播与直播",
+    "会议智能体与统一运维"
+  ],
+  "scenarios": [
+    "会议室与协同办公",
+    "报告厅、礼堂与演播空间",
+    "展示中心与信息发布",
+    "指挥中心与综合研判"
+  ],
+  "delivery": [
+    "空间勘察与使用需求分析",
+    "系统设计、设备选型与点位深化",
+    "安装调试、声场优化与系统联调",
+    "使用培训、巡检与持续运维"
+  ],
+  "id": "solutions--common--audio-visual-space",
+  "draft": false,
+  "seoTitle": "音视频与空间智能 | 天津光泰科技集团",
+  "seoDescription": "让会议、报告、展示、录播与指挥空间可视、可协同、可管控。",
+  "ogImage": "/assets/visual-v2/common-meeting.jpg"
+}

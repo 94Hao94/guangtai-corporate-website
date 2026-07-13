@@ -1,0 +1,39 @@
+{
+  "path": "/solutions/industries/higher-education/management",
+  "template": "detail",
+  "title": "高校管理场景",
+  "english": "UNIVERSITY MANAGEMENT",
+  "category": "高校场景解决方案",
+  "parentPath": "/solutions/industries/higher-education",
+  "visualFamily": "higher",
+  "intro": "以统一门户、流程协同、数据治理和管理智能体提升学校治理效率。",
+  "positioning": "高校管理数智化的重点是减少重复填报、打通跨部门事项并提供可追溯的数据依据。光泰用流程、数据和AI助理协同建设，不以单一大屏代替真实管理改进。",
+  "hero": "/assets/visual-v2/common-delivery.jpg",
+  "images": [
+    "/assets/solution-higher-campus-brain.jpg",
+    "/assets/visual-v2/common-delivery.jpg"
+  ],
+  "capabilities": [
+    "一网通办、统一门户与身份权限",
+    "主数据、指标和业务数据治理",
+    "管理制度知识库与办事智能体",
+    "决策主题分析与运行态势展示"
+  ],
+  "scenarios": [
+    "学工、教务、人事与科研协同",
+    "跨部门审批与办事服务",
+    "领导决策与专题分析",
+    "管理制度查询和流程辅助"
+  ],
+  "delivery": [
+    "管理事项、角色和数据源梳理",
+    "门户、流程、数据和智能体架构",
+    "分批事项上线与历史数据迁移",
+    "数据质量、流程效率和使用情况评估"
+  ],
+  "id": "solutions--industries--higher-education--management",
+  "draft": false,
+  "seoTitle": "高校管理场景 | 天津光泰科技集团",
+  "seoDescription": "以统一门户、流程协同、数据治理和管理智能体提升学校治理效率。",
+  "ogImage": "/assets/visual-v2/common-delivery.jpg"
+}

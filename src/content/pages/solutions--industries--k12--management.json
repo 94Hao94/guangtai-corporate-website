@@ -1,0 +1,39 @@
+{
+  "path": "/solutions/industries/k12/management",
+  "template": "detail",
+  "title": "中小学管理场景",
+  "english": "SCHOOL MANAGEMENT",
+  "category": "中小学场景解决方案",
+  "parentPath": "/solutions/industries/k12",
+  "visualFamily": "k12",
+  "intro": "连接校务、德育、教务、教职工与家校协同，减少重复事务。",
+  "positioning": "中小学管理强调清晰、稳定和易用。方案以学校日常事项和角色权限为主线，把通知、审批、台账、评价、资源和家校沟通统一到可追踪的管理流程。",
+  "hero": "/assets/ai-generated-k12-management.png",
+  "images": [
+    "/assets/k12-overall-framework.jpg",
+    "/assets/visual-v2/hero-k12-learning.jpg"
+  ],
+  "capabilities": [
+    "统一校务门户、组织与权限",
+    "德育、班级、教务与教职工事务",
+    "校务知识库与办事助手",
+    "家校通知、反馈与数据分析"
+  ],
+  "scenarios": [
+    "日常通知、审批和值班管理",
+    "学生成长、德育和班级管理",
+    "教师事务、资源和教研协同",
+    "家长消息、事项反馈和家校共育"
+  ],
+  "delivery": [
+    "校务事项、表单和权限清单",
+    "门户、流程、数据和移动端设计",
+    "分批上线、历史数据整理与用户培训",
+    "使用情况、办事效率与数据质量改进"
+  ],
+  "id": "solutions--industries--k12--management",
+  "draft": false,
+  "seoTitle": "中小学管理场景 | 天津光泰科技集团",
+  "seoDescription": "连接校务、德育、教务、教职工与家校协同，减少重复事务。",
+  "ogImage": "/assets/ai-generated-k12-management.png"
+}

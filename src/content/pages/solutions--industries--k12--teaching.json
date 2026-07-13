@@ -1,0 +1,39 @@
+{
+  "path": "/solutions/industries/k12/teaching",
+  "template": "detail",
+  "title": "中小学教学场景",
+  "english": "PRECISION TEACHING",
+  "category": "中小学场景解决方案",
+  "parentPath": "/solutions/industries/k12",
+  "visualFamily": "k12",
+  "intro": "连接课堂、作业、资源和学情数据，支持教师分层教学与学生个性化学习。",
+  "positioning": "精准教学不等于增加考试和统计。方案将资源准备、课堂互动、作业反馈、学情诊断和教师复盘形成连续闭环，用AI辅助减少重复工作。",
+  "hero": "/assets/visual-v2/k12-science-project.jpg",
+  "images": [
+    "/assets/k12-precision-teaching.jpg",
+    "/assets/visual-v2/k12-science-project.jpg"
+  ],
+  "capabilities": [
+    "课前资源推荐与分层任务设计",
+    "课堂互动、教学过程采集与反馈",
+    "作业批改辅助、错因分析与学情诊断",
+    "个性化练习、学习路径与家校反馈"
+  ],
+  "scenarios": [
+    "日常班级授课与作业",
+    "阶段性学情诊断与分层辅导",
+    "集体备课、课例研修与资源共享",
+    "学生自主学习与家校沟通"
+  ],
+  "delivery": [
+    "教学流程、数据和减负目标梳理",
+    "教学平台、资源和终端环境设计",
+    "学科试点、教师培训与数据校验",
+    "教学效果评估与校本资源运营"
+  ],
+  "id": "solutions--industries--k12--teaching",
+  "draft": false,
+  "seoTitle": "中小学教学场景 | 天津光泰科技集团",
+  "seoDescription": "连接课堂、作业、资源和学情数据，支持教师分层教学与学生个性化学习。",
+  "ogImage": "/assets/visual-v2/k12-science-project.jpg"
+}

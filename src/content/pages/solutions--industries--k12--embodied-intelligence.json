@@ -1,0 +1,40 @@
+{
+  "path": "/solutions/industries/k12/embodied-intelligence",
+  "template": "detail",
+  "title": "中小学具身智能",
+  "english": "EMBODIED AI FOR K12",
+  "category": "中小学场景解决方案",
+  "parentPath": "/solutions/industries/k12",
+  "visualFamily": "k12",
+  "heroPosition": "center 40%",
+  "intro": "用安全、可操作的机器人与仿真平台支撑创新课程、展示与校园服务。",
+  "positioning": "中小学具身智能以科学素养、工程思维和安全体验为目标，优先建设可仿真、可分组、可观察的学习任务，再根据校园边界引入展示、导览和简单服务。",
+  "hero": "/assets/visual-v2/k12-robot-parts.jpg",
+  "images": [
+    "/assets/k12-basic-environment.jpg",
+    "/assets/visual-v2/k12-robot-parts.jpg"
+  ],
+  "capabilities": [
+    "图形化编程、仿真与感知实验",
+    "轮式、四足与人形设备分层实训",
+    "任务编排、数据可视化与作品展示",
+    "设备权限、空间安全与运行监管"
+  ],
+  "scenarios": [
+    "信息科技与人工智能通识课",
+    "创客、科技社团与项目式学习",
+    "校园导览与科技文化展示",
+    "环境感知与简单巡检实践"
+  ],
+  "delivery": [
+    "学段课程目标与任务难度设计",
+    "场地、设备、课程包与安全规则",
+    "教师试教、学生实践与作品展评",
+    "设备保养、师资培训与课程迭代"
+  ],
+  "id": "solutions--industries--k12--embodied-intelligence",
+  "draft": false,
+  "seoTitle": "中小学具身智能 | 天津光泰科技集团",
+  "seoDescription": "用安全、可操作的机器人与仿真平台支撑创新课程、展示与校园服务。",
+  "ogImage": "/assets/visual-v2/k12-robot-parts.jpg"
+}

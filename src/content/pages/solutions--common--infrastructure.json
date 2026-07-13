@@ -1,0 +1,39 @@
+{
+  "path": "/solutions/common/infrastructure",
+  "template": "detail",
+  "title": "数据中心与基础设施",
+  "english": "DATA CENTER & INFRASTRUCTURE",
+  "category": "通用解决方案",
+  "parentPath": "/solutions/common",
+  "visualFamily": "common",
+  "intro": "建设可支撑业务系统、AI应用和智能设备稳定运行的基础底座。",
+  "positioning": "从网络、机房、计算存储、私有云、终端到安全与运维，光泰按业务重要性和可扩展要求统一规划，避免基础设施与上层应用脱节。",
+  "hero": "/assets/visual-v2/common-datacenter.jpg",
+  "images": [
+    "/assets/k12-basic-environment.jpg",
+    "/assets/visual-v2/common-datacenter.jpg"
+  ],
+  "capabilities": [
+    "校园与园区有线无线网络",
+    "模块化机房、供配电与环境监控",
+    "计算、存储、私有云与云桌面",
+    "边界安全、备份容灾与统一运维"
+  ],
+  "scenarios": [
+    "数据中心和业务机房",
+    "多楼宇校园与园区网络",
+    "实训终端与虚拟桌面",
+    "AI推理、视频和物联数据承载"
+  ],
+  "delivery": [
+    "现网评估与容量规划",
+    "网络、机房和云资源深化设计",
+    "建设、迁移、联调与安全加固",
+    "监控、备份、巡检与容量优化"
+  ],
+  "id": "solutions--common--infrastructure",
+  "draft": false,
+  "seoTitle": "数据中心与基础设施 | 天津光泰科技集团",
+  "seoDescription": "建设可支撑业务系统、AI应用和智能设备稳定运行的基础底座。",
+  "ogImage": "/assets/visual-v2/common-datacenter.jpg"
+}

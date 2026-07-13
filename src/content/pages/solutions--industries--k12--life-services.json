@@ -1,0 +1,39 @@
+{
+  "path": "/solutions/industries/k12/life-services",
+  "template": "detail",
+  "title": "中小学生活服务",
+  "english": "CAMPUS LIFE SERVICES",
+  "category": "中小学场景解决方案",
+  "parentPath": "/solutions/industries/k12",
+  "visualFamily": "k12",
+  "intro": "围绕食宿、健康、后勤、资产与校园服务，营造更有序的学习生活环境。",
+  "positioning": "校园生活服务要同时兼顾安全、便利和管理效率。光泰通过服务门户、设施感知、工单闭环和运营数据，将报修、餐饮、宿舍、健康和能耗纳入日常可管理的流程。",
+  "hero": "/assets/ai-generated-k12-life-service.png",
+  "images": [
+    "/assets/k12-scenarios.jpg",
+    "/assets/visual-v2/hero-k12-learning.jpg"
+  ],
+  "capabilities": [
+    "食堂、宿舍与校园生活服务",
+    "健康、晚检和重点关怀信息支持",
+    "设施报修、巡检与后勤工单闭环",
+    "资产、能耗和服务运营分析"
+  ],
+  "scenarios": [
+    "学生餐饮与食品安全管理",
+    "寄宿生活与夜间服务",
+    "校园设施报修和后勤巡检",
+    "健康关怀与家校信息协同"
+  ],
+  "delivery": [
+    "生活服务流程与管理责任梳理",
+    "终端、感知、门户与工单平台设计",
+    "重点服务上线、人员培训和过程联调",
+    "服务响应、风险与运营数据复盘"
+  ],
+  "id": "solutions--industries--k12--life-services",
+  "draft": false,
+  "seoTitle": "中小学生活服务 | 天津光泰科技集团",
+  "seoDescription": "围绕食宿、健康、后勤、资产与校园服务，营造更有序的学习生活环境。",
+  "ogImage": "/assets/ai-generated-k12-life-service.png"
+}

@@ -1,0 +1,40 @@
+{
+  "path": "/solutions/common",
+  "template": "overview",
+  "title": "通用解决方案",
+  "english": "COMMON SOLUTIONS",
+  "category": "解决方案",
+  "visualFamily": "common",
+  "heroPosition": "right center",
+  "heroFit": "contain",
+  "intro": "面向校园、园区、政企、会议、安防、机房和定制开发等共性需求，组合AI、具身智能与系统集成能力。",
+  "positioning": "通用方案不从设备清单出发，而是先建立统一智能入口，再连接空间、安全、基础设施、软件与运营流程，形成可持续交付的整体能力。",
+  "hero": "/assets/visual-v2/home-common-engineering.png",
+  "images": [
+    "/assets/solution-common-scenario-cards.jpg",
+    "/assets/visual-v2/common-meeting.jpg"
+  ],
+  "capabilities": [
+    "AI能力与智能体",
+    "具身智能与设备接入",
+    "音视频、安全与基础设施",
+    "软件定制、低空与持续运营"
+  ],
+  "scenarios": [
+    "智能会议与协同空间",
+    "园区安全与应急联动",
+    "机房、网络与私有云",
+    "巡检、测绘与空间数据"
+  ],
+  "delivery": [
+    "顶层规划与需求分析",
+    "软硬件方案与深化设计",
+    "集成实施、联调和交付",
+    "运维、迭代与运营服务"
+  ],
+  "id": "solutions--common",
+  "draft": false,
+  "seoTitle": "通用解决方案 | 天津光泰科技集团",
+  "seoDescription": "面向校园、园区、政企、会议、安防、机房和定制开发等共性需求，组合AI、具身智能与系统集成能力。",
+  "ogImage": "/assets/visual-v2/home-common-engineering.png"
+}

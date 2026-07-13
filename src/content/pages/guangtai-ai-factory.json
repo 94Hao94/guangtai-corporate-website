@@ -1,0 +1,40 @@
+{
+  "path": "/guangtai-ai-factory",
+  "template": "overview",
+  "title": "光泰AI应用工厂",
+  "english": "GUANGTAI AI APPLICATION FACTORY",
+  "category": "核心平台",
+  "visualFamily": "platform",
+  "heroPosition": "right center",
+  "heroFit": "contain",
+  "intro": "把模型、知识、工具、数据和业务流程编排为可运行、可评估、可迭代的行业智能体。",
+  "positioning": "平台面向项目交付，统一承接模型接入、知识增强、智能体编排、工具调用、设备联动和私有化部署，让AI从演示能力进入客户的真实流程。",
+  "hero": "/assets/visual-v2/hero-platform-lab.png",
+  "images": [
+    "/assets/product-ai-factory-architecture.jpg",
+    "/assets/visual-v2/hero-platform-lab.png"
+  ],
+  "capabilities": [
+    "公有、开源与本地模型路由",
+    "RAG知识库与多模态理解",
+    "任务规划、工具调用与多Agent协同",
+    "AI编程、插件与接口工程"
+  ],
+  "scenarios": [
+    "校园学伴与教师助手",
+    "安防研判与事件处置",
+    "运维巡检与工单闭环",
+    "会议办公与知识检索"
+  ],
+  "delivery": [
+    "业务流程梳理与智能体原型",
+    "模型、知识和工具接入",
+    "权限、日志、评估与安全治理",
+    "私有化部署、运维与持续优化"
+  ],
+  "id": "guangtai-ai-factory",
+  "draft": false,
+  "seoTitle": "光泰AI应用工厂 | 天津光泰科技集团",
+  "seoDescription": "把模型、知识、工具、数据和业务流程编排为可运行、可评估、可迭代的行业智能体。",
+  "ogImage": "/assets/visual-v2/hero-platform-lab.png"
+}

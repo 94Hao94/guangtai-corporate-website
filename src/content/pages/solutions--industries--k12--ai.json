@@ -1,0 +1,39 @@
+{
+  "path": "/solutions/industries/k12/ai",
+  "template": "detail",
+  "title": "中小学AI能力",
+  "english": "AI FOR K12",
+  "category": "中小学场景解决方案",
+  "parentPath": "/solutions/industries/k12",
+  "visualFamily": "k12",
+  "intro": "以校本知识、教师助手、学习助手和安全可控的模型能力服务教学。",
+  "positioning": "中小学AI应用需要与学龄特点、课程目标、内容安全和教师主导原则一致。方案以教师备课、学生学习和校务服务为主线，建立可管、可查、可评估的AI使用环境。",
+  "hero": "/assets/visual-v2/hero-k12-learning.jpg",
+  "images": [
+    "/assets/solution-k12-framework-core.jpg",
+    "/assets/visual-v2/hero-k12-learning.jpg"
+  ],
+  "capabilities": [
+    "校本课程、制度和资源知识库",
+    "教师备课、作业与教研助手",
+    "学习问答、练习反馈与路径建议",
+    "内容安全、权限分级和使用审计"
+  ],
+  "scenarios": [
+    "课前资源准备与分层教学设计",
+    "课后答疑、练习和学情反馈",
+    "校本教研知识沉淀与共享",
+    "家长咨询和校务服务辅助"
+  ],
+  "delivery": [
+    "AI使用规则与场景清单",
+    "知识资源整理与模型安全适配",
+    "教师与班级试点、效果评估",
+    "教师培训、使用监督与持续优化"
+  ],
+  "id": "solutions--industries--k12--ai",
+  "draft": false,
+  "seoTitle": "中小学AI能力 | 天津光泰科技集团",
+  "seoDescription": "以校本知识、教师助手、学习助手和安全可控的模型能力服务教学。",
+  "ogImage": "/assets/visual-v2/hero-k12-learning.jpg"
+}

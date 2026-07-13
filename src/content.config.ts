@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { pageSchema } from './lib/page-schema';
 
 const news = defineCollection({
   loader: glob({ base: './src/content/news', pattern: '**/*.{md,mdx}' }),
@@ -12,4 +13,9 @@ const news = defineCollection({
   }),
 });
 
-export const collections = { news };
+const pages = defineCollection({
+  loader: glob({ base: './src/content/pages', pattern: '**/*.json' }),
+  schema: pageSchema,
+});
+
+export const collections = { news, pages };

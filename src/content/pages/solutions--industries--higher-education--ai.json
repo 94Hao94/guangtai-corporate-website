@@ -1,0 +1,39 @@
+{
+  "path": "/solutions/industries/higher-education/ai",
+  "template": "detail",
+  "title": "高校AI能力",
+  "english": "AI FOR HIGHER EDUCATION",
+  "category": "高校场景解决方案",
+  "parentPath": "/solutions/industries/higher-education",
+  "visualFamily": "higher",
+  "intro": "用校本知识库、教学科研智能体与AI工程能力支撑高校持续创新。",
+  "positioning": "高校AI建设需要兼顾教学质量、科研创新、管理效率和数据安全。光泰通过模型可替换、知识可治理和智能体可评估，建立长期可用的AI底座。",
+  "hero": "/assets/visual-v2/common-software.jpg",
+  "images": [
+    "/assets/solution-higher-campus-brain.jpg",
+    "/assets/visual-v2/common-software.jpg"
+  ],
+  "capabilities": [
+    "校本制度、课程与科研知识库",
+    "教师、学习、科研和管理智能体",
+    "多模型路由与多模态教学理解",
+    "AI编程、实验平台与私有化部署"
+  ],
+  "scenarios": [
+    "课程问答与个性化学习支持",
+    "备课、作业和教研辅助",
+    "科研文献、数据与实验助理",
+    "管理制度检索与事项办理辅助"
+  ],
+  "delivery": [
+    "校内AI场景清单和治理原则",
+    "知识数据整理与模型适配",
+    "智能体试点、评估与系统集成",
+    "权限、审计、培训和持续优化"
+  ],
+  "id": "solutions--industries--higher-education--ai",
+  "draft": false,
+  "seoTitle": "高校AI能力 | 天津光泰科技集团",
+  "seoDescription": "用校本知识库、教学科研智能体与AI工程能力支撑高校持续创新。",
+  "ogImage": "/assets/visual-v2/common-software.jpg"
+}

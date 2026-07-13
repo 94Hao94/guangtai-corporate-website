@@ -1,0 +1,39 @@
+{
+  "path": "/solutions/common/software-integration",
+  "template": "detail",
+  "title": "软件定制与系统集成",
+  "english": "SOFTWARE & SYSTEM INTEGRATION",
+  "category": "通用解决方案",
+  "parentPath": "/solutions/common",
+  "visualFamily": "common",
+  "intro": "围绕客户真实流程定制门户、管理应用、数字孪生与业务集成。",
+  "positioning": "软件项目从业务角色、事项和数据出发，通过可演示原型、分阶段交付和持续迭代降低沟通成本，并用AI编程与自动化测试提升交付效率。",
+  "hero": "/assets/visual-v2/common-software.jpg",
+  "images": [
+    "/assets/product-ai-factory-capabilities.jpg",
+    "/assets/visual-v2/common-software.jpg"
+  ],
+  "capabilities": [
+    "统一门户、流程和管理系统",
+    "移动端、大屏与数字孪生应用",
+    "数据接口、单点登录与业务集成",
+    "AI编程、插件开发与自动化测试"
+  ],
+  "scenarios": [
+    "校园与企业门户",
+    "业务流程与综合管理",
+    "数字孪生与运营大屏",
+    "旧系统升级与多系统整合"
+  ],
+  "delivery": [
+    "需求工作坊与可交互原型",
+    "架构、数据和接口设计",
+    "敏捷开发、测试与阶段验收",
+    "上线迁移、培训和版本运营"
+  ],
+  "id": "solutions--common--software-integration",
+  "draft": false,
+  "seoTitle": "软件定制与系统集成 | 天津光泰科技集团",
+  "seoDescription": "围绕客户真实流程定制门户、管理应用、数字孪生与业务集成。",
+  "ogImage": "/assets/visual-v2/common-software.jpg"
+}

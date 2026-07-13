@@ -1,0 +1,39 @@
+{
+  "path": "/solutions/industries/higher-education/teaching",
+  "template": "detail",
+  "title": "高校教学场景",
+  "english": "SMART TEACHING",
+  "category": "高校场景解决方案",
+  "parentPath": "/solutions/industries/higher-education",
+  "visualFamily": "higher",
+  "intro": "用AI、数据和智能空间支撑课程建设、课堂教学、学习服务与质量改进。",
+  "positioning": "教学建设从师生的课前、课中、课后连续体验出发，将教学空间、课程资源、教学过程数据与教师智能体连接起来，让质量分析服务改进而不是增加负担。",
+  "hero": "/assets/visual-v2/higher-campus-modern.jpg",
+  "images": [
+    "/assets/higher-ed-spaces.jpg",
+    "/assets/visual-v2/higher-campus-students.jpg"
+  ],
+  "capabilities": [
+    "教师备课、资源和教研助手",
+    "智慧教室、录播与远程协同",
+    "学习过程、作业与学情分析",
+    "课程、专业与教学质量数据支撑"
+  ],
+  "scenarios": [
+    "常态化智慧课堂",
+    "混合式与跨校协同教学",
+    "虚拟仿真、实验与工程训练",
+    "课程评价与教学质量改进"
+  ],
+  "delivery": [
+    "教学模式、空间和系统现状评估",
+    "课堂、资源、数据与AI能力设计",
+    "试点课程、教师培训与教学联调",
+    "使用数据分析与长期运营支持"
+  ],
+  "id": "solutions--industries--higher-education--teaching",
+  "draft": false,
+  "seoTitle": "高校教学场景 | 天津光泰科技集团",
+  "seoDescription": "用AI、数据和智能空间支撑课程建设、课堂教学、学习服务与质量改进。",
+  "ogImage": "/assets/visual-v2/higher-campus-modern.jpg"
+}

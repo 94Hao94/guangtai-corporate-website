@@ -1,0 +1,39 @@
+{
+  "path": "/solutions/common/low-altitude",
+  "template": "detail",
+  "title": "低空巡检与空间数据",
+  "english": "LOW-ALTITUDE INSPECTION",
+  "category": "通用解决方案",
+  "parentPath": "/solutions/common",
+  "visualFamily": "common",
+  "intro": "利用无人机、机器人与多源感知获取空间数据，支撑巡检、测绘和建模。",
+  "positioning": "低空业务以合规、安全和任务价值为前提，把航线、任务、影像、点云和异常信息统一归档，与地面巡检和业务系统形成协同。",
+  "hero": "/assets/visual-v2/common-drone.jpg",
+  "images": [
+    "/assets/solution-common-scenario-snapshots.jpg",
+    "/assets/visual-v2/common-drone.jpg"
+  ],
+  "capabilities": [
+    "航线与巡检任务规划",
+    "影像、点云与多传感数据获取",
+    "三维建模、差异比对与异常识别",
+    "任务回放、结果归档与业务集成"
+  ],
+  "scenarios": [
+    "园区和校园全域巡检",
+    "屋面、立面与管线检查",
+    "测绘、建模与施工记录",
+    "应急查看与空间态势辅助"
+  ],
+  "delivery": [
+    "飞行环境、合规边界与任务评估",
+    "设备、载荷、航线与数据标准设计",
+    "试飞、算法联调与业务流程对接",
+    "飞手培训、设备维护与数据运营"
+  ],
+  "id": "solutions--common--low-altitude",
+  "draft": false,
+  "seoTitle": "低空巡检与空间数据 | 天津光泰科技集团",
+  "seoDescription": "利用无人机、机器人与多源感知获取空间数据，支撑巡检、测绘和建模。",
+  "ogImage": "/assets/visual-v2/common-drone.jpg"
+}

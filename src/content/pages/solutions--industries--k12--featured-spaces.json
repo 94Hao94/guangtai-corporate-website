@@ -1,0 +1,39 @@
+{
+  "path": "/solutions/industries/k12/featured-spaces",
+  "template": "detail",
+  "title": "中小学特色空间",
+  "english": "FEATURED LEARNING SPACES",
+  "category": "中小学场景解决方案",
+  "parentPath": "/solutions/industries/k12",
+  "visualFamily": "k12",
+  "intro": "为人工智能、创客、阅读、科学实验和综合实践设计可持续使用的学习空间。",
+  "positioning": "特色空间不以一次性展示为目标，而是将课程、设备、作品、师资和运营机制一起设计，让空间能够长期承载课堂、社团、竞赛和展评活动。",
+  "hero": "/assets/visual-v2/hero-k12-learning.jpg",
+  "images": [
+    "/assets/k12-scenarios.jpg",
+    "/assets/visual-v2/k12-robot-parts.jpg"
+  ],
+  "capabilities": [
+    "AI、创客、机器人与科学实验空间",
+    "阅读、艺术、录播与综合实践空间",
+    "课程资源、设备工具与学习任务管理",
+    "学生作品展示、过程记录与活动运营"
+  ],
+  "scenarios": [
+    "人工智能与编程课程",
+    "科学实验与跨学科项目式学习",
+    "阅读、创作和媒体素养活动",
+    "社团、竞赛、科技节与学生展评"
+  ],
+  "delivery": [
+    "育人目标、课程与空间活动规划",
+    "空间、家具、设备、网络与安全设计",
+    "校本课程包、师资培训与试运行",
+    "课程、设备、作品与活动的长期运营"
+  ],
+  "id": "solutions--industries--k12--featured-spaces",
+  "draft": false,
+  "seoTitle": "中小学特色空间 | 天津光泰科技集团",
+  "seoDescription": "为人工智能、创客、阅读、科学实验和综合实践设计可持续使用的学习空间。",
+  "ogImage": "/assets/visual-v2/hero-k12-learning.jpg"
+}

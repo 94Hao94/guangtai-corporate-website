@@ -1,0 +1,38 @@
+{
+  "path": "/contact",
+  "template": "brand",
+  "title": "联系我们",
+  "english": "CONTACT GUANGTAI",
+  "category": "品牌与服务",
+  "visualFamily": "brand",
+  "intro": "从客户的场景、目标和现有基础出发，共同界定一个可验证、可交付的项目路径。",
+  "positioning": "为了让首次沟通更有效，可先准备建设对象、核心问题、时间目标、现有系统和数据边界。真实电话、邮箱和办公地址需由光泰确认后再公开，本页不使用假联系方式。",
+  "hero": "/assets/hero-guangtai-campus-ai-v1.png",
+  "images": [
+    "/assets/ai-generated-common-delivery.png",
+    "/assets/visual-v2/common-meeting.jpg"
+  ],
+  "capabilities": [
+    "拟建项目类型和服务对象",
+    "希望改善的业务问题和使用场景",
+    "已有系统、设备、数据和网络基础",
+    "计划时间、建设边界和安全要求"
+  ],
+  "scenarios": [
+    "AI应用工厂和智能体项目",
+    "教育行业数智校园项目",
+    "音视频、安全、机房和软件集成项目",
+    "具身智能、低空巡检和创新实训项目"
+  ],
+  "delivery": [
+    "首次场景诊断与需求边界沟通",
+    "项目蓝图、分期建议与可行性分析",
+    "原型或重点场景试点建议",
+    "建设、交付、运维和持续迭代路径"
+  ],
+  "id": "contact",
+  "draft": false,
+  "seoTitle": "联系我们 | 天津光泰科技集团",
+  "seoDescription": "从客户的场景、目标和现有基础出发，共同界定一个可验证、可交付的项目路径。",
+  "ogImage": "/assets/hero-guangtai-campus-ai-v1.png"
+}

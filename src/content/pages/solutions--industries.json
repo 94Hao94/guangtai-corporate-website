@@ -1,0 +1,39 @@
+{
+  "path": "/solutions/industries",
+  "template": "overview",
+  "title": "行业解决方案",
+  "english": "INDUSTRY SOLUTIONS",
+  "category": "解决方案",
+  "visualFamily": "higher",
+  "heroPosition": "62% center",
+  "intro": "面向教育行业，分别围绕高校和中小学的教学、科研、管理、服务与安全建设数智化能力。",
+  "positioning": "行业方案不照搬通用产品，而是从学校角色、流程、数据和空间出发，以AI应用工厂统一生成智能入口，再连接具身设备和现有业务系统。",
+  "hero": "/assets/visual-v2/higher-campus-modern.jpg",
+  "images": [
+    "/assets/ai-generated-k12-solution.png",
+    "/assets/visual-v2/higher-campus-students.jpg"
+  ],
+  "capabilities": [
+    "高校教学、科研、管理和服务",
+    "中小学教学、安全、管理和生活服务",
+    "校园知识库与多类智能体",
+    "具身智能实训、巡检与服务"
+  ],
+  "scenarios": [
+    "教学与学习支持",
+    "科研与实验实训",
+    "管理决策与协同办事",
+    "校园服务、安全与运营"
+  ],
+  "delivery": [
+    "校园数智化现状评估",
+    "学段场景蓝图与分期路径",
+    "平台、系统、空间与设备集成",
+    "教师、管理者与运维团队运营支持"
+  ],
+  "id": "solutions--industries",
+  "draft": false,
+  "seoTitle": "行业解决方案 | 天津光泰科技集团",
+  "seoDescription": "面向教育行业，分别围绕高校和中小学的教学、科研、管理、服务与安全建设数智化能力。",
+  "ogImage": "/assets/visual-v2/higher-campus-modern.jpg"
+}

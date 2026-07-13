@@ -1,0 +1,38 @@
+{
+  "path": "/about",
+  "template": "brand",
+  "title": "关于光泰",
+  "english": "ABOUT GUANGTAI",
+  "category": "品牌与服务",
+  "visualFamily": "brand",
+  "intro": "以AI应用工厂为平台底座，融合软件开发、系统集成、空间智能与具身设备。",
+  "positioning": "天津光泰科技集团面向客户的真实建设需求，将平台、软件、设备、空间和运营服务组织为一套可落地的数智化交付体系。页面只呈现已确认的能力方向，不虚构年限、规模、专利与资质数量。",
+  "hero": "/assets/hero-guangtai-campus-ai-v1.png",
+  "images": [
+    "/assets/ai-generated-assets-overview.jpg",
+    "/assets/visual-v2/home-common-engineering.png"
+  ],
+  "capabilities": [
+    "光泰AI应用工厂",
+    "软件定制、AI编程与系统集成",
+    "音视频、安全、基础设施与空间智能",
+    "具身智能、低空巡检与数据运营"
+  ],
+  "scenarios": [
+    "咨询规划与顶层设计",
+    "平台、软件和数据工程",
+    "设备、空间与多系统集成",
+    "实施交付、培训、运维与持续优化"
+  ],
+  "delivery": [
+    "现状调研与业务问题诊断",
+    "方案蓝图、范围与分期建议",
+    "工程实施、联调、验收与资料移交",
+    "使用评估、运维保障与版本迭代"
+  ],
+  "id": "about",
+  "draft": false,
+  "seoTitle": "关于光泰 | 天津光泰科技集团",
+  "seoDescription": "以AI应用工厂为平台底座，融合软件开发、系统集成、空间智能与具身设备。",
+  "ogImage": "/assets/hero-guangtai-campus-ai-v1.png"
+}

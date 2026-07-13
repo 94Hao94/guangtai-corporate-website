@@ -1,0 +1,39 @@
+{
+  "path": "/solutions/common/security-emergency",
+  "template": "detail",
+  "title": "安全治理与应急联动",
+  "english": "SECURITY GOVERNANCE & EMERGENCY",
+  "category": "通用解决方案",
+  "parentPath": "/solutions/common",
+  "visualFamily": "common",
+  "intro": "从感知接入、风险识别到事件研判和联动处置，构建安全闭环。",
+  "positioning": "安全建设不只增加感知点位，而是统一整合视频、门禁、报警、消防、环境和业务数据，用AI研判和预案编排缩短处置链路。",
+  "hero": "/assets/visual-v2/common-security.jpg",
+  "images": [
+    "/assets/solution-common-scenario-cards.jpg",
+    "/assets/visual-v2/common-security.jpg"
+  ],
+  "capabilities": [
+    "多类感知设备与平台接入",
+    "视频事件理解与风险识别",
+    "告警归因、分级和处置建议",
+    "应急预案、指挥调度与过程留痕"
+  ],
+  "scenarios": [
+    "园区综合安防",
+    "重点区域风险防控",
+    "消防、环境与设备异常",
+    "突发事件指挥和联动"
+  ],
+  "delivery": [
+    "风险清单、预案与管理边界梳理",
+    "感知点位、网络和平台架构设计",
+    "系统集成、算法调优与预案联调",
+    "演练、培训、巡检和闭环复盘"
+  ],
+  "id": "solutions--common--security-emergency",
+  "draft": false,
+  "seoTitle": "安全治理与应急联动 | 天津光泰科技集团",
+  "seoDescription": "从感知接入、风险识别到事件研判和联动处置，构建安全闭环。",
+  "ogImage": "/assets/visual-v2/common-security.jpg"
+}

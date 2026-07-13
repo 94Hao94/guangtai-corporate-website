@@ -1,0 +1,39 @@
+{
+  "path": "/solutions/industries/higher-education/services",
+  "template": "detail",
+  "title": "高校服务场景",
+  "english": "CAMPUS SERVICES",
+  "category": "高校场景解决方案",
+  "parentPath": "/solutions/industries/higher-education",
+  "visualFamily": "higher",
+  "intro": "为师生提供统一、便捷、可感知的校园信息、空间与生活服务。",
+  "positioning": "校园服务不应让师生理解后台系统边界。方案以人和场景为中心，把咨询、办事、空间、设施和生活服务统一到可搜索、可问答、可追踪的服务入口。",
+  "hero": "/assets/visual-v2/higher-campus-students.jpg",
+  "images": [
+    "/assets/higher-ed-campus-brain.jpg",
+    "/assets/visual-v2/higher-campus-modern.jpg"
+  ],
+  "capabilities": [
+    "师生服务门户与校园问答智能体",
+    "空间预约、设施报修与服务追踪",
+    "校园导览、消息发布与个性化提醒",
+    "后勤、能耗与服务运营数据分析"
+  ],
+  "scenarios": [
+    "新生与访客校园导览",
+    "事务咨询、办理和进度追踪",
+    "教室、场馆和共享空间服务",
+    "报修、巡检和后勤服务闭环"
+  ],
+  "delivery": [
+    "师生旅程与服务触点梳理",
+    "服务门户、知识库和系统接口设计",
+    "重点服务试点与线上线下联调",
+    "服务数据分析与持续改进"
+  ],
+  "id": "solutions--industries--higher-education--services",
+  "draft": false,
+  "seoTitle": "高校服务场景 | 天津光泰科技集团",
+  "seoDescription": "为师生提供统一、便捷、可感知的校园信息、空间与生活服务。",
+  "ogImage": "/assets/visual-v2/higher-campus-students.jpg"
+}

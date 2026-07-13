@@ -1,0 +1,40 @@
+{
+  "path": "/solutions/industries/k12",
+  "template": "overview",
+  "title": "中小学场景解决方案",
+  "english": "K12 EDUCATION",
+  "category": "行业解决方案",
+  "parentPath": "/solutions/industries",
+  "visualFamily": "k12",
+  "heroPosition": "center 42%",
+  "intro": "围绕教学、安全、管理、生活服务和特色空间，构建稳定、易用、可持续运营的智慧校园。",
+  "positioning": "中小学方案以师生日常和校园安全为核心，先保障基础环境与管理流程稳定，再将AI助手、个性化学习、具身智能和特色空间逐步纳入教学与育人。",
+  "hero": "/assets/visual-v2/hero-k12-learning.jpg",
+  "images": [
+    "/assets/k12-overall-framework.jpg",
+    "/assets/visual-v2/k12-science-project.jpg"
+  ],
+  "capabilities": [
+    "AI学习助手、教师助手与校本知识",
+    "智慧课堂、精准教学与特色课程",
+    "校园安全、管理与家校服务",
+    "具身智能、创新空间与生活服务"
+  ],
+  "scenarios": [
+    "课堂教学与学习反馈",
+    "校园安全与应急联动",
+    "校务、德育与家校协同",
+    "食宿、健康、阅读与创客空间"
+  ],
+  "delivery": [
+    "学校发展目标与现状评估",
+    "基础环境、平台和场景分期设计",
+    "重点年级、课程或场景试点",
+    "教师培训、校本资源和长期运营"
+  ],
+  "id": "solutions--industries--k12",
+  "draft": false,
+  "seoTitle": "中小学场景解决方案 | 天津光泰科技集团",
+  "seoDescription": "围绕教学、安全、管理、生活服务和特色空间，构建稳定、易用、可持续运营的智慧校园。",
+  "ogImage": "/assets/visual-v2/hero-k12-learning.jpg"
+}

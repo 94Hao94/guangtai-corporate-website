@@ -1,0 +1,40 @@
+{
+  "path": "/solutions/common/embodied-intelligence",
+  "template": "detail",
+  "title": "具身智能",
+  "english": "EMBODIED INTELLIGENCE",
+  "category": "通用解决方案",
+  "parentPath": "/solutions/common",
+  "visualFamily": "common",
+  "heroPosition": "67% center",
+  "intro": "让人形、四足、轮式与无人机设备感知环境、执行任务并回传结果。",
+  "positioning": "具身智能不限定某一种机器人，而是通过任务编排、设备接入、环境感知、远程协同和集群管控，让AI进入真实物理空间。",
+  "hero": "/assets/embodied-intelligence.png",
+  "images": [
+    "/assets/embodied-robotics-matrix.jpg",
+    "/assets/embodied-intelligence.png"
+  ],
+  "capabilities": [
+    "人形、四足、轮式和无人机接入",
+    "任务编排与智能体调度",
+    "感知数据回传与运行监控",
+    "远程控制、集群管控与安全策略"
+  ],
+  "scenarios": [
+    "园区、楼宇与机房巡检",
+    "展示互动与服务导览",
+    "应急辅助与特殊空间作业",
+    "教学实训与科研验证"
+  ],
+  "delivery": [
+    "场景任务与设备选型",
+    "地图、感知与网络环境建设",
+    "调度平台、业务系统与AI工厂联调",
+    "运行规程、培训与运维服务"
+  ],
+  "id": "solutions--common--embodied-intelligence",
+  "draft": false,
+  "seoTitle": "具身智能 | 天津光泰科技集团",
+  "seoDescription": "让人形、四足、轮式与无人机设备感知环境、执行任务并回传结果。",
+  "ogImage": "/assets/embodied-intelligence.png"
+}

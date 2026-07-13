@@ -1,0 +1,39 @@
+{
+  "path": "/solutions/industries/k12/security",
+  "template": "detail",
+  "title": "中小学安全场景",
+  "english": "SAFE CAMPUS",
+  "category": "中小学场景解决方案",
+  "parentPath": "/solutions/industries/k12",
+  "visualFamily": "k12",
+  "intro": "将人员、车辆、空间、设施和应急预案纳入统一安全治理闭环。",
+  "positioning": "平安校园需要把日常管理、风险预防和突发事件联动结合。光泰统一接入视频、门禁、访客、消防、环境和一键报警，用AI研判辅助管理人员快速理解事件。",
+  "hero": "/assets/ai-generated-k12-safety.png",
+  "images": [
+    "/assets/solution-k12-scenario-map.jpg",
+    "/assets/visual-v2/common-security.jpg"
+  ],
+  "capabilities": [
+    "周界、出入、视频、消防和环境感知",
+    "风险事件识别、归因与分级告警",
+    "预案推荐、信息通知与联动处置",
+    "安全台账、演练和事件复盘"
+  ],
+  "scenarios": [
+    "上下学时段出入和交通组织",
+    "楼宇、食堂、宿舍和重点区域安全",
+    "消防、极端天气与设施异常",
+    "家校通知、应急疏散与指挥联动"
+  ],
+  "delivery": [
+    "校园风险清单与应急预案梳理",
+    "点位、网络、平台与指挥链路设计",
+    "系统集成、算法校验与预案演练",
+    "日常巡查、数据复盘与管理改进"
+  ],
+  "id": "solutions--industries--k12--security",
+  "draft": false,
+  "seoTitle": "中小学安全场景 | 天津光泰科技集团",
+  "seoDescription": "将人员、车辆、空间、设施和应急预案纳入统一安全治理闭环。",
+  "ogImage": "/assets/ai-generated-k12-safety.png"
+}

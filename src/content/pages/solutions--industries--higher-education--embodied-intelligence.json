@@ -1,0 +1,40 @@
+{
+  "path": "/solutions/industries/higher-education/embodied-intelligence",
+  "template": "detail",
+  "title": "高校具身智能",
+  "english": "EMBODIED AI FOR UNIVERSITY",
+  "category": "高校场景解决方案",
+  "parentPath": "/solutions/industries/higher-education",
+  "visualFamily": "higher",
+  "heroPosition": "65% center",
+  "intro": "把机器人与教学、实训、科研、巡检和校园服务真正结合。",
+  "positioning": "高校具身智能同时具有人才培养、科研验证和校园应用价值。方案从课程、任务、场地、设备和安全规程出发，建立可实训、可研究、可运行的环境。",
+  "hero": "/assets/visual-v2/hero-platform-lab.png",
+  "images": [
+    "/assets/embodied-robotics-matrix.jpg",
+    "/assets/visual-v2/hero-platform-lab.png"
+  ],
+  "capabilities": [
+    "人形、四足、轮式和无人机实训设备",
+    "仿真、算法、感知与控制实验环境",
+    "多机任务编排与集群管控",
+    "校园场景数据、运行监控与安全管理"
+  ],
+  "scenarios": [
+    "人工智能、自动化与机器人课程",
+    "科研算法与产学研验证",
+    "机房、楼宇和实验室巡检",
+    "招生展示、导览和校园服务"
+  ],
+  "delivery": [
+    "专业课程与实训任务梳理",
+    "设备、场地、网络和安全设计",
+    "平台接入、算法联调与课程资源建设",
+    "师资培训、运行规程与设备运维"
+  ],
+  "id": "solutions--industries--higher-education--embodied-intelligence",
+  "draft": false,
+  "seoTitle": "高校具身智能 | 天津光泰科技集团",
+  "seoDescription": "把机器人与教学、实训、科研、巡检和校园服务真正结合。",
+  "ogImage": "/assets/visual-v2/hero-platform-lab.png"
+}

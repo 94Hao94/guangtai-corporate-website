@@ -1,0 +1,38 @@
+{
+  "path": "/cases",
+  "template": "brand",
+  "title": "案例与客户",
+  "english": "PROJECT PRACTICE",
+  "category": "品牌与服务",
+  "visualFamily": "brand",
+  "intro": "以真实建设需求、项目类型和交付能力展示光泰的项目实践方向。",
+  "positioning": "在客户名称、合同信息和效果数据正式确认之前，页面只展示可被材料支撑的项目类型、建设内容和交付方法，不使用虚构的客户Logo和经营数字。",
+  "hero": "/assets/ai-generated-assets-overview.jpg",
+  "images": [
+    "/assets/generated-preview-grid.jpg",
+    "/assets/visual-v2/common-delivery.jpg"
+  ],
+  "capabilities": [
+    "校园AI智能体与知识库",
+    "具身智能实训、展示与巡检",
+    "智能教学、管理和校园服务",
+    "音视频空间、安全、基础设施与软件集成"
+  ],
+  "scenarios": [
+    "高校数智化与智慧教学",
+    "中小学精准教学与平安校园",
+    "园区、会议、展示和运维场景",
+    "定制软件、系统整合与长期运营"
+  ],
+  "delivery": [
+    "项目背景与客户目标",
+    "建设范围与技术路径",
+    "集成交付与运行方式",
+    "经客户确认后公开的实际效果"
+  ],
+  "id": "cases",
+  "draft": false,
+  "seoTitle": "案例与客户 | 天津光泰科技集团",
+  "seoDescription": "以真实建设需求、项目类型和交付能力展示光泰的项目实践方向。",
+  "ogImage": "/assets/ai-generated-assets-overview.jpg"
+}
