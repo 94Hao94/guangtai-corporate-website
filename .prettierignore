@@ -3,3 +3,4 @@ node_modules
 .astro
 .worktrees
 coverage
+/网站/
