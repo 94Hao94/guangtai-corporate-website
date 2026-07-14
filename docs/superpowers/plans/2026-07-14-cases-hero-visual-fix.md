@@ -13,13 +13,14 @@
 ### Task 0: Retire the unavailable pre-migration contract
 
 **Files:**
+
 - Delete: `tests/mvp-contract.test.ts`
 
-- [ ] **Step 1: Remove the obsolete migration-input test**
+- [x] **Step 1: Remove the obsolete migration-input test**
 
 Delete `tests/mvp-contract.test.ts`. It imports `../../../网站/app/content/pages`, an absent pre-migration input that is no longer an accepted verification source.
 
-- [ ] **Step 2: Verify the current-product baseline**
+- [x] **Step 2: Verify the current-product baseline**
 
 Run:
 
@@ -29,7 +30,7 @@ npm test
 
 Expected: all remaining Vitest suites PASS using migrated Astro content and assets only.
 
-- [ ] **Step 3: Commit the retired legacy contract**
+- [x] **Step 3: Commit the retired legacy contract**
 
 ```bash
 git add -u tests/mvp-contract.test.ts
@@ -39,11 +40,12 @@ git commit -m "test: retire legacy MVP contract"
 ### Task 1: Lock and apply the approved cases visual
 
 **Files:**
+
 - Modify: `tests/content-collection.test.ts:37`
 - Modify: `src/content/pages/cases.json:10`
 - Modify: `src/content/pages/cases.json:37`
 
-- [ ] **Step 1: Write the failing content contract test**
+- [x] **Step 1: Write the failing content contract test**
 
 Add this test inside the existing `describe('pages content collection source', ...)` block:
 
@@ -58,7 +60,7 @@ it('uses the approved AI campus visual for the cases hero and social image', asy
 });
 ```
 
-- [ ] **Step 2: Run the focused test and verify RED**
+- [x] **Step 2: Run the focused test and verify RED**
 
 Run:
 
@@ -68,7 +70,7 @@ npm test -- tests/content-collection.test.ts
 
 Expected: FAIL because `/cases` still uses `/assets/ai-generated-assets-overview.jpg` for `hero` and `ogImage`.
 
-- [ ] **Step 3: Apply the minimal content change**
+- [x] **Step 3: Apply the minimal content change**
 
 Change only these fields in `src/content/pages/cases.json`:
 
@@ -80,7 +82,7 @@ Change only these fields in `src/content/pages/cases.json`:
 "ogImage": "/assets/hero-humanoid-ai-campus.png"
 ```
 
-- [ ] **Step 4: Run the focused test and verify GREEN**
+- [x] **Step 4: Run the focused test and verify GREEN**
 
 Run:
 
@@ -90,7 +92,7 @@ npm test -- tests/content-collection.test.ts
 
 Expected: all tests in `tests/content-collection.test.ts` PASS.
 
-- [ ] **Step 5: Run static validation**
+- [x] **Step 5: Run static validation**
 
 Run:
 
@@ -101,7 +103,7 @@ npm run build
 
 Expected: Astro reports 0 errors, warnings, and hints; the build generates all 30 pages successfully.
 
-- [ ] **Step 6: Commit the tested content change**
+- [x] **Step 6: Commit the tested content change**
 
 ```bash
 git add tests/content-collection.test.ts src/content/pages/cases.json
@@ -111,13 +113,14 @@ git commit -m "fix(cases): replace internal hero contact sheet"
 ### Task 2: Verify responsive rendering and record project progress
 
 **Files:**
+
 - Create: `说明文档.md`
 
-- [ ] **Step 1: Verify the live route and selected image**
+- [x] **Step 1: Verify the live route and selected image**
 
 Open `http://127.0.0.1:4328/cases` and confirm the `.inner-hero img` request no longer contains `ai-generated-assets-overview.jpg` and resolves to the AI campus image.
 
-- [ ] **Step 2: Verify the three approved viewports**
+- [x] **Step 2: Verify the three approved viewports**
 
 Check the first viewport at:
 
@@ -129,7 +132,7 @@ Check the first viewport at:
 
 At each size confirm: the image loads; no internal asset labels or white contact-sheet gutters appear; the H1 remains readable; the robot and AI visualization are not incoherently cropped; no horizontal overflow or layout shift is introduced.
 
-- [ ] **Step 3: Run the complete verification gate**
+- [x] **Step 3: Run the complete verification gate**
 
 Run:
 
@@ -139,11 +142,11 @@ npm run verify
 
 Expected: formatting check, Astro check, Vitest, production build, rendered-site tests, and Playwright tests all PASS.
 
-- [ ] **Step 4: Create the required project explanation record**
+- [x] **Step 4: Create the required project explanation record**
 
 Create `说明文档.md` with the global-spec sections `项目概述`, `技术栈`, `开发计划`, `进度记录`, `问题与解决方案`, `变更记录`, and `部署说明`. Record the 2026-07-14 cases Hero fix as completed only after Steps 1-3 pass, including the chosen C direction, changed files, verification commands, and any remaining visual risks.
 
-- [ ] **Step 5: Commit the synchronized project record**
+- [x] **Step 5: Commit the synchronized project record**
 
 ```bash
 git add 说明文档.md
