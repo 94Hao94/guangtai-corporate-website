@@ -34,4 +34,13 @@ describe('pages content collection source', () => {
       expect(page.ogImage).toMatch(/^\/assets\//);
     }
   });
+
+  it('uses the approved AI campus visual for the cases hero and social image', async () => {
+    const casesPage = (await readPages()).find((page) => page.path === '/cases');
+
+    expect(casesPage).toMatchObject({
+      hero: '/assets/hero-humanoid-ai-campus.png',
+      ogImage: '/assets/hero-humanoid-ai-campus.png',
+    });
+  });
 });

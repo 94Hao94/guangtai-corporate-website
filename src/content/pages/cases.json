@@ -7,7 +7,7 @@
   "visualFamily": "brand",
   "intro": "以真实建设需求、项目类型和交付能力展示光泰的项目实践方向。",
   "positioning": "在客户名称、合同信息和效果数据正式确认之前，页面只展示可被材料支撑的项目类型、建设内容和交付方法，不使用虚构的客户Logo和经营数字。",
-  "hero": "/assets/ai-generated-assets-overview.jpg",
+  "hero": "/assets/hero-humanoid-ai-campus.png",
   "images": [
     "/assets/generated-preview-grid.jpg",
     "/assets/visual-v2/common-delivery.jpg"
@@ -34,5 +34,5 @@
   "draft": false,
   "seoTitle": "案例与客户 | 天津光泰科技集团",
   "seoDescription": "以真实建设需求、项目类型和交付能力展示光泰的项目实践方向。",
-  "ogImage": "/assets/ai-generated-assets-overview.jpg"
+  "ogImage": "/assets/hero-humanoid-ai-campus.png"
 }
