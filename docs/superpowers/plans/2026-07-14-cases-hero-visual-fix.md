@@ -10,6 +10,32 @@
 
 ---
 
+### Task 0: Retire the unavailable pre-migration contract
+
+**Files:**
+- Delete: `tests/mvp-contract.test.ts`
+
+- [ ] **Step 1: Remove the obsolete migration-input test**
+
+Delete `tests/mvp-contract.test.ts`. It imports `../../../网站/app/content/pages`, an absent pre-migration input that is no longer an accepted verification source.
+
+- [ ] **Step 2: Verify the current-product baseline**
+
+Run:
+
+```bash
+npm test
+```
+
+Expected: all remaining Vitest suites PASS using migrated Astro content and assets only.
+
+- [ ] **Step 3: Commit the retired legacy contract**
+
+```bash
+git add -u tests/mvp-contract.test.ts
+git commit -m "test: retire legacy MVP contract"
+```
+
 ### Task 1: Lock and apply the approved cases visual
 
 **Files:**
