@@ -359,6 +359,44 @@ test('representative overview, detail, and brand pages render intact', async ({
   expect(errors).toEqual([]);
 });
 
+test('visual breadcrumbs are reserved for nested pages and stay close to the Hero title', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/cases/');
+  await expect(
+    page.getByRole('navigation', { name: '面包屑导航' }),
+  ).toHaveCount(0);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(
+    page.getByRole('navigation', { name: '面包屑导航' }),
+  ).toHaveCount(0);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/solutions/industries/higher-education/ai/');
+  const breadcrumbs = page.getByRole('navigation', { name: '面包屑导航' });
+  await expect(breadcrumbs).toBeVisible();
+
+  const gap = await breadcrumbs.evaluate((element) => {
+    const eyebrow = document.querySelector('.inner-eyebrow');
+    if (!eyebrow) return null;
+    return (
+      eyebrow.getBoundingClientRect().top -
+      element.getBoundingClientRect().bottom
+    );
+  });
+  expect(gap).not.toBeNull();
+  expect(gap ?? 0).toBeGreaterThanOrEqual(20);
+  expect(gap ?? 0).toBeLessThanOrEqual(32);
+  await expect(breadcrumbs).not.toHaveCSS('position', 'sticky');
+  await expect(breadcrumbs).not.toHaveCSS('position', 'fixed');
+});
+
 test('unknown routes return the branded 404 response', async ({ page }) => {
   const response = await page.goto('/definitely-missing/');
   expect(response?.status()).toBe(404);

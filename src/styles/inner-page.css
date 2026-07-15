@@ -44,6 +44,9 @@
   font: 700 0.72rem var(--font-mono);
   letter-spacing: 0.16em;
 }
+.inner-hero-copy--with-breadcrumbs .inner-eyebrow {
+  margin-top: 1.5rem;
+}
 .inner-hero h1 {
   max-width: 13ch;
   margin: 0;

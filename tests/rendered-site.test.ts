@@ -68,6 +68,38 @@ describe('rendered corporate site', () => {
     expect(descriptions.size).toBe(29);
   });
 
+  it('orders AI, embodied partners, and systems integration on the homepage', async () => {
+    const homepage = await readFile(resolve('dist/index.html'), 'utf8');
+    const aiFactory = homepage.indexOf('GUANGTAI AI FACTORY');
+    const embodied = homepage.indexOf('EMBODIED INTELLIGENCE');
+    const partners = homepage.indexOf('与具身智能伙伴，共同进入真实场景');
+    const integration = homepage.indexOf('SYSTEM INTEGRATION &amp; INDUSTRIES');
+
+    expect(aiFactory).toBeGreaterThan(-1);
+    expect(embodied).toBeGreaterThan(aiFactory);
+    expect(partners).toBeGreaterThan(embodied);
+    expect(integration).toBeGreaterThan(partners);
+    expect(homepage).toContain('系统集成与工程交付');
+    expect(homepage).toContain('href="/solutions/common"');
+    expect(homepage).toContain('href="/solutions/industries"');
+  });
+
+  it('renders visual breadcrumbs only for nested pages while preserving breadcrumb JSON-LD', async () => {
+    const casesHtml = await readFile(routeFile('/cases'), 'utf8');
+    const nestedHtml = await readFile(
+      routeFile('/solutions/industries/higher-education/ai'),
+      'utf8',
+    );
+
+    expect(casesHtml).not.toContain('aria-label="面包屑导航"');
+    expect(casesHtml).toContain('"@type":"BreadcrumbList"');
+    expect(nestedHtml).toContain('aria-label="面包屑导航"');
+    expect(nestedHtml).toContain('href="/solutions/industries"');
+    expect(nestedHtml).toContain(
+      'href="/solutions/industries/higher-education"',
+    );
+  });
+
   it('renders all internal page links to known routes', async () => {
     const contentPages = await pages();
     const routes = new Set(['/', ...contentPages.map((page) => page.path)]);

@@ -8,6 +8,7 @@ interface Props {
   ancestors: SitePage[];
 }
 const { page, ancestors } = Astro.props;
+const showBreadcrumbs = ancestors.length > 0;
 ---
 
 <section class="inner-hero">
@@ -20,8 +21,16 @@ const { page, ancestors } = Astro.props;
     style={`object-position:${page.heroPosition ?? 'center'};object-fit:${page.heroFit ?? 'cover'}`}
   />
   <div class="inner-hero-overlay"></div>
-  <div class="inner-hero-copy" data-reveal>
-    <Breadcrumbs page={page} ancestors={ancestors} /><p class="inner-eyebrow">
+  <div
+    class:list={[
+      'inner-hero-copy',
+      { 'inner-hero-copy--with-breadcrumbs': showBreadcrumbs },
+    ]}
+    data-reveal
+  >
+    {showBreadcrumbs && <Breadcrumbs page={page} ancestors={ancestors} />}<p
+      class="inner-eyebrow"
+    >
       {page.english}
     </p><h1>{page.title}</h1><p class="inner-lead">{page.intro}</p><a
       class="inner-hero-button"
