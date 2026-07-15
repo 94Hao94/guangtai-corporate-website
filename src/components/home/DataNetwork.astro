@@ -1,6 +1,27 @@
 <canvas id="ai-canvas" aria-hidden="true"></canvas>
 <script>
   import { initDataNetwork } from '../../scripts/data-network';
-  const canvas = document.querySelector<HTMLCanvasElement>('#ai-canvas');
-  if (canvas) initDataNetwork(canvas);
+
+  declare global {
+    interface Window {
+      dataNetworkCleanup?: () => void;
+      dataNetworkLifecycleReady?: boolean;
+    }
+  }
+
+  /**
+   * Rebuilds the hero data network for the current route and clears the prior animation loop.
+   * @returns Nothing.
+   */
+  const initializeDataNetwork = (): void => {
+    window.dataNetworkCleanup?.();
+    const canvas = document.querySelector<HTMLCanvasElement>('#ai-canvas');
+    window.dataNetworkCleanup = canvas ? initDataNetwork(canvas) : undefined;
+  };
+
+  if (!window.dataNetworkLifecycleReady) {
+    window.dataNetworkLifecycleReady = true;
+    document.addEventListener('astro:page-load', initializeDataNetwork);
+    initializeDataNetwork();
+  }
 </script>

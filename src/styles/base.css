@@ -87,6 +87,28 @@ p {
   padding: 0 1.4rem;
   border: 1px solid currentColor;
   font-weight: 700;
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease,
+    background-color 0.16s ease,
+    color 0.16s ease;
+}
+.button:hover,
+.button:focus-visible,
+.inner-hero-button:hover,
+.inner-hero-button:focus-visible,
+.home-cta > a:hover,
+.home-cta > a:focus-visible {
+  transform: translateY(-0.14rem);
+}
+.button-primary:hover,
+.button-primary:focus-visible {
+  box-shadow: 0 0.7rem 1.35rem rgba(3, 61, 103, 0.22);
+}
+.button:active,
+.inner-hero-button:active,
+.home-cta > a:active {
+  transform: scale(0.98);
 }
 .button-primary {
   color: #fff;
@@ -105,6 +127,31 @@ p {
   color: var(--blue-700);
   border-bottom: 1px solid currentColor;
   font-weight: 700;
+}
+[data-route-transition] {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  color: #fff;
+  background: var(--blue-950);
+  opacity: 0;
+  transform: translateY(-100%);
+  transition:
+    opacity 0.12s ease,
+    transform 0.24s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+[data-route-transition][data-state='leaving'] {
+  opacity: 1;
+  transform: translateY(0);
+}
+[data-route-cta] {
+  transition: transform 0.12s ease;
+}
+[data-route-cta]:active {
+  transform: scale(0.98);
 }
 [data-reveal] {
   opacity: 0;

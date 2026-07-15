@@ -30,75 +30,88 @@
   height: 100%;
   opacity: 0.75;
 }
+.hero-spline {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: -11vw;
+  bottom: 0;
+  left: 31vw;
+  overflow: hidden;
+}
+.hero-spline spline-viewer {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: none;
+}
+.home-hero.is-spline-mounted .hero-image {
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
 .hero-copy {
   position: relative;
   z-index: 3;
+  pointer-events: none;
   width: var(--page);
-  padding-top: clamp(7rem, 12vw, 11rem);
+  display: grid;
+  min-height: inherit;
+  align-content: center;
+  padding: 0 0 3.5rem;
   margin-inline: auto;
 }
+.hero-copy a {
+  pointer-events: auto;
+}
 .home-hero h1 {
-  max-width: 12ch;
-  margin: 1rem 0 1.4rem;
-  font-size: clamp(3rem, 6.4vw, 6.5rem);
+  margin: 0;
+  font-size: clamp(2.1rem, 5.7vw, 6.5rem);
   line-height: 1.02;
   letter-spacing: 0;
+  white-space: nowrap;
 }
 .home-hero h1::after {
-  display: block;
-  width: 6rem;
-  height: 3px;
-  margin-top: 1.5rem;
-  background: var(--cyan);
-  content: '';
+  content: none;
 }
-.hero-lead {
+.hero-context {
+  position: relative;
   width: min(43rem, 48vw);
+  padding: 1rem 0 0 1.15rem;
+  margin-top: 1.6rem;
+  border-top: 1px solid rgba(27, 123, 166, 0.34);
+  border-left: 2px solid var(--cyan);
+}
+.hero-context::before {
+  position: absolute;
+  top: -0.65rem;
+  left: 1.15rem;
+  padding: 0 0.35rem;
+  color: var(--blue-700);
+  background: rgba(239, 249, 254, 0.85);
+  content: '01 / PLATFORM';
+  font: 700 0.58rem var(--font-mono);
+  letter-spacing: 0.12em;
+}
+.hero-description {
+  max-width: 39rem;
   margin: 0;
   color: #365b73;
-  font-size: clamp(1rem, 1.35vw, 1.25rem);
-  line-height: 1.85;
+  font-size: clamp(0.98rem, 1.18vw, 1.16rem);
+  line-height: 1.75;
+}
+.hero-company {
+  padding-top: 0.75rem;
+  margin: 0.75rem 0 0;
+  border-top: 1px solid rgba(27, 123, 166, 0.2);
+  color: #4d6b7d;
+  font: 600 0.72rem var(--font-mono);
+  letter-spacing: 0.08em;
 }
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.8rem;
-  margin-top: 2rem;
-}
-.hero-proof {
-  display: flex;
-  gap: 2.5rem;
-  margin-top: 3.5rem;
-  color: #35566e;
-  font-size: 0.78rem;
-}
-.hero-proof span {
-  display: grid;
-  gap: 0.15rem;
-}
-.hero-proof b {
-  color: var(--blue-700);
-  font: 700 0.65rem var(--font-mono);
-  letter-spacing: 0.12em;
-}
-.factory-status {
-  position: absolute;
-  z-index: 4;
-  right: 3rem;
-  bottom: 2.5rem;
-  padding: 0.6rem 0.8rem;
-  color: #d9f6ff;
-  background: rgba(3, 31, 57, 0.76);
-  font: 700 0.65rem var(--font-mono);
-  letter-spacing: 0.12em;
-}
-.factory-status span {
-  display: inline-block;
-  width: 0.45rem;
-  height: 0.45rem;
-  margin-right: 0.5rem;
-  background: var(--cyan);
-  border-radius: 50%;
+  margin-top: 2.25rem;
 }
 .solutions {
   color: #fff;
@@ -213,6 +226,57 @@
   height: 100%;
   min-height: 44rem;
   object-fit: cover;
+}
+.partner-marquee {
+  overflow: hidden;
+  background: var(--ice);
+}
+.partner-viewport {
+  overflow: hidden;
+}
+.partner-track {
+  display: flex;
+  width: max-content;
+  gap: 1rem;
+  will-change: transform;
+}
+.partner-track > a,
+.partner-track > div {
+  display: flex;
+  gap: 1rem;
+}
+.partner-track a,
+.partner-track span {
+  display: grid;
+  min-width: 12rem;
+  min-height: 4.5rem;
+  overflow: hidden;
+  place-items: center;
+  padding: 1rem;
+  border: 1px solid var(--blue-800);
+  background: var(--blue-950);
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease;
+}
+.partner-track [data-partner-logo-surface='light'] {
+  border-color: var(--line);
+  background: #fff;
+}
+.partner-logo {
+  display: block;
+  width: auto;
+  max-width: 10rem;
+  height: auto;
+  max-height: 2.7rem;
+  object-fit: contain;
+}
+.partner-track [data-partner-logo-surface='light'] .partner-logo {
+  transform: scale(1.7);
+}
+.partner-track a:hover {
+  border-color: var(--cyan);
+  transform: translateY(-0.25rem);
 }
 .education {
   background: var(--ice);
@@ -331,8 +395,8 @@
   font-size: 1.5rem;
 }
 @media (max-width: 900px) {
-  .hero-lead {
-    width: 60vw;
+  .hero-spline {
+    display: none;
   }
   .factory-layout,
   .embodied {
@@ -365,20 +429,22 @@
     );
   }
   .hero-copy {
-    padding-top: 4.5rem;
+    padding-bottom: 2.5rem;
   }
   .home-hero h1 {
-    font-size: 2.75rem;
+    font-size: clamp(2rem, 8.6vw, 2.75rem);
   }
-  .hero-lead {
+  .hero-company {
+    font-size: 0.66rem;
+    letter-spacing: 0.05em;
+  }
+  .hero-context {
     width: 100%;
+    padding-left: 0.9rem;
+    margin-top: 1.35rem;
   }
-  .hero-proof {
-    display: none;
-  }
-  .factory-status {
-    right: 1.125rem;
-    bottom: 1.125rem;
+  .hero-description {
+    font-size: 0.94rem;
   }
   .solution-split,
   .education-grid,

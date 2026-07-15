@@ -15,21 +15,63 @@ const hero = resolveImage('/assets/hero-humanoid-ai-campus.png');
     loading="eager"
   />
   <div class="hero-wash" aria-hidden="true"></div><DataNetwork />
+  <div
+    class="hero-spline"
+    data-spline-hero
+    data-spline-scene="https://prod.spline.design/JCd7StIa9lqPaRfw/scene.splinecode?v=robot-v2"
+    aria-label="可交互的机器人 3D 模型"
+  >
+  </div>
   <div class="hero-copy">
-    <p class="eyebrow">AI APPLICATION FACTORY</p>
-    <h1>光泰AI应用工厂<br />与数智化解决方案</h1>
-    <p class="hero-lead">
-      以光泰AI应用工厂为平台底座，将模型、知识、智能体与具身设备编排为能够真正运行的业务系统。
-    </p>
-    <div class="hero-actions">
-      <a class="button button-primary" href="/guangtai-ai-factory"
-        >了解AI应用工厂 <span>→</span></a
-      ><a class="button button-ghost" href="/solutions/common">查看解决方案</a>
+    <h1>光启未来 智领时代</h1>
+    <div class="hero-context">
+      <p class="hero-description">
+        以AI应用工厂为平台底座，融合软件开发、系统集成、空间智能与具身设备。
+      </p>
+      <p class="hero-company">天津光泰科技集团有限公司</p>
     </div>
-    <div class="hero-proof">
-      <span><b>MODEL</b>多模型适配</span><span><b>AGENT</b>智能体编排</span
-      ><span><b>ROBOT</b>具身设备协同</span>
+    <div class="hero-actions">
+      <a class="button button-primary" data-route-cta href="/about"
+        >了解更多 <span>→</span></a
+      >
     </div>
   </div>
-  <div class="factory-status"><span></span> AI FACTORY ONLINE</div>
 </section>
+<script>
+  declare global {
+    interface Window {
+      splineHeroLifecycleReady?: boolean;
+    }
+  }
+
+  /**
+   * Mounts the Spline scene only for desktop visitors who have not reduced motion.
+   * @returns Nothing. The function leaves the static Hero background available as a fallback.
+   */
+  const initializeSplineHero = async (): Promise<void> => {
+    const host = document.querySelector<HTMLElement>('[data-spline-hero]');
+    const scene = host?.dataset.splineScene;
+    const canRender3d = window.matchMedia(
+      '(min-width: 901px) and (prefers-reduced-motion: no-preference)',
+    ).matches;
+    if (!host || !scene || !canRender3d || host.childElementCount > 0) return;
+
+    await import('@splinetool/viewer');
+    const viewer = document.createElement('spline-viewer');
+    viewer.setAttribute('url', scene);
+    viewer.setAttribute('aria-label', '可交互的机器人 3D 模型');
+    viewer.addEventListener(
+      'load',
+      () => host.closest('.home-hero')?.classList.add('has-spline'),
+      { once: true },
+    );
+    host.replaceChildren(viewer);
+    host.closest('.home-hero')?.classList.add('is-spline-mounted');
+  };
+
+  if (!window.splineHeroLifecycleReady) {
+    window.splineHeroLifecycleReady = true;
+    document.addEventListener('astro:page-load', initializeSplineHero);
+    void initializeSplineHero();
+  }
+</script>

@@ -19,15 +19,41 @@ function routeFile(path: string): string {
 }
 
 describe('rendered corporate site', () => {
+  it('loads the current Spline scene without distorting its pointer coordinates', async () => {
+    const homeStyles = await readFile(resolve('src/styles/home.css'), 'utf8');
+    const heroTemplate = await readFile(
+      resolve('src/components/home/HomeHero.astro'),
+      'utf8',
+    );
+
+    expect(homeStyles).toContain('left: 31vw;');
+    expect(homeStyles).toContain('right: -11vw;');
+    expect(homeStyles).toContain('transform: none;');
+    expect(homeStyles).toMatch(/\.hero-copy\s*\{[\s\S]*?pointer-events: none;/);
+    expect(homeStyles).toMatch(
+      /\.hero-copy a\s*\{[\s\S]*?pointer-events: auto;/,
+    );
+    expect(heroTemplate).toContain('scene.splinecode?v=robot-v2');
+  });
+
   it('renders home and all 29 MVP routes with page metadata', async () => {
     const contentPages = await pages();
     const titles = new Set<string>();
     const descriptions = new Set<string>();
 
     expect(contentPages).toHaveLength(29);
-    expect(await readFile(resolve('dist/index.html'), 'utf8')).toContain(
-      '光泰AI应用工厂',
+    const homepage = await readFile(resolve('dist/index.html'), 'utf8');
+    expect(homepage).toContain('<h1>光启未来 智领时代</h1>');
+    expect(homepage).toContain(
+      '以AI应用工厂为平台底座，融合软件开发、系统集成、空间智能与具身设备。',
     );
+    expect(homepage).toContain(
+      'data-spline-scene="https://prod.spline.design/JCd7StIa9lqPaRfw/scene.splinecode?v=robot-v2"',
+    );
+    expect(homepage).toContain('aria-label="可交互的机器人 3D 模型"');
+    expect(homepage).toContain('天津光泰科技集团有限公司');
+    expect(homepage).toContain('href="/about">了解更多');
+    expect(homepage).not.toContain('光泰AI应用工厂<br');
 
     for (const page of contentPages) {
       const html = await readFile(routeFile(page.path), 'utf8');

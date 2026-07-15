@@ -5,14 +5,43 @@ interface Props {
   pages: SitePage[];
 }
 const { pages } = Astro.props;
-const children = (path: string) =>
-  pages.filter((page) => page.parentPath === path);
-const common = children('/solutions/common');
-const higher = children('/solutions/industries/higher-education');
-const k12 = children('/solutions/industries/k12');
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+const solutionGroups = [
+  {
+    title: '具身智能与 AI',
+    eyebrow: 'EMBODIED AI',
+    pages: pages.filter(
+      (page) => page.path === '/solutions/common/embodied-intelligence',
+    ),
+  },
+  {
+    title: '通用解决方案',
+    eyebrow: 'GENERAL SOLUTIONS',
+    pages: pages.filter(
+      (page) =>
+        page.path.startsWith('/solutions/common') &&
+        page.path !== '/solutions/common/embodied-intelligence',
+    ),
+  },
+  {
+    title: '高校场景',
+    eyebrow: 'HIGHER EDUCATION',
+    pages: pages.filter((page) =>
+      page.path.startsWith('/solutions/industries/higher-education'),
+    ),
+  },
+  {
+    title: '中小学场景',
+    eyebrow: 'K12 EDUCATION',
+    pages: pages.filter((page) =>
+      page.path.startsWith('/solutions/industries/k12'),
+    ),
+  },
+];
+const defaultSolution = solutionGroups.flatMap((group) => group.pages)[0];
 ---
 
-<header class="site-header" data-site-header>
+<header class="site-header" data-site-header transition:persist="site-header">
   <a class="brand" href="/" aria-label="天津光泰科技集团首页">
     <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
     <span><b>天津光泰科技集团</b><small>GUANGTAI TECHNOLOGY GROUP</small></span>
@@ -28,40 +57,38 @@ const k12 = children('/solutions/industries/k12');
         data-solutions-trigger
         >解决方案 <span aria-hidden="true">⌄</span></button
       >
-      <div class="mega-menu" id="solutions-mega-menu">
-        <section class="mega-column">
-          <a href="/solutions/common">通用解决方案 →</a><ul>
-            {
-              common.map((page) => (
-                <li>
-                  <a href={page.path}>{page.title}</a>
-                </li>
-              ))
-            }
-          </ul>
-        </section>
-        <section class="mega-column">
-          <a href="/solutions/industries/higher-education">高校场景 →</a><ul>
-            {
-              higher.map((page) => (
-                <li>
-                  <a href={page.path}>{page.title}</a>
-                </li>
-              ))
-            }
-          </ul>
-        </section>
-        <section class="mega-column">
-          <a href="/solutions/industries/k12">中小学场景 →</a><ul>
-            {
-              k12.map((page) => (
-                <li>
-                  <a href={page.path}>{page.title}</a>
-                </li>
-              ))
-            }
-          </ul>
-        </section>
+      <div class="mega-menu" id="solutions-mega-menu" data-solutions-mega-menu>
+        <div class="mega-group-grid">
+          {
+            solutionGroups.map((group, groupIndex) => (
+              <section class="mega-group">
+                <p>
+                  {String(groupIndex + 1).padStart(2, '0')} / {group.eyebrow}
+                </p>
+                <h2>{group.title}</h2>
+                <div class="mega-option-list">
+                  {group.pages.map((page) => (
+                    <a
+                      href={page.path}
+                      data-solution-option={page.path}
+                      data-preview-title={page.title}
+                      data-preview-copy={page.intro}
+                      aria-current={pathname === page.path ? 'page' : undefined}
+                    >
+                      <b>{page.title}</b>
+                      <i aria-hidden="true">↗</i>
+                    </a>
+                  ))}
+                </div>
+              </section>
+            ))
+          }
+        </div>
+        <aside class="mega-preview-panel">
+          <p>SELECTED SOLUTION</p><h2 data-solution-preview-title>
+            {defaultSolution?.title}
+          </h2><p data-solution-preview-copy>{defaultSolution?.intro}</p>
+        </aside>
       </div>
     </div>
     <a href="/cases">案例与客户</a><a href="/about">关于光泰</a><a
@@ -80,41 +107,138 @@ const k12 = children('/solutions/industries/k12');
   >
 </header>
 <script>
-  const header = document.querySelector('[data-site-header]');
-  const nav = header?.querySelector('[data-primary-nav]');
-  const menuToggle = header?.querySelector('[data-menu-toggle]');
-  const solutions = header?.querySelector('[data-solutions-menu]');
-  const solutionsTrigger = header?.querySelector('[data-solutions-trigger]');
-  let lastFocused: HTMLElement | null = null;
-  const setMainMenu = (open: boolean) => {
-    nav?.classList.toggle('is-open', open);
-    document.body.classList.toggle('menu-open', open);
-    menuToggle?.setAttribute('aria-expanded', String(open));
-    menuToggle?.setAttribute('aria-label', open ? '关闭导航' : '打开导航');
-    if (!open) lastFocused?.focus();
-  };
-  const setSolutions = (open: boolean) => {
-    solutions?.classList.toggle('is-open', open);
-    solutionsTrigger?.setAttribute('aria-expanded', String(open));
-  };
-  menuToggle?.addEventListener('click', () => {
-    const open = menuToggle.getAttribute('aria-expanded') !== 'true';
-    if (open) lastFocused = document.activeElement as HTMLElement;
-    setMainMenu(open);
-  });
-  solutionsTrigger?.addEventListener('click', () =>
-    setSolutions(solutionsTrigger.getAttribute('aria-expanded') !== 'true'),
-  );
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
+  const header = document.querySelector<HTMLElement>('[data-site-header]');
+  if (header && !header.dataset.siteHeaderInitialized) {
+    header.dataset.siteHeaderInitialized = 'true';
+    const nav = header.querySelector('[data-primary-nav]');
+    const menuToggle = header.querySelector('[data-menu-toggle]');
+    const solutions = header.querySelector('[data-solutions-menu]');
+    const solutionsTrigger = header.querySelector('[data-solutions-trigger]');
+    const solutionsPanel = header.querySelector('[data-solutions-mega-menu]');
+    let lastFocused: HTMLElement | null = null;
+    let solutionsPinned = false;
+    let closeTimer: number | undefined;
+
+    /**
+     * Opens or closes the mobile navigation and restores focus when it closes.
+     * @param open Whether the primary navigation should be visible.
+     * @returns Nothing.
+     */
+    const setMainMenu = (open: boolean): void => {
+      nav?.classList.toggle('is-open', open);
+      document.body.classList.toggle('menu-open', open);
+      menuToggle?.setAttribute('aria-expanded', String(open));
+      menuToggle?.setAttribute('aria-label', open ? '关闭导航' : '打开导航');
+      if (!open) lastFocused?.focus();
+    };
+
+    /**
+     * Opens or closes the solutions mega menu and clears its pointer lock when closed.
+     * @param open Whether the solutions menu should be visible.
+     * @returns Nothing.
+     */
+    const setSolutions = (open: boolean): void => {
+      solutions?.classList.toggle('is-open', open);
+      solutionsTrigger?.setAttribute('aria-expanded', String(open));
+    };
+
+    /** Cancels a pending pointer-leave close so diagonal entry can reach the panel. */
+    const cancelSolutionsClose = (): void => {
+      if (closeTimer !== undefined) window.clearTimeout(closeTimer);
+      closeTimer = undefined;
+    };
+
+    /** Closes the solutions menu and releases a click-based open lock. */
+    const closeSolutions = (): void => {
+      cancelSolutionsClose();
+      solutionsPinned = false;
       setSolutions(false);
-      setMainMenu(false);
-    }
-  });
-  document.addEventListener('click', (event) => {
-    if (header && !header.contains(event.target as Node)) {
-      setSolutions(false);
-      setMainMenu(false);
-    }
-  });
+    };
+
+    /** Defers hover closing briefly, giving the pointer a safe route into the fixed panel. */
+    const scheduleSolutionsClose = (): void => {
+      if (solutionsPinned) return;
+      cancelSolutionsClose();
+      closeTimer = window.setTimeout(closeSolutions, 220);
+    };
+
+    /**
+     * Replaces the preview copy with the option currently hovered or focused.
+     * @param link The solution menu link supplying preview metadata.
+     * @returns Nothing.
+     */
+    const updatePreview = (link: HTMLAnchorElement): void => {
+      const menu = header.querySelector('[data-solutions-mega-menu]');
+      menu
+        ?.querySelector('[data-solution-preview-title]')
+        ?.replaceChildren(link.dataset.previewTitle ?? '');
+      menu
+        ?.querySelector('[data-solution-preview-copy]')
+        ?.replaceChildren(link.dataset.previewCopy ?? '');
+    };
+
+    /**
+     * Keeps the persisted menu's accessible current-page state in sync after Astro navigation.
+     * @returns Nothing.
+     */
+    const syncCurrentSolution = (): void => {
+      const pathname = window.location.pathname.replace(/\/$/, '') || '/';
+      solutions
+        ?.querySelectorAll<HTMLAnchorElement>('[data-solution-option]')
+        .forEach((link) => {
+          link.toggleAttribute('aria-current', link.pathname === pathname);
+          if (link.pathname === pathname)
+            link.setAttribute('aria-current', 'page');
+        });
+    };
+
+    menuToggle?.addEventListener('click', () => {
+      const open = menuToggle.getAttribute('aria-expanded') !== 'true';
+      if (open) lastFocused = document.activeElement as HTMLElement;
+      setMainMenu(open);
+    });
+    solutionsTrigger?.addEventListener('click', () => {
+      if (solutionsPinned) {
+        closeSolutions();
+        return;
+      }
+      cancelSolutionsClose();
+      solutionsPinned = true;
+      setSolutions(true);
+    });
+    solutionsTrigger?.addEventListener('pointerenter', () => {
+      cancelSolutionsClose();
+      if (!solutionsPinned) setSolutions(true);
+    });
+    solutionsTrigger?.addEventListener('focus', () => {
+      cancelSolutionsClose();
+      setSolutions(true);
+    });
+    solutions?.addEventListener('pointerleave', scheduleSolutionsClose);
+    solutionsPanel?.addEventListener('pointerenter', cancelSolutionsClose);
+    solutionsPanel?.addEventListener('pointerleave', scheduleSolutionsClose);
+    solutions
+      ?.querySelectorAll<HTMLAnchorElement>('[data-solution-option]')
+      .forEach((link) => {
+        link.addEventListener('mouseenter', () => updatePreview(link));
+        link.addEventListener('focus', () => updatePreview(link));
+        link.addEventListener('click', closeSolutions);
+      });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeSolutions();
+        setMainMenu(false);
+      }
+    });
+    document.addEventListener('click', (event) => {
+      const target = event.target as Node;
+      if (!solutions?.contains(target)) {
+        closeSolutions();
+      }
+      if (!header.contains(target)) {
+        setMainMenu(false);
+      }
+    });
+    document.addEventListener('astro:after-swap', syncCurrentSolution);
+  }
 </script>

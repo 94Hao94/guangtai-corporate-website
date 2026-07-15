@@ -1,0 +1,50 @@
+---
+import { partners } from '../../data/partners';
+---
+
+<section
+  class="partner-marquee section-pad"
+  data-partner-marquee
+  aria-label="合作伙伴"
+>
+  <div class="section-heading" data-reveal>
+    <p class="eyebrow">PARTNERS</p><h2>与具身智能伙伴，共同进入真实场景</h2>
+  </div>
+  <div class="partner-viewport">
+    <div class="partner-track" data-partner-track>
+      {
+        partners.map((partner) => (
+          <a
+            href={partner.href}
+            target="_blank"
+            rel="noreferrer"
+            data-partner-logo-surface={partner.logoSurface}
+          >
+            <img
+              class="partner-logo"
+              src={partner.logo}
+              alt={partner.logoAlt}
+              loading="lazy"
+              decoding="async"
+            />
+          </a>
+        ))
+      }
+      <div aria-hidden="true">
+        {
+          partners.map((partner) => (
+            <span data-partner-logo-surface={partner.logoSurface}>
+              <img
+                class="partner-logo"
+                src={partner.logo}
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+            </span>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

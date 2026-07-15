@@ -5,6 +5,7 @@ import EmbodiedSection from '../components/home/EmbodiedSection.astro';
 import FactorySection from '../components/home/FactorySection.astro';
 import HomeHero from '../components/home/HomeHero.astro';
 import ProjectCta from '../components/home/ProjectCta.astro';
+import PartnerMarquee from '../components/home/PartnerMarquee.astro';
 import SolutionSplit from '../components/home/SolutionSplit.astro';
 import TechnologySection from '../components/home/TechnologySection.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -17,11 +18,8 @@ import { resolveImage } from '../lib/images';
   ogImage={resolveImage('/assets/hero-humanoid-ai-campus.png').src}
 >
   <main>
-    <HomeHero /><SolutionSplit /><FactorySection /><EmbodiedSection
-    /><EducationSection /><TechnologySection /><CaseSection /><ProjectCta />
+    <HomeHero /><EmbodiedSection /><PartnerMarquee /><SolutionSplit
+    /><FactorySection /><EducationSection /><TechnologySection /><CaseSection
+    /><ProjectCta />
   </main>
 </BaseLayout>
-<script>
-  import { initReveal } from '../scripts/reveal';
-  initReveal();
-</script>

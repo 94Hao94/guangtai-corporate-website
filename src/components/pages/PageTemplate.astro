@@ -24,11 +24,12 @@ const { page, ancestors, children, related } = Astro.props;
     `template-${page.template}`,
     `family-${page.visualFamily}`,
   ]}
+  data-page-motion
 >
   <InnerHero page={page} ancestors={ancestors} /><ChapterNav
     showMatrix={children.length > 0}
   />
-  <section id="overview" class="inner-intro inner-section">
+  <section id="overview" class="inner-intro inner-section" data-reveal>
     <div class="section-kicker">
       <span>01</span><div>
         <b>定位与价值</b><small>POSITIONING & VALUE</small><p>
@@ -52,7 +53,7 @@ const { page, ancestors, children, related } = Astro.props;
   </section>
   {
     children.length > 0 && (
-      <section id="matrix" class="inner-matrix inner-section">
+      <section id="matrix" class="inner-matrix inner-section" data-reveal>
         <>
           <div class="inner-heading">
             <>
@@ -82,7 +83,7 @@ const { page, ancestors, children, related } = Astro.props;
       </section>
     )
   }
-  <section id="capabilities" class="inner-feature inner-section">
+  <section id="capabilities" class="inner-feature inner-section" data-reveal>
     <CapabilityCanvas page={page} /><div class="feature-copy">
       <div class="inner-heading">
         <p>CORE CAPABILITIES</p><h2>

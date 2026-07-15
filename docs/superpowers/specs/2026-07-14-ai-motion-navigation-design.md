@@ -28,6 +28,14 @@
 - 使用 Astro ClientRouter 承接同源页面导航；GSAP 只控制导航前后的视觉状态，不能阻断原生链接、外链、新窗口和页面内锚点。
 - 导航动效不超过 280ms；CTA 的按压与箭头反馈在点击后 120ms 内发生。
 
+### 全站动效生命周期（长期规范）
+
+- 动效是全站体验的一部分：首页、列表页、解决方案详情页、案例页、关于页和联系页必须使用同一套进入、滚动、CTA 与路由反馈规则；后续新增页面不得只在单页脚本中初始化动效。
+- 动效初始化由 `BaseLayout` 在首次加载和每次 `astro:page-load` 时统一调用。每次重建前必须清理上一页的 GSAP context、ScrollTrigger、轮播 tween 与事件监听，禁止依赖 Astro 模块脚本再次执行。
+- 页面组件只声明语义化动效锚点（例如 `data-reveal`）；动画编排、减少动态效果降级和清理逻辑集中在 `src/scripts/site-motion.ts`。
+- 无限轮播在每次回访包含自身的页面时必须重新创建并自动播放；仅在指针悬停、键盘聚焦或减少动态效果偏好下暂停。离开该页面时必须停止，避免后台持续运行。
+- 所有交互动效仅使用 `transform` 与 `opacity`；CTA、卡片、头部咨询入口和内页行动链接使用同一套悬停、按压和焦点反馈，不以动效替代可见的选中态或可访问性语义。
+
 ### 动效性能与可访问性
 
 - 只动画 `opacity`、`transform` 和必要的遮罩位置；不反复动画布局尺寸。
@@ -58,6 +66,10 @@
 
 移动端保留现有导航抽屉，Mega Menu 改为可展开的分类列表；不依赖 hover，不显示大尺寸预览图。
 
+- 桌面端菜单的关闭必须有 220ms 指针容错时间：指针从触发器斜向进入面板时不能因短暂离开触发器而收起；再次进入触发器或面板立即取消关闭。点击触发器后进入锁定打开状态，只能由第二次点击、Escape 或点击外部关闭。
+- 菜单使用半透明深蓝渐变、背景模糊、细边线和轻投影，避免不透明黑色大面积遮挡；透明度不得影响文字对比度。
+- 四个板块须保留完整的 24 个已有解决方案链接：具身智能与 AI（1）、通用解决方案（8）、高校场景（7）、中小学场景（8）。所有链接继续使用既有 URL，不创建虚构路由。
+
 ### 首页业务与合作伙伴
 
 - 首页组件顺序调整为 `HomeHero → EmbodiedSection → PartnerMarquee → SolutionSplit → FactorySection → EducationSection → TechnologySection → CaseSection → ProjectCta`。
@@ -67,20 +79,20 @@
 
 ## 文件范围
 
-| 文件 | 变更 |
-| --- | --- |
-| `package.json` | 添加 `gsap` 依赖。 |
-| `src/layouts/BaseLayout.astro` | 接入 Astro ClientRouter 与全局路由转场组件。 |
-| `src/components/site/RouteTransition.astro`（新增） | 页面帷幕和导航状态容器。 |
-| `src/scripts/site-motion.ts`（新增） | 统一初始化 GSAP、ScrollTrigger、菜单动效和清理逻辑。 |
-| `src/components/site/SiteHeader.astro` | 当前页状态、菜单数据、预览区与键盘/触屏行为。 |
-| `src/styles/site-shell.css` | 头部、Mega Menu、选中和导航意图状态。 |
-| `src/pages/index.astro` | 调整首页区块顺序并接入合作伙伴区。 |
-| `src/components/home/EmbodiedSection.astro` | 为首要业务区补充动效锚点与语义标签。 |
-| `src/components/home/PartnerMarquee.astro`（新增） | 可访问的合作伙伴展示轨道。 |
-| `src/data/partners.ts`（新增） | 八家合作伙伴的展示数据与资产占位。 |
-| `src/styles/home.css` 与 `src/styles/base.css` | 首页、按钮、轮播和减少动态效果样式。 |
-| `tests/browser/site-smoke.spec.ts` | 追加 CTA、菜单、当前项和移动端场景断言。 |
+| 文件                                                | 变更                                                 |
+| --------------------------------------------------- | ---------------------------------------------------- |
+| `package.json`                                      | 添加 `gsap` 依赖。                                   |
+| `src/layouts/BaseLayout.astro`                      | 接入 Astro ClientRouter 与全局路由转场组件。         |
+| `src/components/site/RouteTransition.astro`（新增） | 页面帷幕和导航状态容器。                             |
+| `src/scripts/site-motion.ts`（新增）                | 统一初始化 GSAP、ScrollTrigger、菜单动效和清理逻辑。 |
+| `src/components/site/SiteHeader.astro`              | 当前页状态、菜单数据、预览区与键盘/触屏行为。        |
+| `src/styles/site-shell.css`                         | 头部、Mega Menu、选中和导航意图状态。                |
+| `src/pages/index.astro`                             | 调整首页区块顺序并接入合作伙伴区。                   |
+| `src/components/home/EmbodiedSection.astro`         | 为首要业务区补充动效锚点与语义标签。                 |
+| `src/components/home/PartnerMarquee.astro`（新增）  | 可访问的合作伙伴展示轨道。                           |
+| `src/data/partners.ts`（新增）                      | 八家合作伙伴的展示数据与资产占位。                   |
+| `src/styles/home.css` 与 `src/styles/base.css`      | 首页、按钮、轮播和减少动态效果样式。                 |
+| `tests/browser/site-smoke.spec.ts`                  | 追加 CTA、菜单、当前项和移动端场景断言。             |
 
 ## 测试与验收
 
@@ -94,6 +106,6 @@
 
 ## 风险与待确认事项
 
-- 合作伙伴展示需要业务方确认八家厂商均可公开标注为“合作伙伴”，并提供或批准相应的官方 Logo 素材。
+- 用户已于 2026-07-14 指示收集并接入八家企业官网公开展示的 Logo；所有本地文件与官方来源记录于 `public/partners/SOURCES.md`。商标及 Logo 权利仍归相应企业所有。
 - Astro ClientRouter 与现有页面脚本需在实际浏览器中验证生命周期与清理逻辑，避免页面切换后重复绑定事件。
 - 如果移动端的页面转场或菜单预览影响首屏性能，将保留选中态但关闭对应动画。

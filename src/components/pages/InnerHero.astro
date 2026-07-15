@@ -20,7 +20,7 @@ const { page, ancestors } = Astro.props;
     style={`object-position:${page.heroPosition ?? 'center'};object-fit:${page.heroFit ?? 'cover'}`}
   />
   <div class="inner-hero-overlay"></div>
-  <div class="inner-hero-copy">
+  <div class="inner-hero-copy" data-reveal>
     <Breadcrumbs page={page} ancestors={ancestors} /><p class="inner-eyebrow">
       {page.english}
     </p><h1>{page.title}</h1><p class="inner-lead">{page.intro}</p><a

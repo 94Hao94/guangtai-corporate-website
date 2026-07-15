@@ -1,0 +1,36 @@
+<div
+  data-route-transition
+  data-state="idle"
+  aria-live="polite"
+  transition:persist
+>
+  <span>正在进入页面</span>
+</div>
+<script>
+  document.addEventListener('click', (event) => {
+    const link = (event.target as Element).closest<HTMLAnchorElement>(
+      '[data-route-cta]',
+    );
+    if (
+      !link ||
+      event.defaultPrevented ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    )
+      return;
+    document
+      .querySelector('[data-route-transition]')
+      ?.setAttribute('data-state', 'leaving');
+  });
+  document.addEventListener('astro:page-load', () =>
+    window.setTimeout(
+      () =>
+        document
+          .querySelector('[data-route-transition]')
+          ?.setAttribute('data-state', 'idle'),
+      320,
+    ),
+  );
+</script>

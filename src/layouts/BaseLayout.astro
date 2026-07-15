@@ -2,6 +2,8 @@
 import { getCollection } from 'astro:content';
 import SiteFooter from '../components/site/SiteFooter.astro';
 import SiteHeader from '../components/site/SiteHeader.astro';
+import RouteTransition from '../components/site/RouteTransition.astro';
+import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 
 interface Props {
@@ -73,6 +75,25 @@ const organization = {
     </script>
   </head>
   <body>
-    <SiteHeader pages={pages} /><slot /><SiteFooter />
+    <RouteTransition /><SiteHeader pages={pages} /><slot /><SiteFooter
+    /><ClientRouter />
   </body>
 </html>
+<script>
+  import { initSiteMotion } from '../scripts/site-motion';
+
+  declare global {
+    interface Window {
+      siteMotionLifecycleReady?: boolean;
+    }
+  }
+
+  /** Rebuilds the shared motion context after Astro replaces the current route. */
+  const initializeSiteMotion = (): void => initSiteMotion();
+
+  if (!window.siteMotionLifecycleReady) {
+    window.siteMotionLifecycleReady = true;
+    document.addEventListener('astro:page-load', initializeSiteMotion);
+    initializeSiteMotion();
+  }
+</script>

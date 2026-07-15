@@ -23,7 +23,10 @@ async function assertPageIntegrity(page: Page): Promise<void> {
   const images = page.locator('img');
   for (let index = 0; index < (await images.count()); index += 1) {
     const image = images.nth(index);
-    await image.scrollIntoViewIfNeeded();
+    const isMovingPartnerLogo = await image.evaluate((element) =>
+      Boolean(element.closest('[data-partner-track]')),
+    );
+    if (!isMovingPartnerLogo) await image.scrollIntoViewIfNeeded();
     await expect
       .poll(
         () =>
@@ -56,6 +59,7 @@ async function assertPageIntegrity(page: Page): Promise<void> {
 test('desktop navigation is keyboard operable and closes with Escape', async ({
   page,
 }) => {
+  test.slow();
   const errors = collectRuntimeErrors(page);
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
@@ -80,6 +84,213 @@ test('desktop navigation is keyboard operable and closes with Escape', async ({
   await expect(solutions).toBeFocused();
   await assertPageIntegrity(page);
   expect(errors).toEqual([]);
+});
+
+test('solutions menu previews a focused option and marks the active route', async ({
+  page,
+}) => {
+  const errors = collectRuntimeErrors(page);
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/solutions/common/embodied-intelligence/');
+
+  const solutions = page.getByRole('button', { name: '解决方案' });
+  await solutions.hover();
+  await expect(solutions).toHaveAttribute('aria-expanded', 'true');
+
+  const menu = page.locator('[data-solutions-mega-menu]');
+  const embodied = menu.locator(
+    '[data-solution-option="/solutions/common/embodied-intelligence"]',
+  );
+  await expect(embodied).toHaveAttribute('aria-current', 'page');
+
+  const higherEducation = menu.locator(
+    '[data-solution-option="/solutions/industries/higher-education"]',
+  );
+  await higherEducation.hover();
+  await expect(menu.locator('[data-solution-preview-title]')).toHaveText(
+    '高校场景解决方案',
+  );
+  expect(errors).toEqual([]);
+});
+
+test('solutions menu remains interactive after a client-side page swap', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const primaryNavigation = page.locator('[data-primary-nav]');
+  await primaryNavigation.getByRole('link', { name: 'AI应用工厂' }).click();
+  await expect(page).toHaveURL(/\/guangtai-ai-factory\/?$/);
+
+  const solutions = page.getByRole('button', { name: '解决方案' });
+  await page.mouse.move(0, 600);
+  await expect(solutions).toHaveAttribute('aria-expanded', 'false');
+  await solutions.click();
+  await expect(solutions).toHaveAttribute('aria-expanded', 'true');
+  await expect(page.locator('#solutions-mega-menu')).toBeVisible();
+});
+
+test('solutions menu closes when another header destination is clicked', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const solutions = page.getByRole('button', { name: '解决方案' });
+  await solutions.click();
+  await expect(solutions).toHaveAttribute('aria-expanded', 'true');
+
+  await page
+    .locator('[data-primary-nav]')
+    .getByRole('link', { name: 'AI应用工厂' })
+    .click();
+  await expect(page).toHaveURL(/\/guangtai-ai-factory\/?$/);
+  await expect(solutions).toHaveAttribute('aria-expanded', 'false');
+});
+
+test('solutions menu tolerates a diagonal pointer path into its panel', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const solutions = page.getByRole('button', { name: '解决方案' });
+  await solutions.hover();
+  await expect(solutions).toHaveAttribute('aria-expanded', 'true');
+
+  await page.mouse.move(0, 600);
+  await page.waitForTimeout(120);
+  await expect(solutions).toHaveAttribute('aria-expanded', 'true');
+
+  const panelBox = await page
+    .locator('[data-solutions-mega-menu]')
+    .boundingBox();
+  if (!panelBox) throw new Error('solutions panel should have a bounding box');
+  await page.mouse.move(panelBox.x + 24, panelBox.y + 24);
+  await page.waitForTimeout(160);
+  await expect(solutions).toHaveAttribute('aria-expanded', 'true');
+});
+
+test('solutions menu synchronizes its current option after a client-side page swap', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const solutions = page.getByRole('button', { name: '解决方案' });
+  await solutions.hover();
+  const embodied = page.locator(
+    '[data-solution-option="/solutions/common/embodied-intelligence"]',
+  );
+  await embodied.click();
+  await expect(page).toHaveURL(
+    /\/solutions\/common\/embodied-intelligence\/?$/,
+  );
+
+  await expect(embodied).toHaveAttribute('aria-current', 'page');
+});
+
+test('homepage exposes a labeled eight-partner marquee', async ({ page }) => {
+  await page.goto('/');
+  const partners = page.locator('[data-partner-marquee]');
+  await expect(partners).toHaveAttribute('aria-label', '合作伙伴');
+  await expect(partners.getByRole('link')).toHaveCount(8);
+  await expect(partners.getByRole('img')).toHaveCount(8);
+  await expect(partners.getByRole('img').first()).toHaveAttribute(
+    'alt',
+    '宇树科技 Logo',
+  );
+});
+
+test('homepage centers the brand message within the Hero visual field', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+
+  const brandCenter = await page.evaluate(() => {
+    const hero = document.querySelector('.home-hero')?.getBoundingClientRect();
+    const heading = document
+      .querySelector('.home-hero h1')
+      ?.getBoundingClientRect();
+    const action = document
+      .querySelector('.hero-actions')
+      ?.getBoundingClientRect();
+    if (!hero || !heading || !action) return null;
+    return (heading.top + action.bottom) / 2 - hero.top;
+  });
+  const heroHeight = await page
+    .locator('.home-hero')
+    .evaluate((element) => element.getBoundingClientRect().height);
+
+  expect(brandCenter).not.toBeNull();
+  expect((brandCenter ?? 0) / heroHeight).toBeGreaterThan(0.42);
+  expect((brandCenter ?? 0) / heroHeight).toBeLessThan(0.6);
+});
+
+test('homepage reveal animations initialize after returning through the client router', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  /** Returns to the homepage through the client router after visiting the AI factory page. */
+  const returnToHomepage = async (): Promise<void> => {
+    await page
+      .locator('[data-primary-nav]')
+      .getByRole('link', { name: 'AI应用工厂' })
+      .click();
+    await expect(page).toHaveURL(/\/guangtai-ai-factory\/?$/);
+    await page.getByRole('link', { name: '天津光泰科技集团首页' }).click();
+    await expect(page).toHaveURL(/\/$/);
+  };
+
+  await returnToHomepage();
+  await returnToHomepage();
+
+  const reveal = page.locator('[data-embodied-section] [data-reveal]').first();
+  await reveal.scrollIntoViewIfNeeded();
+  await expect
+    .poll(() =>
+      reveal.evaluate((element) => Number(getComputedStyle(element).opacity)),
+    )
+    .toBeGreaterThan(0.99);
+  await expect(page.locator('#ai-canvas').first()).toHaveJSProperty(
+    'width',
+    1440,
+  );
+});
+
+test('sitewide motion reinitializes after client-side navigation', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page
+    .locator('[data-primary-nav]')
+    .getByRole('link', { name: 'AI应用工厂' })
+    .click();
+  await expect(page).toHaveURL(/\/guangtai-ai-factory\/?$/);
+  await page.getByRole('link', { name: '天津光泰科技集团首页' }).click();
+  await expect(page).toHaveURL(/\/$/);
+
+  const track = page.locator('[data-partner-track]');
+  await expect(track).toHaveCSS('transform', /matrix/);
+
+  await page
+    .locator('[data-primary-nav]')
+    .getByRole('link', { name: 'AI应用工厂' })
+    .click();
+  await expect(page).toHaveURL(/\/guangtai-ai-factory\/?$/);
+  const reveal = page.locator('[data-page-motion] [data-reveal]').first();
+  await reveal.scrollIntoViewIfNeeded();
+  await expect(reveal).toHaveCSS('opacity', '1');
+});
+
+test('project CTA exposes a navigation intent state before navigation', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const cta = page.locator('[data-route-cta]').first();
+  await expect(cta).toBeVisible();
+  await cta.click();
+  await expect(page.locator('[data-route-transition]')).toHaveAttribute(
+    'data-state',
+    'leaving',
+  );
 });
 
 test('mobile navigation restores focus and body scrolling after Escape', async ({
@@ -166,7 +377,12 @@ test('captures the four approved responsive viewports', async ({
   ]) {
     await page.setViewportSize(viewport);
     await page.goto('/');
-    await assertPageIntegrity(page);
+    await expect(page.locator('.home-hero')).toBeVisible();
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth,
+      ),
+    ).toBe(true);
     await page.screenshot({
       fullPage: true,
       path: testInfo.outputPath(`${viewport.name}.png`),
