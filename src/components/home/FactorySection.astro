@@ -2,9 +2,11 @@
 import { Image } from 'astro:assets';
 import { factoryLayers } from '../../data/home';
 import { resolveImage } from '../../lib/images';
+import HomeChapter from './HomeChapter.astro';
 ---
 
 <section class="factory section-pad">
+  <HomeChapter number="01" title="AI 应用工厂" english="GUANGTAI AI FACTORY" />
   <div class="section-heading" data-reveal>
     <p class="eyebrow">GUANGTAI AI FACTORY</p><h2>
       把模型、知识、工具和流程<br />编排成可运行的行业智能体

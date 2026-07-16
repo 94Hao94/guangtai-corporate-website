@@ -113,6 +113,42 @@
   gap: 0.8rem;
   margin-top: 2.25rem;
 }
+.home-chapter {
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: center;
+  max-width: 54rem;
+  padding-top: 0.85rem;
+  margin-bottom: 1.75rem;
+  border-top: 1px solid rgba(8, 62, 101, 0.24);
+  color: var(--blue-950);
+}
+.home-chapter__title,
+.home-chapter__english {
+  margin: 0;
+  font: 700 0.68rem var(--font-mono);
+  letter-spacing: 0.08em;
+}
+.home-chapter__title {
+  color: var(--blue-700);
+}
+.home-chapter__english {
+  margin-top: 0.28rem;
+  color: var(--muted);
+  font-size: 0.56rem;
+  letter-spacing: 0.14em;
+}
+.home-chapter--dark {
+  border-color: rgba(255, 255, 255, 0.32);
+  color: #fff;
+}
+.home-chapter--dark .home-chapter__title {
+  color: var(--cyan);
+}
+.home-chapter--dark .home-chapter__english {
+  color: rgba(255, 255, 255, 0.72);
+}
 .solutions {
   color: #fff;
   background: var(--blue-950);
@@ -445,6 +481,11 @@
   }
   .hero-description {
     font-size: 0.94rem;
+  }
+  .home-chapter {
+    grid-template-columns: 2.7rem minmax(0, 1fr);
+    gap: 0.7rem;
+    margin-bottom: 1.35rem;
   }
   .solution-split,
   .education-grid,

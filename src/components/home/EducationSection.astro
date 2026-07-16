@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import { resolveImage } from '../../lib/images';
+import HomeChapter from './HomeChapter.astro';
 const cards = [
   {
     image: '/assets/higher-teaching.png',
@@ -20,6 +21,11 @@ const cards = [
 ---
 
 <section class="education section-pad">
+  <HomeChapter
+    number="03.1"
+    title="教育行业场景"
+    english="EDUCATION SCENARIOS"
+  />
   <div class="section-heading" data-reveal>
     <p class="eyebrow">EDUCATION SCENARIOS</p><h2>
       面向不同学段，让数智能力落到教学现场

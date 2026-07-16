@@ -223,6 +223,28 @@ test('homepage centers the brand message within the Hero visual field', async ({
   expect((brandCenter ?? 0) / heroHeight).toBeLessThan(0.6);
 });
 
+test('homepage chapter signposts keep business sections identifiable', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+
+  const chapters = page.locator('[data-home-chapter]');
+  await expect(chapters).toHaveCount(7);
+  await expect(chapters.nth(0)).toContainText('01 / AI 应用工厂');
+  await expect(chapters.nth(1)).toContainText('02 / 具身智能');
+  await expect(chapters.nth(2)).toContainText('02.1 / 具身生态伙伴');
+  await expect(chapters.nth(3)).toContainText('03 / 系统集成与行业场景');
+  await expect(chapters.nth(6)).toContainText('04 / 项目实践');
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+});
+
 test('homepage reveal animations initialize after returning through the client router', async ({
   page,
 }) => {

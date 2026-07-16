@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import { embodiedItems } from '../../data/home';
 import { resolveImage } from '../../lib/images';
+import HomeChapter from './HomeChapter.astro';
 ---
 
 <section id="embodied-ai" class="embodied section-pad" data-embodied-section>
@@ -13,6 +14,7 @@ import { resolveImage } from '../../lib/images';
       sizes="(max-width: 900px) 100vw, 48vw"
     />
   </div><div>
+    <HomeChapter number="02" title="具身智能" english="EMBODIED INTELLIGENCE" />
     <div class="section-heading" data-reveal>
       <p class="eyebrow">EMBODIED INTELLIGENCE</p><h2>
         让AI走进真实空间，感知、决策并执行任务

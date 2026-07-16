@@ -1,11 +1,18 @@
 ---
 import { Image } from 'astro:assets';
 import { resolveImage } from '../../lib/images';
+import HomeChapter from './HomeChapter.astro';
 const common = resolveImage('/assets/visual-v2/common-delivery.jpg');
 const education = resolveImage('/assets/visual-v2/higher-campus-students.jpg');
 ---
 
 <section id="solutions" class="solutions section-pad">
+  <HomeChapter
+    number="03"
+    title="系统集成与行业场景"
+    english="SYSTEM INTEGRATION & INDUSTRIES"
+    tone="dark"
+  />
   <div class="section-heading light" data-reveal>
     <p class="eyebrow">SYSTEM INTEGRATION &amp; INDUSTRIES</p><h2>
       从系统集成，走向每一个真实场景

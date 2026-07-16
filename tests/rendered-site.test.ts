@@ -84,6 +84,16 @@ describe('rendered corporate site', () => {
     expect(homepage).toContain('href="/solutions/industries"');
   });
 
+  it('renders chapter signposts for the homepage business narrative', async () => {
+    const homepage = await readFile(resolve('dist/index.html'), 'utf8');
+
+    expect(homepage).toContain('01 / AI 应用工厂');
+    expect(homepage).toContain('02.1 / 具身生态伙伴');
+    expect(homepage).toContain('03.1 / 教育行业场景');
+    expect(homepage).toContain('03.2 / 工程与技术');
+    expect(homepage).toContain('04 / 项目实践');
+  });
+
   it('renders visual breadcrumbs only for nested pages while preserving breadcrumb JSON-LD', async () => {
     const casesHtml = await readFile(routeFile('/cases'), 'utf8');
     const nestedHtml = await readFile(

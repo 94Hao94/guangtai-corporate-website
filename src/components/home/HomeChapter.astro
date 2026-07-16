@@ -1,0 +1,15 @@
+---
+interface Props {
+  number: string;
+  title: string;
+  english: string;
+  tone?: 'light' | 'dark';
+}
+
+const { number, title, english, tone = 'light' } = Astro.props;
+---
+
+<div class:list={['home-chapter', `home-chapter--${tone}`]} data-home-chapter>
+  <p class="home-chapter__title">{number} / {title}</p>
+  <p class="home-chapter__english">{english}</p>
+</div>
