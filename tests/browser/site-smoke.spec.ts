@@ -407,14 +407,18 @@ test('about capability navigator updates its panel on hover and ArrowDown', asyn
   const tabs = navigator.getByRole('tab');
   const panel = navigator.getByRole('tabpanel');
   const tabCount = await tabs.count();
-  expect(tabCount).toBeGreaterThanOrEqual(2);
+  expect(tabCount).toBeGreaterThanOrEqual(3);
   await expect(panel).toHaveCount(1);
+  await expect(panel).toBeVisible();
+  const initialPanelCopy = await panel.textContent();
 
   const hoveredTab = tabs.nth(1);
   const hoveredTabId = await hoveredTab.getAttribute('id');
   await hoveredTab.hover();
   await expect(hoveredTab).toHaveAttribute('aria-selected', 'true');
   await expect(panel).toHaveAttribute('aria-labelledby', hoveredTabId ?? '');
+  await expect(panel).toContainText('软件定制、AI编程与系统集成');
+  expect(await panel.textContent()).not.toBe(initialPanelCopy);
 
   await hoveredTab.focus();
   await page.keyboard.press('ArrowDown');
@@ -423,6 +427,8 @@ test('about capability navigator updates its panel on hover and ArrowDown', asyn
   await expect(keyboardTab).toBeFocused();
   await expect(keyboardTab).toHaveAttribute('aria-selected', 'true');
   await expect(panel).toHaveAttribute('aria-labelledby', keyboardTabId ?? '');
+  await expect(panel).toContainText('音视频、安全、基础设施与空间智能');
+  expect(await panel.textContent()).not.toContain('软件定制、AI编程与系统集成');
 });
 
 test('mobile capability navigator activates on click without horizontal overflow', async ({
@@ -478,7 +484,7 @@ test('contact project form accepts valid details and reports its unconfigured ch
   }
 
   await form.locator('button[type="submit"]').click();
-  await expect(page.getByText('联系渠道尚未配置')).toBeVisible();
+  await expect(page.getByRole('status')).toContainText('联系渠道尚未配置');
 });
 
 test('unknown routes return the branded 404 response', async ({ page }) => {

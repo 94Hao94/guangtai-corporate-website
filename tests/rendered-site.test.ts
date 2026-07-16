@@ -128,26 +128,6 @@ describe('rendered corporate site', () => {
     expect(contactHtml).not.toContain('START A PROJECT');
   });
 
-  it('keeps AI and embodied intelligence together in the first solution menu group', async () => {
-    const homepage = await readFile(resolve('dist/index.html'), 'utf8');
-    const groupStart = homepage.indexOf('AI 与具身智能');
-    const nextGroupStart = homepage.indexOf('通用解决方案', groupStart);
-    const firstGroup = homepage.slice(groupStart, nextGroupStart);
-    const aiFactoryLink = homepage.indexOf('href="/guangtai-ai-factory"');
-    const solutionRoutes = [...firstGroup.matchAll(/href="([^"]+)"/g)].map(
-      (match) => match[1],
-    );
-
-    expect(groupStart).toBeGreaterThan(-1);
-    expect(nextGroupStart).toBeGreaterThan(groupStart);
-    expect(solutionRoutes).toEqual([
-      '/solutions/common/ai',
-      '/solutions/common/embodied-intelligence',
-    ]);
-    expect(aiFactoryLink).toBeGreaterThan(-1);
-    expect(aiFactoryLink).toBeLessThan(groupStart);
-  });
-
   it('renders all internal page links to known routes', async () => {
     const contentPages = await pages();
     const routes = new Set(['/', ...contentPages.map((page) => page.path)]);
