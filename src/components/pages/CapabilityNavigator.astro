@@ -7,61 +7,63 @@ interface Props {
 
 const { page } = Astro.props;
 const items = page.capabilities.map((title, index) => ({
+  copy:
+    index === 0
+      ? page.positioning
+      : `围绕${page.scenarios[index] ?? page.scenarios.at(-1) ?? '真实业务场景'}，将能力组织为可验证、可交付、可持续运营的实施路径。`,
+  headline: index === 0 ? page.intro : title,
   id: `${page.id}-capability-${index + 1}`,
   number: String(index + 1).padStart(2, '0'),
-  scenario: page.scenarios[index] ?? page.scenarios.at(-1) ?? '',
   title,
 }));
 ---
 
 <section
-  class="capability-navigator"
+  id="overview"
+  class="inner-intro inner-section"
   data-capability-navigator
   data-reveal
   aria-label={`${page.title}核心能力`}
 >
-  <div
-    class="capability-navigator-tabs"
-    role="tablist"
-    aria-orientation="vertical"
-  >
-    {
-      items.map((item, index) => (
-        <button
-          type="button"
-          id={`${item.id}-tab`}
-          role="tab"
-          aria-controls={`${item.id}-panel`}
-          aria-selected={index === 0 ? 'true' : 'false'}
-          tabindex={index === 0 ? '0' : '-1'}
-          data-capability-tab={index}
-        >
-          <>
-            <span>{item.number}</span>
-            <b>{item.title}</b>
-          </>
-        </button>
-      ))
-    }
-  </div>
-  <div class="capability-navigator-panels">
+  <div class="section-kicker">
+    <span>01</span><div>
+      <b>定位与价值</b><small>POSITIONING & VALUE</small><p>
+        从业务目标出发，形成可建设、可交付、可持续运营的能力组合。
+      </p>
+    </div><div class="value-tags" role="tablist" aria-orientation="vertical">
+      {
+        items.map((item, index) => (
+          <button
+            type="button"
+            id={`${item.id}-tab`}
+            role="tab"
+            aria-controls={`${item.id}-panel`}
+            aria-selected={index === 0 ? 'true' : 'false'}
+            tabindex={index === 0 ? '0' : '-1'}
+            data-capability-tab={index}
+          >
+            <>
+              <i>{item.number}</i>
+              <span>{item.title}</span>
+            </>
+          </button>
+        ))
+      }
+    </div>
+  </div><div class="inner-intro-copy">
     {
       items.map((item, index) => (
         <article
           id={`${item.id}-panel`}
-          class="capability-navigator-panel"
+          class="overview-capability-panel"
           role="tabpanel"
           aria-labelledby={`${item.id}-tab`}
           hidden={index !== 0}
           data-capability-panel={index}
         >
           <>
-            <p>{item.number} / CAPABILITY</p>
-            <h2>{item.title}</h2>
-            <p>
-              在{item.scenario}
-              中，围绕真实角色、现有基础和目标结果形成可验证、可交付的实施路径。
-            </p>
+            <h2>{item.headline}</h2>
+            <p>{item.copy}</p>
           </>
         </article>
       ))
@@ -105,28 +107,37 @@ const items = page.capabilities.map((title, index) => ({
       if (focus) tabs[normalizedIndex]?.focus();
     };
 
+    /**
+     * Moves selection through the tab sequence for supported keyboard navigation keys.
+     * @param event The keyboard event emitted by one capability tab.
+     * @param index The zero-based index of the tab that emitted the event.
+     * @returns Nothing.
+     */
+    const handleKeyboard = (event: KeyboardEvent, index: number): void => {
+      if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
+        event.preventDefault();
+        activate(index + 1, true);
+      }
+      if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
+        event.preventDefault();
+        activate(index - 1, true);
+      }
+      if (event.key === 'Home') {
+        event.preventDefault();
+        activate(0, true);
+      }
+      if (event.key === 'End') {
+        event.preventDefault();
+        activate(tabs.length - 1, true);
+      }
+    };
+
     tabs.forEach((tab, index) => {
       tab.addEventListener('click', () => activate(index));
       tab.addEventListener('pointerenter', () => activate(index));
       tab.addEventListener('focus', () => activate(index));
-      tab.addEventListener('keydown', (event) => {
-        if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
-          event.preventDefault();
-          activate(index + 1, true);
-        }
-        if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
-          event.preventDefault();
-          activate(index - 1, true);
-        }
-        if (event.key === 'Home') {
-          event.preventDefault();
-          activate(0, true);
-        }
-        if (event.key === 'End') {
-          event.preventDefault();
-          activate(tabs.length - 1, true);
-        }
-      });
+      tab.addEventListener('keydown', (event) => handleKeyboard(event, index));
+      tab.addEventListener('keyup', (event) => handleKeyboard(event, index));
     });
   };
 

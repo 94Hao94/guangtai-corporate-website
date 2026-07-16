@@ -35,29 +35,38 @@ const isFactory = page.path === '/guangtai-ai-factory';
     showMatrix={children.length > 0}
     showScenarios={!isAbout && !isFactory && !isContact}
     showDelivery={isAbout || (!isFactory && !isContact)}
+    showCapabilities={isContact}
   />
-  <section id="overview" class="inner-intro inner-section" data-reveal>
-    <div class="section-kicker">
-      <span>01</span><div>
-        <b>定位与价值</b><small>POSITIONING & VALUE</small><p>
-          从业务目标出发，形成可建设、可交付、可持续运营的能力组合。
-        </p>
-      </div><div class="value-tags">
-        {
-          page.capabilities.slice(0, 3).map((item, index) => (
-            <div>
-              <>
-                <i>{String(index + 1).padStart(2, '0')}</i>
-                <span>{item}</span>
-              </>
-            </div>
-          ))
-        }
-      </div>
-    </div><div class="inner-intro-copy">
-      <h2>{page.intro}</h2><p>{page.positioning}</p>
-    </div>
-  </section>
+  {
+    isContact ? (
+      <section id="overview" class="inner-intro inner-section" data-reveal>
+        <>
+          <div class="section-kicker">
+            <>
+              <span>01</span>
+              <div>
+                <>
+                  <b>定位与价值</b>
+                  <small>POSITIONING & VALUE</small>
+                  <p>
+                    从业务目标出发，形成可建设、可交付、可持续运营的能力组合。
+                  </p>
+                </>
+              </div>
+            </>
+          </div>
+          <div class="inner-intro-copy">
+            <>
+              <h2>{page.intro}</h2>
+              <p>{page.positioning}</p>
+            </>
+          </div>
+        </>
+      </section>
+    ) : (
+      <CapabilityNavigator page={page} />
+    )
+  }
   {
     children.length > 0 && (
       <section id="matrix" class="inner-matrix inner-section" data-reveal>
@@ -90,15 +99,7 @@ const isFactory = page.path === '/guangtai-ai-factory';
       </section>
     )
   }
-  {
-    isContact ? (
-      <ContactForm />
-    ) : (
-      <section id="capabilities" class="inner-feature inner-section">
-        <CapabilityNavigator page={page} />
-      </section>
-    )
-  }
+  {isContact && <ContactForm />}
   {isFactory && <FactoryExperienceCta />}
   {!isAbout && !isFactory && !isContact && <ScenarioSection page={page} />}
   {isAbout && <DeliverySection page={page} compact />}

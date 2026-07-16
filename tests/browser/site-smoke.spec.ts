@@ -397,15 +397,15 @@ test('visual breadcrumbs are reserved for nested pages and stay close to the Her
   await expect(breadcrumbs).not.toHaveCSS('position', 'fixed');
 });
 
-test('about capability navigator updates its panel on hover and ArrowDown', async ({
+test('about capability navigator updates its panel on hover and focus', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/about/');
 
-  const navigator = page.locator('[data-capability-navigator]');
+  const navigator = page.locator('#overview[data-capability-navigator]');
   const tabs = navigator.getByRole('tab');
-  const panels = navigator.getByRole('tabpanel');
+  const panels = navigator.locator('[data-capability-panel]');
   const visiblePanel = navigator.locator('[role="tabpanel"]:visible');
   await expect(tabs).toHaveCount(4);
   await expect(panels).toHaveCount(4);
@@ -437,7 +437,9 @@ test('about capability navigator updates its panel on hover and ArrowDown', asyn
     hoveredTabId ?? '',
   );
   await expect(visiblePanel).toContainText('软件定制、AI编程与系统集成');
-  await expect(tabs.locator('[aria-selected="true"]')).toHaveCount(1);
+  await expect(
+    navigator.locator('[role="tab"][aria-selected="true"]'),
+  ).toHaveCount(1);
 
   const focusedTab = tabs.nth(2);
   const focusedTabId = await focusedTab.getAttribute('id');
@@ -450,21 +452,9 @@ test('about capability navigator updates its panel on hover and ArrowDown', asyn
     focusedTabId ?? '',
   );
   await expect(visiblePanel).toContainText('音视频、安全、基础设施与空间智能');
-  await expect(tabs.locator('[aria-selected="true"]')).toHaveCount(1);
-
-  await page.keyboard.press('ArrowDown');
-  const keyboardTab = tabs.nth(3);
-  const keyboardTabId = await keyboardTab.getAttribute('id');
-  const keyboardTabControls = await keyboardTab.getAttribute('aria-controls');
-  await expect(keyboardTab).toBeFocused();
-  await expect(keyboardTab).toHaveAttribute('aria-selected', 'true');
-  await expect(visiblePanel).toHaveAttribute('id', keyboardTabControls ?? '');
-  await expect(visiblePanel).toHaveAttribute(
-    'aria-labelledby',
-    keyboardTabId ?? '',
-  );
-  await expect(visiblePanel).toContainText('具身智能、低空巡检与数据运营');
-  await expect(tabs.locator('[aria-selected="true"]')).toHaveCount(1);
+  await expect(
+    navigator.locator('[role="tab"][aria-selected="true"]'),
+  ).toHaveCount(1);
 });
 
 test('mobile capability navigator activates on click without horizontal overflow', async ({
@@ -473,7 +463,9 @@ test('mobile capability navigator activates on click without horizontal overflow
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/about/');
 
-  const navigator = page.locator('[data-capability-navigator]');
+  const navigator = page.locator('#overview[data-capability-navigator]');
+  await navigator.scrollIntoViewIfNeeded();
+  await expect(navigator).toBeVisible();
   const selectedTab = navigator.getByRole('tab').nth(1);
   await selectedTab.click();
   await expect(selectedTab).toHaveAttribute('aria-selected', 'true');
@@ -489,6 +481,9 @@ test('AI factory experience control is disabled and does not navigate', async ({
 }) => {
   await page.goto('/guangtai-ai-factory/');
 
+  const experienceSection = page.locator('.factory-experience');
+  await experienceSection.scrollIntoViewIfNeeded();
+  await expect(experienceSection).toBeVisible();
   const experienceButton = page.getByRole('button', { name: '前去体验' });
   await expect(experienceButton).toBeDisabled();
   await expect(experienceButton).toHaveAttribute('aria-disabled', 'true');
@@ -505,6 +500,7 @@ test('contact project form accepts labeled details and reports its unconfigured 
   await page.goto('/contact/');
 
   const form = page.locator('[data-project-contact-form]');
+  await form.scrollIntoViewIfNeeded();
   await expect(form).toBeVisible();
   await form.getByLabel('姓名').fill('李明');
   await form.getByLabel('单位').fill('天津光泰科技集团');

@@ -103,7 +103,12 @@ describe('rendered corporate site', () => {
   it('renders an accessible capability navigator on the about page', async () => {
     const aboutHtml = await readFile(routeFile('/about'), 'utf8');
 
-    expect(aboutHtml).toContain('data-capability-navigator');
+    expect(aboutHtml).toMatch(
+      /<section[^>]+id="overview"[^>]+data-capability-navigator/,
+    );
+    expect(aboutHtml).not.toMatch(
+      /<section[^>]+id="capabilities"[^>]+data-capability-navigator/,
+    );
     expect(aboutHtml).toContain('role="tablist"');
     expect(aboutHtml).toContain('role="tab"');
     expect(aboutHtml).toContain('role="tabpanel"');

@@ -125,15 +125,40 @@
   gap: 0.5rem;
   margin-top: 2rem;
 }
-.value-tags > div {
+.value-tags > div,
+.value-tags > button {
   display: grid;
   grid-template-columns: 2rem 1fr;
+  width: 100%;
   padding: 0.75rem 0;
   border-top: 1px solid var(--line);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+}
+.value-tags > button {
+  border-right: 0;
+  border-bottom: 0;
+  border-left: 0;
+  cursor: pointer;
+}
+.value-tags > button:hover,
+.value-tags > button:focus-visible,
+.value-tags > button[aria-selected='true'] {
+  color: var(--family);
+  outline: 0;
+}
+.value-tags > button[aria-selected='true'] span {
+  font-weight: 700;
 }
 .value-tags i {
   color: var(--family);
   font-style: normal;
+}
+.overview-capability-panel h2,
+.overview-capability-panel p {
+  margin-top: 0;
 }
 .inner-intro-copy h2 {
   margin: 0 0 1.5rem;
