@@ -132,21 +132,20 @@ describe('rendered corporate site', () => {
     const homepage = await readFile(resolve('dist/index.html'), 'utf8');
     const groupStart = homepage.indexOf('AI 与具身智能');
     const nextGroupStart = homepage.indexOf('通用解决方案', groupStart);
-    const aiFactoryLink = homepage.indexOf(
-      'href="/guangtai-ai-factory"',
-      groupStart,
-    );
-    const embodiedLink = homepage.indexOf(
-      'href="/solutions/common/embodied-intelligence"',
-      groupStart,
+    const firstGroup = homepage.slice(groupStart, nextGroupStart);
+    const aiFactoryLink = homepage.indexOf('href="/guangtai-ai-factory"');
+    const solutionRoutes = [...firstGroup.matchAll(/href="([^"]+)"/g)].map(
+      (match) => match[1],
     );
 
     expect(groupStart).toBeGreaterThan(-1);
     expect(nextGroupStart).toBeGreaterThan(groupStart);
-    expect(aiFactoryLink).toBeGreaterThan(groupStart);
-    expect(aiFactoryLink).toBeLessThan(nextGroupStart);
-    expect(embodiedLink).toBeGreaterThan(groupStart);
-    expect(embodiedLink).toBeLessThan(nextGroupStart);
+    expect(solutionRoutes).toEqual([
+      '/solutions/common/ai',
+      '/solutions/common/embodied-intelligence',
+    ]);
+    expect(aiFactoryLink).toBeGreaterThan(-1);
+    expect(aiFactoryLink).toBeLessThan(groupStart);
   });
 
   it('renders all internal page links to known routes', async () => {
