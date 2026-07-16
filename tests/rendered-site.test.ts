@@ -100,6 +100,55 @@ describe('rendered corporate site', () => {
     );
   });
 
+  it('renders an accessible capability navigator on the about page', async () => {
+    const aboutHtml = await readFile(routeFile('/about'), 'utf8');
+
+    expect(aboutHtml).toContain('data-capability-navigator');
+    expect(aboutHtml).toContain('role="tablist"');
+    expect(aboutHtml).toContain('role="tab"');
+    expect(aboutHtml).toContain('role="tabpanel"');
+  });
+
+  it('keeps the AI factory experience control visibly unavailable', async () => {
+    const factoryHtml = await readFile(
+      routeFile('/guangtai-ai-factory'),
+      'utf8',
+    );
+
+    expect(factoryHtml).toMatch(
+      /<[^>]+aria-disabled="true"[^>]*>\s*前去体验\s*<\//,
+    );
+  });
+
+  it('renders the contact project form without an unconfigured project CTA', async () => {
+    const contactHtml = await readFile(routeFile('/contact'), 'utf8');
+
+    expect(contactHtml).toContain('data-project-contact-form');
+    expect(contactHtml).toContain('联系渠道尚未配置');
+    expect(contactHtml).not.toContain('START A PROJECT');
+  });
+
+  it('keeps AI and embodied intelligence together in the first solution menu group', async () => {
+    const homepage = await readFile(resolve('dist/index.html'), 'utf8');
+    const groupStart = homepage.indexOf('AI 与具身智能');
+    const nextGroupStart = homepage.indexOf('通用解决方案', groupStart);
+    const aiFactoryLink = homepage.indexOf(
+      'href="/guangtai-ai-factory"',
+      groupStart,
+    );
+    const embodiedLink = homepage.indexOf(
+      'href="/solutions/common/embodied-intelligence"',
+      groupStart,
+    );
+
+    expect(groupStart).toBeGreaterThan(-1);
+    expect(nextGroupStart).toBeGreaterThan(groupStart);
+    expect(aiFactoryLink).toBeGreaterThan(groupStart);
+    expect(aiFactoryLink).toBeLessThan(nextGroupStart);
+    expect(embodiedLink).toBeGreaterThan(groupStart);
+    expect(embodiedLink).toBeLessThan(nextGroupStart);
+  });
+
   it('renders all internal page links to known routes', async () => {
     const contentPages = await pages();
     const routes = new Set(['/', ...contentPages.map((page) => page.path)]);

@@ -397,6 +397,90 @@ test('visual breadcrumbs are reserved for nested pages and stay close to the Her
   await expect(breadcrumbs).not.toHaveCSS('position', 'fixed');
 });
 
+test('about capability navigator updates its panel on hover and ArrowDown', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/about/');
+
+  const navigator = page.locator('[data-capability-navigator]');
+  const tabs = navigator.getByRole('tab');
+  const panel = navigator.getByRole('tabpanel');
+  const tabCount = await tabs.count();
+  expect(tabCount).toBeGreaterThanOrEqual(2);
+  await expect(panel).toHaveCount(1);
+
+  const hoveredTab = tabs.nth(1);
+  const hoveredTabId = await hoveredTab.getAttribute('id');
+  await hoveredTab.hover();
+  await expect(hoveredTab).toHaveAttribute('aria-selected', 'true');
+  await expect(panel).toHaveAttribute('aria-labelledby', hoveredTabId ?? '');
+
+  await hoveredTab.focus();
+  await page.keyboard.press('ArrowDown');
+  const keyboardTab = tabs.nth(2 % tabCount);
+  const keyboardTabId = await keyboardTab.getAttribute('id');
+  await expect(keyboardTab).toBeFocused();
+  await expect(keyboardTab).toHaveAttribute('aria-selected', 'true');
+  await expect(panel).toHaveAttribute('aria-labelledby', keyboardTabId ?? '');
+});
+
+test('mobile capability navigator activates on click without horizontal overflow', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/about/');
+
+  const navigator = page.locator('[data-capability-navigator]');
+  const selectedTab = navigator.getByRole('tab').nth(1);
+  await selectedTab.click();
+  await expect(selectedTab).toHaveAttribute('aria-selected', 'true');
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+});
+
+test('contact project form accepts valid details and reports its unconfigured channel', async ({
+  page,
+}) => {
+  await page.goto('/contact/');
+
+  const form = page.locator('[data-project-contact-form]');
+  await expect(form).toBeVisible();
+  const requiredControls = form.locator(
+    'input[required], textarea[required], select[required]',
+  );
+  expect(await requiredControls.count()).toBeGreaterThan(0);
+
+  for (let index = 0; index < (await requiredControls.count()); index += 1) {
+    const control = requiredControls.nth(index);
+    const tagName = await control.evaluate((element) => element.tagName);
+    const type = await control.getAttribute('type');
+    if (tagName === 'SELECT') {
+      await control.selectOption({ index: 1 });
+    } else if (type === 'checkbox' || type === 'radio') {
+      await control.check();
+    } else if (type === 'email') {
+      await control.fill('contact@example.com');
+    } else if (type === 'tel') {
+      await control.fill('13800000000');
+    } else if (type === 'date') {
+      await control.fill('2026-08-01');
+    } else if (type === 'number') {
+      await control.fill('1');
+    } else if (type === 'url') {
+      await control.fill('https://example.com');
+    } else {
+      await control.fill('天津光泰项目需求');
+    }
+  }
+
+  await form.locator('button[type="submit"]').click();
+  await expect(page.getByText('联系渠道尚未配置')).toBeVisible();
+});
+
 test('unknown routes return the branded 404 response', async ({ page }) => {
   const response = await page.goto('/definitely-missing/');
   expect(response?.status()).toBe(404);
