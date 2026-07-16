@@ -114,10 +114,13 @@ describe('rendered corporate site', () => {
       routeFile('/guangtai-ai-factory'),
       'utf8',
     );
+    const experienceButton =
+      factoryHtml.match(/<button\b[^>]*>\s*前去体验\s*<\/button>/)?.[0] ?? '';
 
-    expect(factoryHtml).toMatch(
-      /<[^>]+aria-disabled="true"[^>]*>\s*前去体验\s*<\//,
-    );
+    expect(experienceButton).not.toBe('');
+    expect(experienceButton).toMatch(/\sdisabled(?:\s|=|>)/);
+    expect(experienceButton).toContain('aria-disabled="true"');
+    expect(experienceButton).not.toContain('href=');
   });
 
   it('renders the contact project form without an unconfigured project CTA', async () => {
@@ -126,6 +129,35 @@ describe('rendered corporate site', () => {
     expect(contactHtml).toContain('data-project-contact-form');
     expect(contactHtml).toContain('联系渠道尚未配置');
     expect(contactHtml).not.toContain('START A PROJECT');
+  });
+
+  it('keeps AI and embodied intelligence in the first solution menu group', async () => {
+    const homepage = await readFile(resolve('dist/index.html'), 'utf8');
+    const primaryNavigationStart = homepage.indexOf('data-primary-nav');
+    const solutionsMenuStart = homepage.indexOf(
+      'data-solutions-mega-menu',
+      primaryNavigationStart,
+    );
+    const groupStart = homepage.indexOf('AI 与具身智能', solutionsMenuStart);
+    const nextGroupStart = homepage.indexOf('通用解决方案', groupStart);
+    const firstGroup = homepage.slice(groupStart, nextGroupStart);
+    const solutionRoutes = [...firstGroup.matchAll(/href="([^"]+)"/g)].map(
+      (match) => match[1],
+    );
+    const factoryLink = homepage.indexOf(
+      'href="/guangtai-ai-factory"',
+      primaryNavigationStart,
+    );
+
+    expect(groupStart).toBeGreaterThan(solutionsMenuStart);
+    expect(nextGroupStart).toBeGreaterThan(groupStart);
+    expect(solutionRoutes).toEqual([
+      '/solutions/common/ai',
+      '/solutions/common/embodied-intelligence',
+    ]);
+    expect(firstGroup).not.toContain('href="/guangtai-ai-factory"');
+    expect(factoryLink).toBeGreaterThan(primaryNavigationStart);
+    expect(factoryLink).toBeLessThan(solutionsMenuStart);
   });
 
   it('renders all internal page links to known routes', async () => {

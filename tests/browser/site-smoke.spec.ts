@@ -405,30 +405,66 @@ test('about capability navigator updates its panel on hover and ArrowDown', asyn
 
   const navigator = page.locator('[data-capability-navigator]');
   const tabs = navigator.getByRole('tab');
-  const panel = navigator.getByRole('tabpanel');
-  const tabCount = await tabs.count();
-  expect(tabCount).toBeGreaterThanOrEqual(3);
-  await expect(panel).toHaveCount(1);
-  await expect(panel).toBeVisible();
-  const initialPanelCopy = await panel.textContent();
+  const panels = navigator.getByRole('tabpanel');
+  const visiblePanel = navigator.locator('[role="tabpanel"]:visible');
+  await expect(tabs).toHaveCount(4);
+  await expect(panels).toHaveCount(4);
+  await expect(visiblePanel).toHaveCount(1);
+  const tabAttributes = await tabs.evaluateAll((elements) =>
+    elements.map((element) => ({
+      id: element.id,
+      controls: element.getAttribute('aria-controls'),
+      text: element.textContent?.trim() ?? '',
+    })),
+  );
+  for (const [index, tab] of tabAttributes.entries()) {
+    expect(tab.text).toContain(`0${index + 1}`);
+    expect(tab.id).not.toBe('');
+    expect(tab.controls).not.toBeNull();
+    expect(tab.controls).not.toBe('');
+  }
+  expect(new Set(tabAttributes.map((tab) => tab.id)).size).toBe(4);
+  expect(new Set(tabAttributes.map((tab) => tab.controls)).size).toBe(4);
 
   const hoveredTab = tabs.nth(1);
   const hoveredTabId = await hoveredTab.getAttribute('id');
+  const hoveredTabControls = await hoveredTab.getAttribute('aria-controls');
   await hoveredTab.hover();
   await expect(hoveredTab).toHaveAttribute('aria-selected', 'true');
-  await expect(panel).toHaveAttribute('aria-labelledby', hoveredTabId ?? '');
-  await expect(panel).toContainText('软件定制、AI编程与系统集成');
-  expect(await panel.textContent()).not.toBe(initialPanelCopy);
+  await expect(visiblePanel).toHaveAttribute('id', hoveredTabControls ?? '');
+  await expect(visiblePanel).toHaveAttribute(
+    'aria-labelledby',
+    hoveredTabId ?? '',
+  );
+  await expect(visiblePanel).toContainText('软件定制、AI编程与系统集成');
+  await expect(tabs.locator('[aria-selected="true"]')).toHaveCount(1);
 
-  await hoveredTab.focus();
+  const focusedTab = tabs.nth(2);
+  const focusedTabId = await focusedTab.getAttribute('id');
+  const focusedTabControls = await focusedTab.getAttribute('aria-controls');
+  await focusedTab.focus();
+  await expect(focusedTab).toHaveAttribute('aria-selected', 'true');
+  await expect(visiblePanel).toHaveAttribute('id', focusedTabControls ?? '');
+  await expect(visiblePanel).toHaveAttribute(
+    'aria-labelledby',
+    focusedTabId ?? '',
+  );
+  await expect(visiblePanel).toContainText('音视频、安全、基础设施与空间智能');
+  await expect(tabs.locator('[aria-selected="true"]')).toHaveCount(1);
+
   await page.keyboard.press('ArrowDown');
-  const keyboardTab = tabs.nth(2 % tabCount);
+  const keyboardTab = tabs.nth(3);
   const keyboardTabId = await keyboardTab.getAttribute('id');
+  const keyboardTabControls = await keyboardTab.getAttribute('aria-controls');
   await expect(keyboardTab).toBeFocused();
   await expect(keyboardTab).toHaveAttribute('aria-selected', 'true');
-  await expect(panel).toHaveAttribute('aria-labelledby', keyboardTabId ?? '');
-  await expect(panel).toContainText('音视频、安全、基础设施与空间智能');
-  expect(await panel.textContent()).not.toContain('软件定制、AI编程与系统集成');
+  await expect(visiblePanel).toHaveAttribute('id', keyboardTabControls ?? '');
+  await expect(visiblePanel).toHaveAttribute(
+    'aria-labelledby',
+    keyboardTabId ?? '',
+  );
+  await expect(visiblePanel).toContainText('具身智能、低空巡检与数据运营');
+  await expect(tabs.locator('[aria-selected="true"]')).toHaveCount(1);
 });
 
 test('mobile capability navigator activates on click without horizontal overflow', async ({
@@ -448,43 +484,40 @@ test('mobile capability navigator activates on click without horizontal overflow
   ).toBe(true);
 });
 
-test('contact project form accepts valid details and reports its unconfigured channel', async ({
+test('AI factory experience control is disabled and does not navigate', async ({
+  page,
+}) => {
+  await page.goto('/guangtai-ai-factory/');
+
+  const experienceButton = page.getByRole('button', { name: '前去体验' });
+  await expect(experienceButton).toBeDisabled();
+  await expect(experienceButton).toHaveAttribute('aria-disabled', 'true');
+  await expect(experienceButton).not.toHaveAttribute('href');
+
+  const initialUrl = page.url();
+  await experienceButton.click({ force: true });
+  await expect(page).toHaveURL(initialUrl);
+});
+
+test('contact project form accepts labeled details and reports its unconfigured channel', async ({
   page,
 }) => {
   await page.goto('/contact/');
 
   const form = page.locator('[data-project-contact-form]');
   await expect(form).toBeVisible();
-  const requiredControls = form.locator(
-    'input[required], textarea[required], select[required]',
-  );
-  expect(await requiredControls.count()).toBeGreaterThan(0);
-
-  for (let index = 0; index < (await requiredControls.count()); index += 1) {
-    const control = requiredControls.nth(index);
-    const tagName = await control.evaluate((element) => element.tagName);
-    const type = await control.getAttribute('type');
-    if (tagName === 'SELECT') {
-      await control.selectOption({ index: 1 });
-    } else if (type === 'checkbox' || type === 'radio') {
-      await control.check();
-    } else if (type === 'email') {
-      await control.fill('contact@example.com');
-    } else if (type === 'tel') {
-      await control.fill('13800000000');
-    } else if (type === 'date') {
-      await control.fill('2026-08-01');
-    } else if (type === 'number') {
-      await control.fill('1');
-    } else if (type === 'url') {
-      await control.fill('https://example.com');
-    } else {
-      await control.fill('天津光泰项目需求');
-    }
-  }
+  await form.getByLabel('姓名').fill('李明');
+  await form.getByLabel('单位').fill('天津光泰科技集团');
+  await form.getByLabel('联系方式').fill('13800000000');
+  await form.getByLabel('项目类型').selectOption({ index: 1 });
+  await form.getByLabel('计划时间').selectOption({ index: 1 });
+  await form
+    .getByLabel('需求描述')
+    .fill('需要规划一个可验证的 AI 应用工厂项目。');
 
   await form.locator('button[type="submit"]').click();
-  await expect(page.getByRole('status')).toContainText('联系渠道尚未配置');
+  await expect(form.getByRole('status')).toContainText('联系渠道尚未配置');
+  await expect(form).not.toContainText(/提交成功|已发送/);
 });
 
 test('unknown routes return the branded 404 response', async ({ page }) => {
