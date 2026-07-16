@@ -8,10 +8,12 @@ const { pages } = Astro.props;
 const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
 const solutionGroups = [
   {
-    title: '具身智能与 AI',
-    eyebrow: 'EMBODIED AI',
+    title: 'AI 与具身智能',
+    eyebrow: 'AI & EMBODIED',
     pages: pages.filter(
-      (page) => page.path === '/solutions/common/embodied-intelligence',
+      (page) =>
+        page.path === '/solutions/common/ai' ||
+        page.path === '/solutions/common/embodied-intelligence',
     ),
   },
   {
@@ -20,6 +22,7 @@ const solutionGroups = [
     pages: pages.filter(
       (page) =>
         page.path.startsWith('/solutions/common') &&
+        page.path !== '/solutions/common/ai' &&
         page.path !== '/solutions/common/embodied-intelligence',
     ),
   },
@@ -96,7 +99,7 @@ const defaultSolution = solutionGroups.flatMap((group) => group.pages)[0];
     >
   </nav>
   <a class="header-contact" href="/contact"
-    >项目咨询 <span aria-hidden="true">↗</span></a
+    >项目联系 <span aria-hidden="true">↗</span></a
   >
   <button
     class="menu-toggle"

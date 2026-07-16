@@ -4,8 +4,10 @@ import ChapterNav from '../site/ChapterNav.astro';
 import ContactCta from '../site/ContactCta.astro';
 import type { SitePage } from '../../lib/page-schema';
 import { resolveImage } from '../../lib/images';
-import CapabilityCanvas from './CapabilityCanvas.astro';
+import CapabilityNavigator from './CapabilityNavigator.astro';
+import ContactForm from './ContactForm.astro';
 import DeliverySection from './DeliverySection.astro';
+import FactoryExperienceCta from './FactoryExperienceCta.astro';
 import InnerHero from './InnerHero.astro';
 import RelatedPages from './RelatedPages.astro';
 import ScenarioSection from './ScenarioSection.astro';
@@ -16,6 +18,9 @@ interface Props {
   related: SitePage[];
 }
 const { page, ancestors, children, related } = Astro.props;
+const isAbout = page.path === '/about';
+const isContact = page.path === '/contact';
+const isFactory = page.path === '/guangtai-ai-factory';
 ---
 
 <main
@@ -28,6 +33,8 @@ const { page, ancestors, children, related } = Astro.props;
 >
   <InnerHero page={page} ancestors={ancestors} /><ChapterNav
     showMatrix={children.length > 0}
+    showScenarios={!isAbout && !isFactory && !isContact}
+    showDelivery={isAbout || (!isFactory && !isContact)}
   />
   <section id="overview" class="inner-intro inner-section" data-reveal>
     <div class="section-kicker">
@@ -83,31 +90,19 @@ const { page, ancestors, children, related } = Astro.props;
       </section>
     )
   }
-  <section id="capabilities" class="inner-feature inner-section" data-reveal>
-    <CapabilityCanvas page={page} /><div class="feature-copy">
-      <div class="inner-heading">
-        <p>CORE CAPABILITIES</p><h2>
-          {
-            page.path === '/contact'
-              ? '让第一次沟通更聚焦'
-              : '面向落地的核心能力'
-          }
-        </h2>
-      </div><div class="inner-numbered-list">
-        {
-          page.capabilities.map((item, index) => (
-            <article>
-              <>
-                <span>{String(index + 1).padStart(2, '0')}</span>
-                <p>{item}</p>
-              </>
-            </article>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-  <ScenarioSection page={page} /><DeliverySection page={page} /><RelatedPages
-    pages={related}
-  /><ContactCta contact={page.path === '/contact'} />
+  {
+    isContact ? (
+      <ContactForm />
+    ) : (
+      <section id="capabilities" class="inner-feature inner-section">
+        <CapabilityNavigator page={page} />
+      </section>
+    )
+  }
+  {isFactory && <FactoryExperienceCta />}
+  {!isAbout && !isFactory && !isContact && <ScenarioSection page={page} />}
+  {isAbout && <DeliverySection page={page} compact />}
+  {!isAbout && !isFactory && !isContact && <DeliverySection page={page} />}
+  {!isFactory && !isContact && <RelatedPages pages={related} />}
+  {!isFactory && !isContact && <ContactCta />}
 </main>

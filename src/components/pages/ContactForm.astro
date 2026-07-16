@@ -1,0 +1,78 @@
+<section
+  id="capabilities"
+  class="contact-form-section inner-section"
+  data-reveal
+>
+  <div class="inner-heading">
+    <p>PROJECT CONTACT</p><h2>留下项目需求，我们从真实场景开始沟通</h2>
+  </div><form class="project-contact-form" data-project-contact-form>
+    <label>姓名<input name="name" required autocomplete="name" /></label>
+    <label
+      >单位<input
+        name="organization"
+        required
+        autocomplete="organization"
+      /></label
+    >
+    <label>联系方式<input name="contact" required autocomplete="tel" /></label>
+    <label
+      >项目类型<select name="projectType" required
+        ><option value="">请选择项目类型</option><option>AI应用与智能体</option
+        ><option>具身智能</option><option>系统集成</option><option
+          >其他项目</option
+        ></select
+      ></label
+    >
+    <label
+      >计划时间<select name="timeline" required
+        ><option value="">请选择计划时间</option><option>1个月内</option><option
+          >1-3个月</option
+        ><option>3-6个月</option><option>待评估</option></select
+      ></label
+    >
+    <label class="contact-form-message"
+      >需求描述<textarea name="message" required minlength="10"
+      ></textarea></label
+    >
+    <div class="contact-form-action">
+      <button type="submit"
+        >提交项目需求 <span aria-hidden="true">↗</span></button
+      ><p role="status" aria-live="polite" data-contact-status>
+        联系渠道尚未配置，提交后将提示当前状态。
+      </p>
+    </div>
+  </form>
+</section>
+
+<script>
+  /**
+   * Adds browser validation and a truthful delivery status to one project contact form.
+   * @param form The form element to initialize.
+   * @returns Nothing.
+   */
+  const initializeContactForm = (form: HTMLFormElement): void => {
+    if (form.dataset.contactFormInitialized) return;
+    form.dataset.contactFormInitialized = 'true';
+    const status = form.querySelector<HTMLElement>('[data-contact-status]');
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      if (status) {
+        status.textContent = '联系渠道尚未配置，请稍后联系。';
+        status.dataset.state = 'unconfigured';
+      }
+    });
+  };
+
+  document
+    .querySelectorAll<HTMLFormElement>('[data-project-contact-form]')
+    .forEach(initializeContactForm);
+  document.addEventListener('astro:page-load', () => {
+    document
+      .querySelectorAll<HTMLFormElement>('[data-project-contact-form]')
+      .forEach(initializeContactForm);
+  });
+</script>

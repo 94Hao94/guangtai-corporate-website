@@ -1,0 +1,141 @@
+---
+import type { SitePage } from '../../lib/page-schema';
+
+interface Props {
+  page: SitePage;
+}
+
+const { page } = Astro.props;
+const items = page.capabilities.map((title, index) => ({
+  id: `${page.id}-capability-${index + 1}`,
+  number: String(index + 1).padStart(2, '0'),
+  scenario: page.scenarios[index] ?? page.scenarios.at(-1) ?? '',
+  title,
+}));
+---
+
+<section
+  class="capability-navigator"
+  data-capability-navigator
+  data-reveal
+  aria-label={`${page.title}核心能力`}
+>
+  <div
+    class="capability-navigator-tabs"
+    role="tablist"
+    aria-orientation="vertical"
+  >
+    {
+      items.map((item, index) => (
+        <button
+          type="button"
+          id={`${item.id}-tab`}
+          role="tab"
+          aria-controls={`${item.id}-panel`}
+          aria-selected={index === 0 ? 'true' : 'false'}
+          tabindex={index === 0 ? '0' : '-1'}
+          data-capability-tab={index}
+        >
+          <>
+            <span>{item.number}</span>
+            <b>{item.title}</b>
+          </>
+        </button>
+      ))
+    }
+  </div>
+  <div class="capability-navigator-panels">
+    {
+      items.map((item, index) => (
+        <article
+          id={`${item.id}-panel`}
+          class="capability-navigator-panel"
+          role="tabpanel"
+          aria-labelledby={`${item.id}-tab`}
+          hidden={index !== 0}
+          data-capability-panel={index}
+        >
+          <>
+            <p>{item.number} / CAPABILITY</p>
+            <h2>{item.title}</h2>
+            <p>
+              在{item.scenario}
+              中，围绕真实角色、现有基础和目标结果形成可验证、可交付的实施路径。
+            </p>
+          </>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  /**
+   * Initializes one capability navigator and keeps its tab and panel state synchronized.
+   * @param navigator The rendered navigator element to initialize.
+   * @returns Nothing.
+   */
+  const initializeCapabilityNavigator = (navigator: HTMLElement): void => {
+    if (navigator.dataset.capabilityNavigatorInitialized) return;
+    navigator.dataset.capabilityNavigatorInitialized = 'true';
+
+    const tabs = Array.from(
+      navigator.querySelectorAll<HTMLButtonElement>('[data-capability-tab]'),
+    );
+    const panels = Array.from(
+      navigator.querySelectorAll<HTMLElement>('[data-capability-panel]'),
+    );
+
+    /**
+     * Activates one tab, reveals its associated panel, and optionally moves keyboard focus.
+     * @param nextIndex The zero-based tab index to activate.
+     * @param focus Whether the activated tab should receive focus.
+     * @returns Nothing.
+     */
+    const activate = (nextIndex: number, focus = false): void => {
+      const normalizedIndex = (nextIndex + tabs.length) % tabs.length;
+      tabs.forEach((tab, index) => {
+        const selected = index === normalizedIndex;
+        tab.setAttribute('aria-selected', String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+      });
+      panels.forEach((panel, index) => {
+        panel.hidden = index !== normalizedIndex;
+      });
+      if (focus) tabs[normalizedIndex]?.focus();
+    };
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => activate(index));
+      tab.addEventListener('pointerenter', () => activate(index));
+      tab.addEventListener('focus', () => activate(index));
+      tab.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
+          event.preventDefault();
+          activate(index + 1, true);
+        }
+        if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
+          event.preventDefault();
+          activate(index - 1, true);
+        }
+        if (event.key === 'Home') {
+          event.preventDefault();
+          activate(0, true);
+        }
+        if (event.key === 'End') {
+          event.preventDefault();
+          activate(tabs.length - 1, true);
+        }
+      });
+    });
+  };
+
+  document
+    .querySelectorAll<HTMLElement>('[data-capability-navigator]')
+    .forEach(initializeCapabilityNavigator);
+  document.addEventListener('astro:page-load', () => {
+    document
+      .querySelectorAll<HTMLElement>('[data-capability-navigator]')
+      .forEach(initializeCapabilityNavigator);
+  });
+</script>

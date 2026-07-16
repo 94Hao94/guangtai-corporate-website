@@ -2,8 +2,9 @@
 import type { SitePage } from '../../lib/page-schema';
 interface Props {
   page: SitePage;
+  compact?: boolean;
 }
-const { page } = Astro.props;
+const { page, compact = false } = Astro.props;
 const descriptions = [
   '明确目标、范围与成功标准。',
   '形成能够评审和验证的方案。',
@@ -12,7 +13,15 @@ const descriptions = [
 ];
 ---
 
-<section id="delivery" class="inner-delivery inner-section" data-reveal>
+<section
+  id="delivery"
+  class:list={[
+    'inner-delivery',
+    'inner-section',
+    { 'inner-delivery--compact': compact },
+  ]}
+  data-reveal
+>
   <div class="inner-heading light">
     <p>DELIVERY PATH</p><h2>
       {page.path === '/contact' ? '建议准备这些信息' : '从场景蓝图到持续运营'}

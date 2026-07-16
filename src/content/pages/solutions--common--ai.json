@@ -1,23 +1,23 @@
 {
   "path": "/solutions/common/ai",
   "template": "detail",
-  "title": "AI能力",
-  "english": "AI CAPABILITIES",
+  "title": "智能体与AI工作流",
+  "english": "AGENTS & AI WORKFLOWS",
   "category": "通用解决方案",
   "parentPath": "/solutions/common",
   "visualFamily": "common",
-  "intro": "以智能体、大模型、知识库与AI编程为每一类数智化项目建立统一智能入口。",
-  "positioning": "光泰将AI能力嵌入会议、安防、运维、软件和项目交付流程，用平台化生成、场景化适配和工程化交付解决“能演示、难使用”的问题。",
+  "intro": "以智能体、AI工作流、知识库与自动化工具，为具体业务流程建立可持续运行的智能入口。",
+  "positioning": "光泰将智能体、知识与工具嵌入会议、安防、运维、软件和项目交付流程，通过场景化适配、评估与工程化交付解决“能演示、难使用”的问题。",
   "hero": "/assets/hero-humanoid-ai-campus.png",
   "images": [
     "/assets/ai-application-factory.jpg",
     "/assets/hero-humanoid-ai-campus.png"
   ],
   "capabilities": [
-    "多模型适配与路由",
+    "智能体规划、工具调用与业务记忆",
+    "AI工作流与跨系统自动化",
     "业务知识库与RAG增强",
-    "智能体规划、工具调用与记忆",
-    "AI编程、自动化测试与私有化部署"
+    "AI编程、自动化测试与工程交付"
   ],
   "scenarios": [
     "会议转写、纪要与待办提取",
@@ -33,7 +33,7 @@
   ],
   "id": "solutions--common--ai",
   "draft": false,
-  "seoTitle": "AI能力 | 天津光泰科技集团",
-  "seoDescription": "以智能体、大模型、知识库与AI编程为每一类数智化项目建立统一智能入口。",
+  "seoTitle": "智能体与AI工作流 | 天津光泰科技集团",
+  "seoDescription": "以智能体、AI工作流、知识库与自动化工具，为具体业务流程建立可持续运行的智能入口。",
   "ogImage": "/assets/hero-humanoid-ai-campus.png"
 }

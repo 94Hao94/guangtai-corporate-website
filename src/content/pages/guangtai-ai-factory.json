@@ -8,7 +8,7 @@
   "heroPosition": "right center",
   "heroFit": "contain",
   "intro": "把模型、知识、工具、数据和业务流程编排为可运行、可评估、可迭代的行业智能体。",
-  "positioning": "平台面向项目交付，统一承接模型接入、知识增强、智能体编排、工具调用、设备联动和私有化部署，让AI从演示能力进入客户的真实流程。",
+  "positioning": "光泰AI应用工厂是项目的智能平台底座，统一承接模型、知识、工具、权限和评估，让后续的智能体与工作流能够持续运营。",
   "hero": "/assets/visual-v2/hero-platform-lab.png",
   "images": [
     "/assets/product-ai-factory-architecture.jpg",
