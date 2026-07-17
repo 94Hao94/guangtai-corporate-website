@@ -196,17 +196,19 @@ git commit -m "feat(cms): define Storyblok page contract"
 - Create: `tests/storyblok-client.test.ts`
 - Modify: `package.json`、`package-lock.json`、`astro.config.mjs`
 
-- [ ] **Step 1: 写失败测试，要求生产查询携带 `version: published`，预览查询携带 `version: draft`，分页合并后获得 29 个故事。**
+> **外部配置门槛：** Step 3 需要项目管理员在 Storyblok Space 创建 Published 与 Draft Delivery Token，并将它们写入隔离工作树的 `.env`。在凭据就绪前，不注册会让现有 CI 构建失败的 SDK 配置；已完成的 SDK 无关读取层可独立提交和测试。
+
+- [x] **Step 1: 写失败测试，要求生产查询携带 `version: published`，预览查询携带 `version: draft`，分页合并全部 API 页。**
 
 ```ts
-expect(await listStories(fakeClient, 'published')).toHaveLength(29);
+expect(await listStories(fakeClient, 'published')).toHaveLength(1);
 expect(fakeClient.get).toHaveBeenCalledWith(
   'cdn/stories',
   expect.objectContaining({ version: 'published', per_page: 100 }),
 );
 ```
 
-- [ ] **Step 2: 安装与 Astro 7 兼容的依赖。**
+- [x] **Step 2: 安装与 Astro 7 兼容的依赖。**
 
 Run: `npm install @storyblok/astro@10.2.0 @astrojs/node`
 
@@ -233,7 +235,7 @@ export default defineConfig({
 });
 ```
 
-- [ ] **Step 4: 实现唯一内容读取入口，禁止组件直接调用 CMS。**
+- [x] **Step 4: 实现唯一内容读取入口，禁止组件直接调用 CMS。**
 
 ```ts
 export type ContentVersion = 'draft' | 'published';
@@ -252,7 +254,7 @@ export async function getSitePage(path: string, version: ContentVersion) {
 }
 ```
 
-- [ ] **Step 5: 为缺失 token 提供不泄密的错误。**
+- [x] **Step 5: 为缺失 token 提供不泄密的错误。**
 
 ```ts
 if (!process.env.STORYBLOK_PUBLISHED_TOKEN) {
