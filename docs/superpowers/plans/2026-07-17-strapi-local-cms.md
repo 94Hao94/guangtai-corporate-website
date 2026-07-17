@@ -430,7 +430,7 @@ git commit -m "feat(cms): define Strapi content models"
 - Create: `tests/strapi-import.test.ts`
 - Modify: `cms/package.json`
 
-- [ ] **Step 1: Write a failing import test that loads the 29 current JSON pages and produces one deterministic Strapi payload for every route.**
+- [x] **Step 1: Write a failing import test that loads the 29 current JSON pages and produces one deterministic Strapi payload for every route.**
 
 ```ts
 expect(await exportPages()).toHaveLength(29);
@@ -438,13 +438,13 @@ expect((await exportPages()).map((page) => page.slug)).toContain('about');
 expect((await exportPages())[0].blocks).toEqual([]);
 ```
 
-- [ ] **Step 2: Run the focused test and confirm it fails because the import API does not exist.**
+- [x] **Step 2: Run the focused test and confirm it fails because the import API does not exist.**
 
 Run: `npm test -- tests/strapi-import.test.ts`
 
 Expected: FAIL because `cms/scripts/import-current-content.mjs` does not export `exportPages`.
 
-- [ ] **Step 3: Implement deterministic JSON conversion from `src/content/pages/*.json`.**
+- [x] **Step 3: Implement deterministic JSON conversion from `src/content/pages/*.json`.**
 
 ```js
 export async function exportPages() {

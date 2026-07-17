@@ -28,6 +28,12 @@
 4. 将 Token 只保存到官网项目根目录未跟踪的 `.env` 中：`STRAPI_API_TOKEN=...`。不要写入 `cms/.env`、浏览器代码、构建日志或 Git。
 5. 编辑者先保存草稿，在本地 Astro 预览确认内容后才发布。发布内容会在后续接入的静态构建流程中生效。
 
+## 一次性内容导入 Token
+
+首次迁移现有 29 个页面及媒体时，管理员在 **Settings → API Tokens** 创建本机专用的 `cms-import` Custom token，授予 Site Page、Home Page、Site Setting 与 Upload 的创建、读取、更新、发布权限。仅在 `cms/.env` 加入 `STRAPI_ADMIN_TOKEN=...`，不要把值发送到聊天或提交到 Git。
+
+导入和一致性校验完成后，立即在后台撤销 `cms-import` Token；后续 Astro 构建只使用权限更小的只读 `astro-build` Token。
+
 ## 日常操作
 
 ```sh
@@ -42,6 +48,13 @@ docker compose -f docker-compose.cms.yml down
 ```
 
 再次执行 `docker compose -f docker-compose.cms.yml up -d` 即可恢复服务。请不要为日常停止操作附加 `--volumes`，否则会删除本地 CMS 数据和已上传的媒体。
+
+## 后台语言与 Chrome 翻译
+
+- 管理后台已原生启用 `zh-Hans`，请在右上角语言菜单选择“中文（简体）”。
+- 不需要再对 `127.0.0.1:1337/admin` 使用 Chrome 网页翻译。Chrome 翻译会替换 React 管理端的文本节点，可能触发 `removeChild` / `insertBefore` DOM 异常。
+- Admin 入口已安装 React 官方建议的兼容保护；当翻译器提前移动节点时跳过非法 DOM 操作，同时保留正常 DOM 更新。
+- 官方依据：[Strapi 已确认问题 #25544](https://github.com/strapi/strapi/issues/25544)、[Strapi 的 Chrome Translator 复现记录](https://github.com/strapi/strapi/issues/25608#issuecomment-4862490668)、[React 官方问题与兼容方案](https://github.com/react/react/issues/11538#issuecomment-417504600)。
 
 ## 本地边界与验证
 

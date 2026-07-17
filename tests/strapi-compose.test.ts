@@ -11,6 +11,8 @@ describe('local Strapi Compose stack', () => {
     expect(compose).not.toMatch(/5432:5432/);
     expect(compose).toContain('strapi-postgres-data');
     expect(compose).toContain('strapi-uploads');
+    expect(compose).toContain('./src/assets/mvp:/opt/import-assets:ro');
+    expect(compose).toContain('./src/content/pages:/opt/import-pages:ro');
   });
 
   it('installs the pinned CMS dependency graph in the runtime image', async () => {
@@ -18,6 +20,9 @@ describe('local Strapi Compose stack', () => {
 
     expect(dockerfile).toContain('COPY package.json package-lock.json ./');
     expect(dockerfile).toContain('RUN npm ci --omit=dev');
+    expect(dockerfile).toContain('RUN npm run build');
+    expect(dockerfile).toContain('CMD ["npm", "run", "start"]');
+    expect(dockerfile).not.toContain('CMD ["npm", "run", "develop"]');
   });
 
   it('keeps local dependencies and secrets out of the build context', async () => {

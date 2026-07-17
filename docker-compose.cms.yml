@@ -18,10 +18,14 @@ services:
     env_file: ./cms/.env
     environment:
       DATABASE_CLIENT: postgres
+      LEGACY_PAGES_DIRECTORY: /opt/import-pages
+      LEGACY_ASSETS_DIRECTORY: /opt/import-assets
     ports:
       - '127.0.0.1:1337:1337'
     volumes:
       - strapi-uploads:/opt/app/public/uploads
+      - ./src/assets/mvp:/opt/import-assets:ro
+      - ./src/content/pages:/opt/import-pages:ro
     depends_on:
       postgres:
         condition: service_healthy
