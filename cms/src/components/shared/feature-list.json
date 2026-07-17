@@ -1,0 +1,9 @@
+{
+  "collectionName": "components_shared_feature_lists",
+  "info": { "displayName": "Feature List", "description": "功能要点列表" },
+  "attributes": {
+    "heading": { "type": "string", "required": true },
+    "copy": { "type": "text" },
+    "items": { "type": "json", "required": true }
+  }
+}

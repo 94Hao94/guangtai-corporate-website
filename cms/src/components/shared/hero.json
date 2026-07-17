@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_shared_heroes",
+  "info": { "displayName": "Hero", "description": "受控首屏内容" },
+  "attributes": {
+    "heading": { "type": "string", "required": true },
+    "copy": { "type": "text" },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"],
+      "description": "图片必须填写替代文本。"
+    },
+    "label": { "type": "string" },
+    "link": { "type": "string" }
+  }
+}

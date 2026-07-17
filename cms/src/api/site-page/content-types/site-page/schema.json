@@ -1,0 +1,67 @@
+{
+  "kind": "collectionType",
+  "collectionName": "site_pages",
+  "info": {
+    "singularName": "site-page",
+    "pluralName": "site-pages",
+    "displayName": "Site Page",
+    "description": "官网内页的受控内容模型"
+  },
+  "options": { "draftAndPublish": true },
+  "attributes": {
+    "slug": { "type": "string", "required": true, "unique": true },
+    "template": {
+      "type": "enumeration",
+      "enum": ["overview", "detail", "brand"],
+      "required": true
+    },
+    "parentPath": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "english": { "type": "string", "required": true },
+    "category": { "type": "string", "required": true },
+    "visualFamily": {
+      "type": "enumeration",
+      "enum": ["platform", "common", "higher", "k12", "brand"],
+      "required": true
+    },
+    "intro": { "type": "text", "required": true },
+    "positioning": { "type": "text", "required": true },
+    "hero": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"],
+      "description": "必须在媒体库中填写有意义的替代文本。"
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": true,
+      "allowedTypes": ["images"],
+      "description": "上传的每张图片都必须填写有意义的替代文本。"
+    },
+    "ogImage": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"],
+      "description": "必须在媒体库中填写有意义的替代文本。"
+    },
+    "capabilities": { "type": "json", "required": true },
+    "scenarios": { "type": "json", "required": true },
+    "delivery": { "type": "json", "required": true },
+    "seoTitle": { "type": "string", "required": true },
+    "seoDescription": { "type": "text", "required": true },
+    "blocks": {
+      "type": "dynamiczone",
+      "components": [
+        "shared.hero",
+        "shared.feature-list",
+        "shared.card-grid",
+        "shared.image-copy",
+        "shared.partner-marquee",
+        "shared.cta"
+      ]
+    }
+  }
+}

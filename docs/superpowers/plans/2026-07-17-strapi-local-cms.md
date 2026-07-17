@@ -316,7 +316,7 @@ git commit -m "feat(cms): add local Strapi runtime"
 - Create: `cms/src/api/site-page/content-types/site-page/lifecycles.js`
 - Create: `tests/strapi-schema.test.ts`
 
-- [ ] **Step 1: Write schema tests that inspect every required content type, component UID, Dynamic Zone allowlist, and required media alt field.**
+- [x] **Step 1: Write schema tests that inspect every required content type, component UID, Dynamic Zone allowlist, and required media alt field.**
 
 ```ts
 expect(sitePageSchema.attributes.blocks.components).toEqual([
@@ -331,13 +331,13 @@ expect(sitePageSchema.attributes.slug.unique).toBe(true);
 expect(sitePageSchema.options.draftAndPublish).toBe(true);
 ```
 
-- [ ] **Step 2: Run the focused test and confirm it fails before schemas exist.**
+- [x] **Step 2: Run the focused test and confirm it fails before schemas exist.**
 
 Run: `npm test -- tests/strapi-schema.test.ts`
 
 Expected: FAIL because the schema files do not exist.
 
-- [ ] **Step 3: Implement the Site Page collection schema.**
+- [x] **Step 3: Implement the Site Page collection schema.**
 
 ```json
 {
@@ -380,11 +380,11 @@ Expected: FAIL because the schema files do not exist.
 
 Add the remaining scalar fields listed in the design document, the two required `images`, a required `ogImage`, and the three repeatable text fields. Use Strapi field descriptions to state that every uploaded media asset requires alternative text.
 
-- [ ] **Step 4: Implement Home Page, Site Setting, and the six fixed Dynamic Zone components.**
+- [x] **Step 4: Implement Home Page, Site Setting, and the six fixed Dynamic Zone components.**
 
 Each component schema must have a required `displayName`, fixed field types, and no custom HTML field. `shared.cta` has required `heading`, `label`, and `link`; `shared.image-copy` has required `heading`, `copy`, and one image; `shared.card-grid` has an enumeration for two, three, or four columns.
 
-- [ ] **Step 5: Add lifecycle validation for whitespace-only slug, empty media alternative text, and parentPath self-reference.**
+- [x] **Step 5: Add lifecycle validation for whitespace-only slug, empty media alternative text, and parentPath self-reference.**
 
 ```js
 function assertText(value, field) {
@@ -404,17 +404,17 @@ module.exports = {
 };
 ```
 
-- [ ] **Step 6: Restrict the public role and document the editor workflow.**
+- [x] **Step 6: Restrict the public role and document the editor workflow.**
 
 In `cms/src/index.js`, do not grant public content permissions. The setup guide must instruct the administrator to create one read-only API token for Astro and editor accounts for humans. The token is saved only in the root `.env` as `STRAPI_API_TOKEN`.
 
-- [ ] **Step 7: Run schema tests and verify the Admin panel.**
+- [x] **Step 7: Run schema tests and verify the Admin panel.**
 
 Run: `npm test -- tests/strapi-schema.test.ts && docker compose -f docker-compose.cms.yml restart strapi`
 
 Expected: PASS; Admin lists Site Page, Home Page, Site Setting, and exactly six shared block types.
 
-- [ ] **Step 8: Commit content modeling.**
+- [x] **Step 8: Commit content modeling.**
 
 ```bash
 git add cms/src tests/strapi-schema.test.ts docs/cms/strapi-local-setup.md

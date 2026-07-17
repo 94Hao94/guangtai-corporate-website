@@ -1,0 +1,10 @@
+{
+  "collectionName": "components_shared_ctas",
+  "info": { "displayName": "CTA", "description": "固定行动号召" },
+  "attributes": {
+    "heading": { "type": "string", "required": true },
+    "copy": { "type": "text" },
+    "label": { "type": "string", "required": true },
+    "link": { "type": "string", "required": true }
+  }
+}

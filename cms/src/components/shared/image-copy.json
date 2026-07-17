@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_shared_image_copies",
+  "info": { "displayName": "Image Copy", "description": "图文内容区块" },
+  "attributes": {
+    "heading": { "type": "string", "required": true },
+    "copy": { "type": "text", "required": true },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"],
+      "description": "图片必须填写替代文本。"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "kind": "singleType",
+  "collectionName": "home_pages",
+  "info": {
+    "singularName": "home-page",
+    "pluralName": "home-pages",
+    "displayName": "Home Page"
+  },
+  "options": { "draftAndPublish": true },
+  "attributes": {
+    "title": { "type": "string", "required": true },
+    "seoTitle": { "type": "string", "required": true },
+    "seoDescription": { "type": "text", "required": true },
+    "ogImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"],
+      "description": "必须在媒体库中填写有意义的替代文本。"
+    },
+    "blocks": {
+      "type": "dynamiczone",
+      "components": [
+        "shared.hero",
+        "shared.feature-list",
+        "shared.card-grid",
+        "shared.image-copy",
+        "shared.partner-marquee",
+        "shared.cta"
+      ]
+    }
+  }
+}

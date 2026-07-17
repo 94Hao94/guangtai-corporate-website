@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_shared_card_grids",
+  "info": { "displayName": "Card Grid", "description": "固定列数的卡片网格" },
+  "attributes": {
+    "heading": { "type": "string", "required": true },
+    "columns": {
+      "type": "enumeration",
+      "enum": ["two", "three", "four"],
+      "required": true
+    },
+    "cards": { "type": "json", "required": true }
+  }
+}

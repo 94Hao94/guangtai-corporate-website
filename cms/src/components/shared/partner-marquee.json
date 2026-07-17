@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_shared_partner_marquees",
+  "info": { "displayName": "Partner Marquee", "description": "合作伙伴轮播" },
+  "attributes": {
+    "heading": { "type": "string", "required": true },
+    "logos": {
+      "type": "media",
+      "multiple": true,
+      "required": true,
+      "allowedTypes": ["images"],
+      "description": "每个标志都必须填写替代文本。"
+    }
+  }
+}

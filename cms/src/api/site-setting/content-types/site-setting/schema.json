@@ -1,0 +1,20 @@
+{
+  "kind": "singleType",
+  "collectionName": "site_settings",
+  "info": {
+    "singularName": "site-setting",
+    "pluralName": "site-settings",
+    "displayName": "Site Setting"
+  },
+  "options": { "draftAndPublish": true },
+  "attributes": {
+    "companyName": { "type": "string", "required": true },
+    "contact": { "type": "json", "required": true },
+    "defaultSeoTitle": { "type": "string", "required": true },
+    "defaultSeoDescription": { "type": "text", "required": true },
+    "navigation": { "type": "json", "required": true },
+    "footerGroups": { "type": "json", "required": true },
+    "publicCtaLabel": { "type": "string", "required": true },
+    "publicCtaLink": { "type": "string", "required": true }
+  }
+}

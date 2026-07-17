@@ -20,6 +20,14 @@
 
 5. 打开 [Strapi 管理后台](http://127.0.0.1:1337/admin)，按首次启动页面创建管理员账号。该账号由内容负责人保管，不写入项目文件。
 
+## 编辑者、发布与官网读取
+
+1. 管理员在 Strapi Admin 的 **Settings → Administration panel → Users** 中为内容人员创建 Editor 账号；编辑者只在后台保存草稿和发布，不共享管理员账号。
+2. 保持 **Settings → Users & Permissions plugin → Roles → Public** 的所有内容类型权限未勾选。公开角色没有读取、创建、更新或删除官网内容的权限。
+3. 在 **Settings → API Tokens** 创建名为 `astro-build` 的只读 Custom token；仅在之后的 Astro 内容读取层需要的 `Site Page`、`Home Page` 和 `Site Setting` 查询权限启用它。
+4. 将 Token 只保存到官网项目根目录未跟踪的 `.env` 中：`STRAPI_API_TOKEN=...`。不要写入 `cms/.env`、浏览器代码、构建日志或 Git。
+5. 编辑者先保存草稿，在本地 Astro 预览确认内容后才发布。发布内容会在后续接入的静态构建流程中生效。
+
 ## 日常操作
 
 ```sh
@@ -46,4 +54,4 @@ docker compose -f docker-compose.cms.yml down
   lsof -nP -iTCP:5432 -sTCP:LISTEN
   ```
 
-- 当前阶段仅搭建编辑运行环境；页面内容类型、编辑角色、内容迁移和 Astro 的只读内容读取会在后续任务完成后接入。
+- 已具备受控页面内容类型和编辑流程；现有页面迁移与 Astro 的只读内容读取会在后续任务完成后接入。
