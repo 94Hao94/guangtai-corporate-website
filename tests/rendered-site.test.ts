@@ -68,6 +68,18 @@ describe('rendered corporate site', () => {
     expect(descriptions.size).toBe(29);
   });
 
+  it('uses the supplied official logo variants in shared site chrome', async () => {
+    const homepage = await readFile(resolve('dist/index.html'), 'utf8');
+    const header = homepage.match(/<header\b[\s\S]*?<\/header>/)?.[0] ?? '';
+    const footer = homepage.match(/<footer\b[\s\S]*?<\/footer>/)?.[0] ?? '';
+    const favicon = homepage.match(/<link\b[^>]*\brel="icon"[^>]*>/)?.[0] ?? '';
+
+    expect(favicon).toContain('href="/brand/guangtai-logo-gray-square.png"');
+    expect(header).toContain('src="/brand/guangtai-logo-color.png"');
+    expect(footer).toContain('src="/brand/guangtai-logo-white-square.png"');
+    expect(homepage).not.toContain('class="brand-mark"');
+  });
+
   it('orders AI, embodied partners, and systems integration on the homepage', async () => {
     const homepage = await readFile(resolve('dist/index.html'), 'utf8');
     const aiFactory = homepage.indexOf('GUANGTAI AI FACTORY');
@@ -144,6 +156,16 @@ describe('rendered corporate site', () => {
     expect(contactHtml).toContain('data-project-contact-form');
     expect(contactHtml).toContain('联系渠道尚未配置');
     expect(contactHtml).not.toContain('START A PROJECT');
+  });
+
+  it('uses the shared project contact CTA on the homepage', async () => {
+    const homepage = await readFile(resolve('dist/index.html'), 'utf8');
+
+    expect(homepage).toContain('PROJECT CONTACT');
+    expect(homepage).toContain('从一个真实项目需求开始');
+    expect(homepage).toContain('提交项目需求');
+    expect(homepage).not.toContain('START A PROJECT');
+    expect(homepage).not.toContain('项目咨询');
   });
 
   it('keeps AI and embodied intelligence in the first solution menu group', async () => {

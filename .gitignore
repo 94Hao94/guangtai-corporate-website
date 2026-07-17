@@ -7,6 +7,7 @@ dist/
 node_modules/
 .worktrees/
 coverage/
+核心产品/
 playwright-report/
 test-results/
 

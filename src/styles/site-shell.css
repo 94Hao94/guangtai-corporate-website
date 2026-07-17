@@ -15,32 +15,19 @@
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
 }
-.brand-mark {
-  display: grid;
-  width: 2.45rem;
-  height: 2.45rem;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 3px;
-  padding: 0.45rem;
-  background: var(--blue-800);
-}
-.brand-mark i {
-  background: linear-gradient(180deg, var(--cyan), #fff);
-  transform: skewY(-25deg);
-}
-.brand b,
-.brand small {
+.brand-logo {
   display: block;
+  width: auto;
+  object-fit: contain;
 }
-.brand b {
-  font-size: 0.94rem;
+.brand-logo--header {
+  height: 2.85rem;
+  max-width: min(15.5rem, 42vw);
 }
-.brand small {
-  color: var(--muted);
-  font: 600 0.58rem var(--font-mono);
-  letter-spacing: 0.08em;
+.brand-logo--footer {
+  height: 6.25rem;
+  max-width: 100%;
 }
 .primary-nav {
   display: flex;
@@ -255,9 +242,6 @@
   color: #afc5d5;
   background: var(--blue-950);
 }
-.site-footer .brand b {
-  color: #fff;
-}
 .site-footer > p {
   max-width: 34rem;
   justify-self: end;
@@ -357,8 +341,9 @@
     min-height: 4.25rem;
     padding-inline: 1rem;
   }
-  .brand small {
-    display: none;
+  .brand-logo--header {
+    height: 2.4rem;
+    max-width: 13rem;
   }
   .primary-nav {
     top: 4.25rem;
