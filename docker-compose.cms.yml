@@ -1,0 +1,31 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    env_file: ./cms/.env
+    volumes:
+      - strapi-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB']
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
+
+  strapi:
+    build:
+      context: ./cms
+      dockerfile: Dockerfile
+    env_file: ./cms/.env
+    environment:
+      DATABASE_CLIENT: postgres
+    ports:
+      - '127.0.0.1:1337:1337'
+    volumes:
+      - strapi-uploads:/opt/app/public/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  strapi-postgres-data:
+  strapi-uploads:

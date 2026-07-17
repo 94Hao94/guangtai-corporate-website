@@ -179,7 +179,7 @@ Run: `npm test -- tests/strapi-mapper.test.ts && npm run check && npm run format
 
 Expected: PASS with zero Astro errors, warnings, and hints.
 
-- [ ] **Step 6: Commit the Strapi contract.**
+- [x] **Step 6: Commit the Strapi contract.**
 
 ```bash
 git add src/lib/strapi/types.ts src/lib/strapi/mapper.ts src/lib/page-schema.ts tests/strapi-mapper.test.ts
@@ -199,7 +199,7 @@ git commit -m "feat(cms): define Strapi page contract"
 - Create: `tests/strapi-compose.test.ts`
 - Create: `docs/cms/strapi-local-setup.md`
 
-- [ ] **Step 1: Write a failing Compose contract test.**
+- [x] **Step 1: Write a failing Compose contract test.**
 
 ```ts
 expect(compose).toContain('postgres:16-alpine');
@@ -209,19 +209,19 @@ expect(compose).toContain('strapi-postgres-data');
 expect(compose).toContain('strapi-uploads');
 ```
 
-- [ ] **Step 2: Run the test and confirm the missing Compose file failure.**
+- [x] **Step 2: Run the test and confirm the missing Compose file failure.**
 
 Run: `npm test -- tests/strapi-compose.test.ts`
 
 Expected: FAIL because `docker-compose.cms.yml` does not exist.
 
-- [ ] **Step 3: Scaffold the Strapi 5 application in `cms/` and pin its runtime dependency.**
+- [x] **Step 3: Scaffold the Strapi 5 application in `cms/` and pin its runtime dependency.**
 
 Run: `npx create-strapi-app@5.50.2 cms --skip-cloud --no-run --js --use-npm`
 
 Expected: `cms/package.json` contains `@strapi/strapi: 5.50.2`; no generated database or secret file is committed.
 
-- [ ] **Step 4: Configure Strapi to use PostgreSQL and bind locally.**
+- [x] **Step 4: Configure Strapi to use PostgreSQL and bind locally.**
 
 ```js
 module.exports = ({ env }) => ({
@@ -247,7 +247,7 @@ module.exports = ({ env }) => ({
 });
 ```
 
-- [ ] **Step 5: Create the local-only Compose stack.**
+- [x] **Step 5: Create the local-only Compose stack.**
 
 ```yaml
 services:
@@ -269,7 +269,7 @@ volumes:
   strapi-uploads:
 ```
 
-- [ ] **Step 6: Add a secret-free environment template and local setup guide.**
+- [x] **Step 6: Add a secret-free environment template and local setup guide.**
 
 ```dotenv
 HOST=0.0.0.0
@@ -291,13 +291,13 @@ POSTGRES_PASSWORD=local-strapi-password
 
 The guide must require `cp cms/.env.example cms/.env`, generating unique local secrets, `docker compose -f docker-compose.cms.yml up -d`, creating the initial administrator, and verifying `http://127.0.0.1:1337/admin`.
 
-- [ ] **Step 7: Run the Compose contract test and start the local stack.**
+- [x] **Step 7: Run the Compose contract test and start the local stack.**
 
 Run: `npm test -- tests/strapi-compose.test.ts && docker compose -f docker-compose.cms.yml up -d`
 
 Expected: PASS; PostgreSQL reports healthy; Strapi responds on `http://127.0.0.1:1337/admin`; host port 5432 is not listening.
 
-- [ ] **Step 8: Commit the local runtime.**
+- [x] **Step 8: Commit the local runtime.**
 
 ```bash
 git add cms docker-compose.cms.yml tests/strapi-compose.test.ts docs/cms/strapi-local-setup.md
