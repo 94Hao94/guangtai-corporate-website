@@ -5,8 +5,9 @@ const assetPathSchema = z
   .refine(
     (value) =>
       value.startsWith('/assets/') ||
-      value.startsWith('https://a.storyblok.com/'),
-    'Asset paths must use /assets/ or the Storyblok CDN',
+      value.startsWith('https://a.storyblok.com/') ||
+      /^https?:\/\//.test(value),
+    'Asset paths must use /assets/, the Storyblok CDN, or an HTTP(S) CMS URL',
   );
 
 export const pageSchema = z.object({
