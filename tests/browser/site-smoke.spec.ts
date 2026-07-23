@@ -197,6 +197,30 @@ test('homepage exposes a labeled eight-partner marquee', async ({ page }) => {
   );
 });
 
+test('low-capability desktop visitors keep the static Hero instead of mounting Spline', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'hardwareConcurrency', {
+      configurable: true,
+      value: 4,
+    });
+    Object.defineProperty(navigator, 'deviceMemory', {
+      configurable: true,
+      value: 4,
+    });
+  });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+
+  await expect(page.locator('[data-spline-hero]')).toHaveAttribute(
+    'data-spline-mode',
+    'static',
+  );
+  await expect(page.locator('[data-spline-hero] spline-viewer')).toHaveCount(0);
+  await expect(page.locator('.home-hero .hero-image')).toBeVisible();
+});
+
 test('homepage centers the brand message within the Hero visual field', async ({
   page,
 }) => {

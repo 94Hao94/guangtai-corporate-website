@@ -38,6 +38,8 @@ const hero = resolveImage('/assets/hero-humanoid-ai-campus.png');
   </div>
 </section>
 <script>
+  import { canAutoMountSplineHero } from '../../lib/spline-capability';
+
   declare global {
     interface Window {
       splineHeroLifecycleReady?: boolean;
@@ -45,28 +47,56 @@ const hero = resolveImage('/assets/hero-humanoid-ai-campus.png');
   }
 
   /**
-   * Mounts the Spline scene only for desktop visitors who have not reduced motion.
-   * @returns Nothing. The function leaves the static Hero background available as a fallback.
+   * Mounts the Spline scene only when the browser reports enough desktop, hardware, and network capacity.
+   * @returns Nothing. Unsupported, low-capability, or failed viewers retain the static Hero fallback.
+   * @throws Never intentionally throws; a failed dynamic import leaves the fallback in place.
    */
   const initializeSplineHero = async (): Promise<void> => {
     const host = document.querySelector<HTMLElement>('[data-spline-hero]');
     const scene = host?.dataset.splineScene;
-    const canRender3d = window.matchMedia(
-      '(min-width: 901px) and (prefers-reduced-motion: no-preference)',
-    ).matches;
-    if (!host || !scene || !canRender3d || host.childElementCount > 0) return;
+    if (!host || !scene || host.childElementCount > 0) return;
 
-    await import('@splinetool/viewer');
-    const viewer = document.createElement('spline-viewer');
-    viewer.setAttribute('url', scene);
-    viewer.setAttribute('aria-label', '可交互的机器人 3D 模型');
-    viewer.addEventListener(
-      'load',
-      () => host.closest('.home-hero')?.classList.add('has-spline'),
-      { once: true },
-    );
-    host.replaceChildren(viewer);
-    host.closest('.home-hero')?.classList.add('is-spline-mounted');
+    const navigatorWithSignals = navigator as Navigator & {
+      deviceMemory?: number;
+      connection?: { saveData?: boolean; effectiveType?: string };
+    };
+    const canRender3d = canAutoMountSplineHero({
+      viewportWidth: window.innerWidth,
+      reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)')
+        .matches,
+      hardwareConcurrency: navigator.hardwareConcurrency,
+      deviceMemory: navigatorWithSignals.deviceMemory,
+      saveData: navigatorWithSignals.connection?.saveData,
+      effectiveType: navigatorWithSignals.connection?.effectiveType,
+    });
+    host.dataset.splineMode = canRender3d ? 'interactive' : 'static';
+    if (!canRender3d) return;
+
+    try {
+      await import('@splinetool/viewer');
+      const viewer = document.createElement('spline-viewer');
+      viewer.setAttribute('url', scene);
+      viewer.setAttribute('aria-label', '可交互的机器人 3D 模型');
+      viewer.addEventListener(
+        'load',
+        () => {
+          host.closest('.home-hero')?.classList.add('has-spline');
+          host.closest('.home-hero')?.classList.add('is-spline-mounted');
+        },
+        { once: true },
+      );
+      viewer.addEventListener(
+        'error',
+        () => {
+          viewer.remove();
+          host.dataset.splineMode = 'static';
+        },
+        { once: true },
+      );
+      host.replaceChildren(viewer);
+    } catch {
+      host.dataset.splineMode = 'static';
+    }
   };
 
   if (!window.splineHeroLifecycleReady) {
