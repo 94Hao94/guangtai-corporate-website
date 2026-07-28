@@ -71,8 +71,23 @@ const defaultSolution = solutionGroups.flatMap((group) => group.pages)[0];
                 <p>
                   {String(groupIndex + 1).padStart(2, '0')} / {group.eyebrow}
                 </p>
-                <h2>{group.title}</h2>
-                <div class="mega-option-list">
+                <h2 class="mega-group-title">{group.title}</h2>
+                <button
+                  class="mega-group-trigger"
+                  type="button"
+                  aria-expanded={groupIndex === 0 ? 'true' : 'false'}
+                  aria-controls={`solution-group-${groupIndex + 1}`}
+                  data-solution-group-trigger={groupIndex}
+                >
+                  <span>{String(groupIndex + 1).padStart(2, '0')}</span>
+                  <strong>{group.title}</strong>
+                  <small>{group.pages.length} 项</small>
+                </button>
+                <div
+                  id={`solution-group-${groupIndex + 1}`}
+                  class="mega-option-list"
+                  data-solution-group-panel={groupIndex}
+                >
                   {group.pages.map((page) => (
                     <a
                       href={page.path}
@@ -100,6 +115,9 @@ const defaultSolution = solutionGroups.flatMap((group) => group.pages)[0];
     <a href="/cases">案例与客户</a><a href="/about">关于光泰</a><a
       href="/contact">联系我们</a
     >
+    <a class="mobile-nav-contact" href="/contact"
+      >提交项目需求 <span aria-hidden="true">↗</span></a
+    >
   </nav>
   <a class="header-contact" href="/contact"
     >项目联系 <span aria-hidden="true">↗</span></a
@@ -121,6 +139,14 @@ const defaultSolution = solutionGroups.flatMap((group) => group.pages)[0];
     const solutions = header.querySelector('[data-solutions-menu]');
     const solutionsTrigger = header.querySelector('[data-solutions-trigger]');
     const solutionsPanel = header.querySelector('[data-solutions-mega-menu]');
+    const solutionGroupTriggers = Array.from(
+      header.querySelectorAll<HTMLButtonElement>(
+        '[data-solution-group-trigger]',
+      ),
+    );
+    const solutionGroupPanels = Array.from(
+      header.querySelectorAll<HTMLElement>('[data-solution-group-panel]'),
+    );
     let lastFocused: HTMLElement | null = null;
     let solutionsPinned = false;
     let closeTimer: number | undefined;
@@ -135,7 +161,24 @@ const defaultSolution = solutionGroups.flatMap((group) => group.pages)[0];
       document.body.classList.toggle('menu-open', open);
       menuToggle?.setAttribute('aria-expanded', String(open));
       menuToggle?.setAttribute('aria-label', open ? '关闭导航' : '打开导航');
-      if (!open) lastFocused?.focus();
+      if (!open) {
+        closeSolutions();
+        lastFocused?.focus();
+      }
+    };
+
+    /**
+     * Expands one mobile solution family while collapsing the other three.
+     * @param nextIndex The zero-based family index to expose.
+     * @returns Nothing.
+     */
+    const setSolutionGroup = (nextIndex: number): void => {
+      solutionGroupTriggers.forEach((trigger, index) => {
+        trigger.setAttribute('aria-expanded', String(index === nextIndex));
+      });
+      solutionGroupPanels.forEach((panel, index) => {
+        panel.toggleAttribute('data-mobile-open', index === nextIndex);
+      });
     };
 
     /**
@@ -146,6 +189,14 @@ const defaultSolution = solutionGroups.flatMap((group) => group.pages)[0];
     const setSolutions = (open: boolean): void => {
       solutions?.classList.toggle('is-open', open);
       solutionsTrigger?.setAttribute('aria-expanded', String(open));
+      if (open) {
+        const currentGroupIndex = solutionGroupPanels.findIndex((panel) =>
+          Boolean(
+            panel.querySelector('[data-solution-option][aria-current="page"]'),
+          ),
+        );
+        setSolutionGroup(currentGroupIndex >= 0 ? currentGroupIndex : 0);
+      }
     };
 
     /** Cancels a pending pointer-leave close so diagonal entry can reach the panel. */
@@ -220,6 +271,10 @@ const defaultSolution = solutionGroups.flatMap((group) => group.pages)[0];
       cancelSolutionsClose();
       setSolutions(true);
     });
+    solutionGroupTriggers.forEach((trigger, index) => {
+      trigger.addEventListener('click', () => setSolutionGroup(index));
+    });
+    setSolutionGroup(0);
     solutions?.addEventListener('pointerleave', scheduleSolutionsClose);
     solutionsPanel?.addEventListener('pointerenter', cancelSolutionsClose);
     solutionsPanel?.addEventListener('pointerleave', scheduleSolutionsClose);
@@ -228,7 +283,7 @@ const defaultSolution = solutionGroups.flatMap((group) => group.pages)[0];
       .forEach((link) => {
         link.addEventListener('mouseenter', () => updatePreview(link));
         link.addEventListener('focus', () => updatePreview(link));
-        link.addEventListener('click', closeSolutions);
+        link.addEventListener('click', () => setMainMenu(false));
       });
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') {

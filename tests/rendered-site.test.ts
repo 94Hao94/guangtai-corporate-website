@@ -197,6 +197,17 @@ describe('rendered corporate site', () => {
     expect(factoryLink).toBeLessThan(solutionsMenuStart);
   });
 
+  it('renders four mobile solution family controls and a project contact action', async () => {
+    const homepage = await readFile(resolve('dist/index.html'), 'utf8');
+
+    expect(homepage.match(/data-solution-group-trigger="\d+"/g)).toHaveLength(
+      4,
+    );
+    expect(homepage.match(/data-solution-group-panel="\d+"/g)).toHaveLength(4);
+    expect(homepage).toContain('class="mobile-nav-contact"');
+    expect(homepage).toContain('>提交项目需求<');
+  });
+
   it('renders all internal page links to known routes', async () => {
     const contentPages = await pages();
     const routes = new Set(['/', ...contentPages.map((page) => page.path)]);

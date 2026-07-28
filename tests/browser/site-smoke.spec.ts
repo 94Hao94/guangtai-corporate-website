@@ -322,6 +322,16 @@ test('mobile navigation restores focus and body scrolling after Escape', async (
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
 
+  await expect
+    .poll(() =>
+      page
+        .locator('.site-header')
+        .evaluate((element) =>
+          Math.round(element.getBoundingClientRect().height),
+        ),
+    )
+    .toBe(58);
+
   const menu = page.locator('[data-menu-toggle]');
   await menu.click();
   await expect(menu).toHaveAttribute('aria-expanded', 'true');
@@ -333,6 +343,16 @@ test('mobile navigation restores focus and body scrolling after Escape', async (
   await expect(page.locator('#solutions-mega-menu a')).toHaveCount(
     expectedSolutionLinks,
   );
+  const familyButtons = page.locator('[data-solution-group-trigger]');
+  await expect(familyButtons).toHaveCount(4);
+  await expect(familyButtons.first()).toHaveAttribute('aria-expanded', 'true');
+  await familyButtons.nth(2).click();
+  await expect(familyButtons.nth(2)).toHaveAttribute('aria-expanded', 'true');
+  await expect(familyButtons.first()).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('[data-solution-group-panel]:visible')).toHaveCount(
+    1,
+  );
+  await expect(page.locator('.mobile-nav-contact')).toBeVisible();
 
   await page.keyboard.press('Escape');
   await expect(menu).toHaveAttribute('aria-expanded', 'false');
