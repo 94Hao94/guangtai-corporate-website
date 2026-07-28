@@ -557,23 +557,45 @@ test('about capability navigator updates its panel on hover and focus', async ({
   ).toHaveCount(1);
 });
 
-test('mobile capability navigator activates on click without horizontal overflow', async ({
+test('mobile inner page reaches an accessible capability accordion in the first viewport', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/about/');
 
-  const navigator = page.locator('#overview[data-capability-navigator]');
-  await navigator.scrollIntoViewIfNeeded();
-  await expect(navigator).toBeVisible();
-  const selectedTab = navigator.getByRole('tab').nth(1);
-  await selectedTab.click();
-  await expect(selectedTab).toHaveAttribute('aria-selected', 'true');
+  await expect
+    .poll(() =>
+      page
+        .locator('.inner-hero')
+        .evaluate((element) =>
+          Math.round(element.getBoundingClientRect().height),
+        ),
+    )
+    .toBe(230);
+  await expect
+    .poll(() =>
+      page
+        .locator('.chapter-nav')
+        .evaluate((element) =>
+          Math.round(element.getBoundingClientRect().height),
+        ),
+    )
+    .toBe(46);
+
+  const accordion = page.locator('[data-mobile-capability-accordion]');
+  await expect(accordion).toBeVisible();
   expect(
-    await page.evaluate(
-      () => document.documentElement.scrollWidth <= window.innerWidth,
-    ),
-  ).toBe(true);
+    await accordion.evaluate((element) => element.getBoundingClientRect().top),
+  ).toBeLessThan(844);
+
+  const triggers = accordion.locator('[data-mobile-capability-trigger]');
+  await expect(triggers).toHaveCount(4);
+  await triggers.nth(1).click();
+  await expect(triggers.nth(1)).toHaveAttribute('aria-expanded', 'true');
+  await expect(triggers.first()).toHaveAttribute('aria-expanded', 'false');
+  await expect(
+    accordion.locator('[data-mobile-capability-panel]:visible'),
+  ).toHaveCount(1);
 });
 
 test('AI factory experience control is disabled and does not navigate', async ({

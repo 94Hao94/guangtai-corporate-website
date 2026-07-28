@@ -158,6 +158,17 @@ describe('rendered corporate site', () => {
     expect(aboutHtml).toContain('role="tablist"');
     expect(aboutHtml).toContain('role="tab"');
     expect(aboutHtml).toContain('role="tabpanel"');
+    expect(aboutHtml).toContain('data-mobile-capability-accordion');
+    expect(
+      aboutHtml.match(/data-mobile-capability-trigger="\d+"/g),
+    ).toHaveLength(4);
+    expect(aboutHtml.match(/data-mobile-capability-panel="\d+"/g)).toHaveLength(
+      4,
+    );
+    expect(aboutHtml).toContain('aria-expanded="true"');
+    expect(aboutHtml).toContain(
+      'aria-controls="about-capability-1-mobile-panel"',
+    );
   });
 
   it('keeps the AI factory experience control visibly unavailable', async () => {

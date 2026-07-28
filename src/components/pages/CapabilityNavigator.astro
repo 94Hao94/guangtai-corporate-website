@@ -69,6 +69,34 @@ const items = page.capabilities.map((title, index) => ({
       ))
     }
   </div>
+  <div class="mobile-capability-accordion" data-mobile-capability-accordion>
+    {
+      items.map((item, index) => (
+        <section>
+          <button
+            type="button"
+            aria-expanded={index === 0 ? 'true' : 'false'}
+            aria-controls={`${item.id}-mobile-panel`}
+            id={`${item.id}-mobile-trigger`}
+            data-mobile-capability-trigger={index}
+          >
+            <span>{item.number}</span>
+            <strong>{item.title}</strong>
+            <i aria-hidden="true">+</i>
+          </button>
+          <div
+            id={`${item.id}-mobile-panel`}
+            aria-labelledby={`${item.id}-mobile-trigger`}
+            hidden={index !== 0}
+            data-mobile-capability-panel={index}
+          >
+            <h2>{item.headline}</h2>
+            <p>{item.copy}</p>
+          </div>
+        </section>
+      ))
+    }
+  </div>
 </section>
 
 <script>
@@ -141,12 +169,55 @@ const items = page.capabilities.map((title, index) => ({
     });
   };
 
+  /**
+   * Initializes the mobile capability accordion and keeps exactly one panel expanded.
+   * @param accordion The rendered mobile accordion element to initialize.
+   * @returns Nothing.
+   */
+  const initializeMobileAccordion = (accordion: HTMLElement): void => {
+    if (accordion.dataset.mobileAccordionInitialized) return;
+    accordion.dataset.mobileAccordionInitialized = 'true';
+
+    const triggers = Array.from(
+      accordion.querySelectorAll<HTMLButtonElement>(
+        '[data-mobile-capability-trigger]',
+      ),
+    );
+    const panels = Array.from(
+      accordion.querySelectorAll<HTMLElement>('[data-mobile-capability-panel]'),
+    );
+
+    /**
+     * Expands one capability and collapses all other mobile panels.
+     * @param nextIndex The zero-based capability index to reveal.
+     * @returns Nothing.
+     */
+    const activate = (nextIndex: number): void => {
+      triggers.forEach((trigger, index) =>
+        trigger.setAttribute('aria-expanded', String(index === nextIndex)),
+      );
+      panels.forEach((panel, index) => {
+        panel.hidden = index !== nextIndex;
+      });
+    };
+
+    triggers.forEach((trigger, index) => {
+      trigger.addEventListener('click', () => activate(index));
+    });
+  };
+
   document
     .querySelectorAll<HTMLElement>('[data-capability-navigator]')
     .forEach(initializeCapabilityNavigator);
+  document
+    .querySelectorAll<HTMLElement>('[data-mobile-capability-accordion]')
+    .forEach(initializeMobileAccordion);
   document.addEventListener('astro:page-load', () => {
     document
       .querySelectorAll<HTMLElement>('[data-capability-navigator]')
       .forEach(initializeCapabilityNavigator);
+    document
+      .querySelectorAll<HTMLElement>('[data-mobile-capability-accordion]')
+      .forEach(initializeMobileAccordion);
   });
 </script>

@@ -11,7 +11,12 @@ const { page, ancestors } = Astro.props;
 const showBreadcrumbs = ancestors.length > 0;
 ---
 
-<section class="inner-hero">
+<section
+  class:list={[
+    'inner-hero',
+    { 'inner-hero--contact': page.path === '/contact' },
+  ]}
+>
   <Image
     src={resolveImage(page.hero)}
     alt={`${page.title}场景`}
