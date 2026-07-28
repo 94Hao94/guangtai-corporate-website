@@ -8,6 +8,13 @@ export const homeAssetPaths = [
   '/assets/k12-campus.png',
 ] as const;
 
+export const mobileCapabilities = [
+  ['01', 'AI 应用工厂', '/guangtai-ai-factory'],
+  ['02', '具身智能', '/solutions/common/embodied-intelligence'],
+  ['03', '系统集成', '/solutions/common'],
+  ['04', '行业场景', '/solutions/industries'],
+] as const;
+
 export const factoryLayers = [
   ['应用层', '校园学伴、教师助手、安防研判、巡检运维、会议办公'],
   ['智能体层', '任务规划、多Agent协同、工具调用、记忆复盘、权限治理'],

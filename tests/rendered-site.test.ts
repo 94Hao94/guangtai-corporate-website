@@ -53,6 +53,18 @@ describe('rendered corporate site', () => {
     expect(homepage).toContain('aria-label="可交互的机器人 3D 模型"');
     expect(homepage).toContain('天津光泰科技集团有限公司');
     expect(homepage).toContain('href="/about">了解更多');
+    expect(homepage).toContain('hero-image hero-image--desktop');
+    expect(homepage).toContain('hero-image hero-image--mobile');
+    const mobileCapabilities =
+      homepage.match(
+        /<section[^>]+data-mobile-capabilities[\s\S]*?<\/section>/,
+      )?.[0] ?? '';
+    expect(mobileCapabilities).toContain('href="/guangtai-ai-factory"');
+    expect(mobileCapabilities).toContain(
+      'href="/solutions/common/embodied-intelligence"',
+    );
+    expect(mobileCapabilities).toContain('href="/solutions/common"');
+    expect(mobileCapabilities).toContain('href="/solutions/industries"');
     expect(homepage).not.toContain('光泰AI应用工厂<br');
 
     for (const page of contentPages) {

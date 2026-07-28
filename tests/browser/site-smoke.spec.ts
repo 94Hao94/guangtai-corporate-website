@@ -223,6 +223,42 @@ test('homepage centers the brand message within the Hero visual field', async ({
   expect((brandCenter ?? 0) / heroHeight).toBeLessThan(0.6);
 });
 
+test('mobile homepage fits the compact Hero, four capabilities, and delivery teaser in the first viewport', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+
+  const metrics = await page.evaluate(() => {
+    const header = document
+      .querySelector('.site-header')!
+      .getBoundingClientRect();
+    const hero = document.querySelector('.home-hero')!.getBoundingClientRect();
+    const capabilities = document
+      .querySelector('[data-mobile-capabilities]')!
+      .getBoundingClientRect();
+    const teaser = document
+      .querySelector('[data-mobile-delivery-teaser]')!
+      .getBoundingClientRect();
+    return {
+      header: Math.round(header.height),
+      hero: Math.round(hero.height),
+      capabilities: Math.round(capabilities.height),
+      teaser: Math.round(teaser.height),
+      teaserBottom: Math.round(teaser.bottom),
+    };
+  });
+
+  expect(metrics).toEqual({
+    header: 58,
+    hero: 220,
+    capabilities: 430,
+    teaser: 136,
+    teaserBottom: 844,
+  });
+  await expect(page.locator('[data-mobile-capabilities] a')).toHaveCount(4);
+});
+
 test('homepage chapter signposts keep business sections identifiable', async ({
   page,
 }) => {

@@ -176,6 +176,13 @@ p {
     font-size: 2.25rem;
   }
 }
+@media (max-width: 700px) {
+  .section-pad,
+  .inner-section {
+    padding-block: 48px;
+    padding-inline: 20px;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
