@@ -619,11 +619,26 @@ test('AI factory experience control is disabled and does not navigate', async ({
 test('contact project form accepts labeled details and reports its unconfigured channel', async ({
   page,
 }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/contact/');
 
   const form = page.locator('[data-project-contact-form]');
-  await form.scrollIntoViewIfNeeded();
   await expect(form).toBeVisible();
+  expect(
+    await form.evaluate((element) => element.getBoundingClientRect().top),
+  ).toBeLessThan(844);
+  expect(
+    await form
+      .getByLabel('姓名')
+      .evaluate((element) => element.getBoundingClientRect().top),
+  ).toBeLessThan(844);
+
+  await form.locator('button[type="submit"]').click();
+  await expect(form.locator('[data-field-error]').first()).toContainText(
+    '请输入姓名',
+  );
+  await expect(form.getByLabel('姓名')).toHaveAttribute('aria-invalid', 'true');
+
   await form.getByLabel('姓名').fill('李明');
   await form.getByLabel('单位').fill('天津光泰科技集团');
   await form.getByLabel('联系方式').fill('13800000000');
@@ -636,6 +651,28 @@ test('contact project form accepts labeled details and reports its unconfigured 
   await form.locator('button[type="submit"]').click();
   await expect(form.getByRole('status')).toContainText('联系渠道尚未配置');
   await expect(form).not.toContainText(/提交成功|已发送/);
+});
+
+test('mobile footer exposes three collapsed groups and visible project contact', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+
+  const footer = page.locator('.site-footer');
+  const groups = footer.locator('details.footer-group');
+  await expect(groups).toHaveCount(3);
+  await expect(groups.first()).not.toHaveAttribute('open', '');
+  await groups.first().locator('summary').click();
+  await expect(groups.first()).toHaveAttribute('open', '');
+  await expect(footer.locator('[data-footer-contact]')).toBeVisible();
+  await expect(footer.locator('small')).toContainText('天津光泰科技集团');
+
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await expect(groups).toHaveCount(3);
+  for (const group of await groups.all()) {
+    await expect(group).toHaveAttribute('open', '');
+  }
 });
 
 test('unknown routes return the branded 404 response', async ({ page }) => {

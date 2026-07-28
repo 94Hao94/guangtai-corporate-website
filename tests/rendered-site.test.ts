@@ -187,10 +187,16 @@ describe('rendered corporate site', () => {
 
   it('renders the contact project form without an unconfigured project CTA', async () => {
     const contactHtml = await readFile(routeFile('/contact'), 'utf8');
+    const homepage = await readFile(resolve('dist/index.html'), 'utf8');
 
     expect(contactHtml).toContain('data-project-contact-form');
+    expect(contactHtml).toContain('data-field-error');
+    expect(contactHtml).toContain('novalidate');
     expect(contactHtml).toContain('联系渠道尚未配置');
     expect(contactHtml).not.toContain('START A PROJECT');
+    expect(homepage.match(/class="footer-group"/g)).toHaveLength(3);
+    expect(homepage).toContain('data-footer-contact');
+    expect(homepage).not.toMatch(/ICP备案|法律声明/);
   });
 
   it('uses the shared project contact CTA on the homepage', async () => {

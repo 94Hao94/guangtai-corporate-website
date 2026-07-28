@@ -1,22 +1,94 @@
+---
+const footerGroups = [
+  {
+    title: '核心业务',
+    links: [
+      ['AI应用工厂', '/guangtai-ai-factory'],
+      ['案例与客户', '/cases'],
+    ],
+  },
+  {
+    title: '解决方案',
+    links: [
+      ['通用解决方案', '/solutions/common'],
+      ['行业解决方案', '/solutions/industries'],
+    ],
+  },
+  {
+    title: '了解光泰',
+    links: [
+      ['关于光泰', '/about'],
+      ['联系我们', '/contact'],
+    ],
+  },
+] as const;
+---
+
 <footer class="site-footer">
-  <div class="brand">
-    <img
-      class="brand-logo brand-logo--footer"
-      src="/brand/guangtai-logo-white-square.png"
-      alt="天津光泰科技集团"
-    />
+  <div class="footer-brand">
+    <div class="brand">
+      <img
+        class="brand-logo brand-logo--footer"
+        src="/brand/guangtai-logo-white-square.png"
+        alt="天津光泰科技集团"
+      />
+    </div>
+    <p>
+      以AI应用工厂连接模型、知识、业务系统、真实空间与具身设备，形成可建设、可交付、可持续运营的数智化能力。
+    </p>
   </div>
-  <p>
-    以AI应用工厂连接模型、知识、业务系统、真实空间与具身设备，形成可建设、可交付、可持续运营的数智化能力。
-  </p>
-  <nav class="footer-links" aria-label="页脚导航">
-    <a href="/guangtai-ai-factory">AI应用工厂</a><a href="/solutions/common"
-      >通用解决方案</a
-    ><a href="/solutions/industries">行业解决方案</a><a href="/cases"
-      >案例与客户</a
-    ><a href="/about">关于光泰</a><a href="/contact">联系我们</a>
-  </nav>
+  <div class="footer-groups">
+    {
+      footerGroups.map((group) => (
+        <details class="footer-group" open>
+          <summary>{group.title}</summary>
+          <nav aria-label={`${group.title}链接`}>
+            {group.links.map(([title, href]) => (
+              <a href={href}>{title}</a>
+            ))}
+          </nav>
+        </details>
+      ))
+    }
+  </div>
+  <a class="footer-contact" href="/contact" data-footer-contact>
+    提交项目需求 <span aria-hidden="true">↗</span>
+  </a>
   <small
     >© {new Date().getUTCFullYear()} 天津光泰科技集团。官网内容以正式发布为准。</small
   >
 </footer>
+
+<script>
+  declare global {
+    interface Window {
+      footerGroupsLifecycleReady?: boolean;
+    }
+  }
+
+  const footerQuery = window.matchMedia('(max-width: 700px)');
+
+  /**
+   * Synchronizes the native footer details state with the active responsive mode.
+   * @param mobile Whether the footer is currently using its mobile layout.
+   * @returns Nothing.
+   */
+  const syncFooterGroups = (mobile: boolean): void => {
+    document
+      .querySelectorAll<HTMLDetailsElement>('.footer-group')
+      .forEach((group) => {
+        group.open = !mobile;
+      });
+  };
+
+  syncFooterGroups(footerQuery.matches);
+  if (!window.footerGroupsLifecycleReady) {
+    window.footerGroupsLifecycleReady = true;
+    footerQuery.addEventListener('change', (event) =>
+      syncFooterGroups(event.matches),
+    );
+    document.addEventListener('astro:page-load', () =>
+      syncFooterGroups(footerQuery.matches),
+    );
+  }
+</script>

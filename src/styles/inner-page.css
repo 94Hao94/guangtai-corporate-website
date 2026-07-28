@@ -351,6 +351,7 @@
   max-width: 62rem;
 }
 .project-contact-form label {
+  min-width: 0;
   display: grid;
   gap: 0.55rem;
   color: var(--text);
@@ -371,6 +372,16 @@
 .project-contact-form textarea {
   min-height: 10rem;
   resize: vertical;
+}
+.project-contact-form [data-field-error] {
+  min-height: 1.25em;
+  color: #b42318;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.project-contact-form [aria-invalid='true'] {
+  border-color: #b42318;
 }
 .contact-form-message,
 .contact-form-action {
@@ -804,16 +815,69 @@
   .factory-experience button {
     width: fit-content;
   }
-  .project-contact-form {
-    grid-template-columns: 1fr;
+  .contact-intro {
+    padding: 28px 20px 20px;
   }
+  .contact-intro .section-kicker p {
+    display: none;
+  }
+  .contact-intro .inner-intro-copy {
+    display: block;
+    margin-top: 1rem;
+  }
+  .contact-intro .inner-intro-copy h2 {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    font-size: 25px;
+    line-height: 1.28;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  .contact-intro .inner-intro-copy p {
+    margin: 0.75rem 0 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .contact-form-section {
+    padding-top: 32px;
+  }
+  .contact-form-section .inner-heading {
+    margin-bottom: 1.5rem;
+  }
+  .contact-form-section .inner-heading h2 {
+    font-size: 25px;
+  }
+  .project-contact-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+  .contact-form-contact,
   .contact-form-message,
   .contact-form-action {
-    grid-column: auto;
+    grid-column: 1 / -1;
+  }
+  .project-contact-form label {
+    gap: 0.4rem;
+    font-size: 0.78rem;
+  }
+  .project-contact-form input,
+  .project-contact-form select,
+  .project-contact-form textarea {
+    min-height: 44px;
+    padding: 0.65rem;
+    font-size: 0.86rem;
+  }
+  .project-contact-form textarea {
+    min-height: 7.5rem;
   }
   .contact-form-action {
     align-items: flex-start;
     flex-direction: column;
+  }
+  .contact-form-action button {
+    width: 100%;
+    min-height: 48px;
   }
   .canvas-core {
     width: 9rem;
