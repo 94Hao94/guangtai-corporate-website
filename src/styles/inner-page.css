@@ -739,10 +739,17 @@
     bottom: 4rem;
   }
   .inner-cta {
+    min-height: 220px;
     grid-template-columns: 1fr;
-    padding: 4.5rem 1.125rem;
+    gap: 1.5rem;
+    padding: 36px 20px;
+  }
+  .inner-cta h2 {
+    font-size: 29px;
   }
   .inner-cta a {
+    width: 100%;
+    min-height: 48px;
     justify-self: start;
   }
 }

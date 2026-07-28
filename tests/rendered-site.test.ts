@@ -108,6 +108,18 @@ describe('rendered corporate site', () => {
     expect(homepage).toContain('href="/solutions/industries"');
   });
 
+  it('renders the compact mobile delivery, scenario, project, and partner flow from real data', async () => {
+    const homepage = await readFile(resolve('dist/index.html'), 'utf8');
+
+    expect(homepage).toContain('id="mobile-delivery"');
+    expect(homepage).toContain('data-mobile-scenario');
+    expect(homepage).toContain('data-mobile-projects');
+    expect(homepage).toContain('data-mobile-partners');
+    expect(homepage).toContain('需求与场景定义');
+    expect(homepage).toContain('平台与系统建设');
+    expect(homepage).toContain('运营与持续优化');
+  });
+
   it('renders chapter signposts for the homepage business narrative', async () => {
     const homepage = await readFile(resolve('dist/index.html'), 'utf8');
 

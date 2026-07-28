@@ -5,6 +5,9 @@ import EmbodiedSection from '../components/home/EmbodiedSection.astro';
 import FactorySection from '../components/home/FactorySection.astro';
 import HomeHero from '../components/home/HomeHero.astro';
 import MobileCapabilityOverview from '../components/home/MobileCapabilityOverview.astro';
+import MobileDeliverySection from '../components/home/MobileDeliverySection.astro';
+import MobileProjectSection from '../components/home/MobileProjectSection.astro';
+import MobileScenarioSection from '../components/home/MobileScenarioSection.astro';
 import ProjectCta from '../components/home/ProjectCta.astro';
 import PartnerMarquee from '../components/home/PartnerMarquee.astro';
 import SolutionSplit from '../components/home/SolutionSplit.astro';
@@ -19,8 +22,9 @@ import { resolveImage } from '../lib/images';
   ogImage={resolveImage('/assets/hero-humanoid-ai-campus.png').src}
 >
   <main>
-    <HomeHero /><MobileCapabilityOverview /><FactorySection /><EmbodiedSection
-    /><PartnerMarquee /><SolutionSplit /><EducationSection /><TechnologySection
-    /><CaseSection /><ProjectCta />
+    <HomeHero /><MobileCapabilityOverview /><MobileDeliverySection
+    /><MobileScenarioSection /><MobileProjectSection /><FactorySection
+    /><EmbodiedSection /><PartnerMarquee /><SolutionSplit /><EducationSection
+    /><TechnologySection /><CaseSection /><ProjectCta />
   </main>
 </BaseLayout>

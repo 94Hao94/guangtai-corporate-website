@@ -259,6 +259,28 @@ test('mobile homepage fits the compact Hero, four capabilities, and delivery tea
   await expect(page.locator('[data-mobile-capabilities] a')).toHaveCount(4);
 });
 
+test('mobile homepage uses the approved delivery-to-partner sequence', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+
+  const order = await page
+    .locator('main > :visible')
+    .evaluateAll((elements) =>
+      elements.map((element) => element.id || [...element.classList].join('.')),
+    );
+  expect(order.join('|')).toMatch(
+    /home.*mobile-home-intro.*mobile-delivery.*mobile-scenario.*mobile-projects.*inner-cta/,
+  );
+  await expect(page.locator('[data-mobile-partners] a')).toHaveCount(8);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+});
+
 test('homepage chapter signposts keep business sections identifiable', async ({
   page,
 }) => {

@@ -15,6 +15,31 @@ export const mobileCapabilities = [
   ['04', '行业场景', '/solutions/industries'],
 ] as const;
 
+export const mobileDeliverySteps = [
+  ['需求与场景定义', '明确目标、使用角色、既有系统与验收边界。'],
+  ['平台与系统建设', '组合 AI、软件、设备与空间能力，完成实施联调。'],
+  ['运营与持续优化', '以真实使用反馈持续评估、迭代和优化。'],
+] as const;
+
+export const mobileScenarioLinks = [
+  ['AI 与具身智能', '/solutions/common/ai'],
+  ['通用方案', '/solutions/common'],
+  ['高校场景', '/solutions/industries/higher-education'],
+  ['中小学场景', '/solutions/industries/k12'],
+] as const;
+
+export const projectTypes = [
+  ['校园AI智能体', '知识库、教师助手、学习服务与管理流程智能体。'],
+  [
+    '具身智能实训与巡检',
+    '人形、四足与轮式设备的任务编排、数据回传和运行管理。',
+  ],
+  [
+    '智能空间与系统集成',
+    '会议、报告、展示、安防、机房与业务系统的一体化建设。',
+  ],
+] as const;
+
 export const factoryLayers = [
   ['应用层', '校园学伴、教师助手、安防研判、巡检运维、会议办公'],
   ['智能体层', '任务规划、多Agent协同、工具调用、记忆复盘、权限治理'],

@@ -1,17 +1,6 @@
 ---
+import { projectTypes } from '../../data/home';
 import HomeChapter from './HomeChapter.astro';
-
-const cases = [
-  ['校园AI智能体', '知识库、教师助手、学习服务与管理流程智能体。'],
-  [
-    '具身智能实训与巡检',
-    '人形、四足与轮式设备的任务编排、数据回传和运行管理。',
-  ],
-  [
-    '智能空间与系统集成',
-    '会议、报告、展示、安防、机房与业务系统的一体化建设。',
-  ],
-];
 ---
 
 <section class="cases section-pad">
@@ -22,7 +11,7 @@ const cases = [
     </p>
   </div><div class="case-row">
     {
-      cases.map(([title, text], index) => (
+      projectTypes.map(([title, text], index) => (
         <article data-reveal>
           <>
             <span>PROJECT TYPE / 0{index + 1}</span>

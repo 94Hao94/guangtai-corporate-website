@@ -1,0 +1,42 @@
+---
+import { Image } from 'astro:assets';
+import { mobileScenarioLinks } from '../../data/home';
+import { resolveImage } from '../../lib/images';
+
+const scenarioImage = resolveImage('/assets/embodied-intelligence.png');
+---
+
+<section
+  class="mobile-scenario"
+  data-mobile-scenario
+  aria-labelledby="mobile-scenario-title"
+>
+  <p class="mobile-section-kicker">FOCUS SCENARIO</p>
+  <h2 id="mobile-scenario-title">让智能进入真实空间</h2>
+  <a
+    class="mobile-scenario-feature"
+    href="/solutions/common/embodied-intelligence"
+  >
+    <Image
+      src={scenarioImage}
+      alt="人形、四足和轮式机器人具身智能场景"
+      widths={[520, 780]}
+      sizes="100vw"
+      loading="lazy"
+    />
+    <span>具身智能</span>
+    <strong>连接感知、决策、执行与现场反馈</strong>
+    <i aria-hidden="true">↗</i>
+  </a>
+  <nav aria-label="业务场景家族">
+    {
+      mobileScenarioLinks.map(([title, href], index) => (
+        <a href={href}>
+          <span>0{index + 1}</span>
+          <strong>{title}</strong>
+          <i aria-hidden="true">↗</i>
+        </a>
+      ))
+    }
+  </nav>
+</section>
