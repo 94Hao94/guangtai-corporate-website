@@ -822,3 +822,14 @@
     transform: scale(1.45);
   }
 }
+@media (max-width: 340px) {
+  .mobile-partner-track {
+    grid-auto-columns: 120px;
+  }
+  .mobile-partner-track a {
+    width: 120px;
+  }
+  .mobile-partner-track img {
+    max-width: 94px;
+  }
+}
