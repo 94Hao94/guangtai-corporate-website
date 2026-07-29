@@ -13,33 +13,39 @@ export function initSiteMotion(): void {
   const reduceMotion = window.matchMedia(
     '(prefers-reduced-motion: reduce)',
   ).matches;
-  const reveals = Array.from(
+  const compactMotion = window.matchMedia('(max-width: 700px)').matches;
+  const allReveals = Array.from(
     document.querySelectorAll<HTMLElement>('[data-reveal]'),
   );
   if (reduceMotion) {
-    reveals.forEach((element) => element.classList.add('is-visible'));
+    allReveals.forEach((element) => element.classList.add('is-visible'));
     cleanup = undefined;
     return;
   }
+  const reveals = allReveals.filter((element) => element.offsetParent !== null);
   gsap.registerPlugin(ScrollTrigger);
   const context = gsap.context(() => {
     reveals.forEach((element, index) =>
       gsap.fromTo(
         element,
-        { autoAlpha: 0, y: 28 },
+        { autoAlpha: 0, y: compactMotion ? 12 : 28 },
         {
           autoAlpha: 1,
           y: 0,
-          duration: 0.65,
+          duration: compactMotion ? 0.35 : 0.65,
           delay: Math.min(index * 0.04, 0.2),
           ease: 'power2.out',
-          scrollTrigger: { trigger: element, start: 'top 88%', once: true },
+          scrollTrigger: {
+            trigger: element,
+            start: compactMotion ? 'top 94%' : 'top 88%',
+            once: true,
+          },
         },
       ),
     );
     const track = document.querySelector<HTMLElement>('[data-partner-track]');
     const viewport = track?.parentElement;
-    if (track && viewport) {
+    if (track && viewport && track.offsetParent !== null) {
       const tween = gsap.to(track, {
         xPercent: -50,
         duration: 32,

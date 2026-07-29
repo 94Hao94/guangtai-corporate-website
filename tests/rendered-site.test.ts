@@ -58,6 +58,18 @@ describe('rendered corporate site', () => {
     expect(homepage).toContain('aria-label="可交互的机器人 3D 模型"');
     expect(homepage).toContain('天津光泰科技集团有限公司');
     expect(homepage).toContain('href="/about">了解更多');
+    expect(homepage).toContain('hero-image hero-image--desktop');
+    expect(homepage).toContain('hero-image hero-image--mobile');
+    const mobileCapabilities =
+      homepage.match(
+        /<section[^>]+data-mobile-capabilities[\s\S]*?<\/section>/,
+      )?.[0] ?? '';
+    expect(mobileCapabilities).toContain('href="/guangtai-ai-factory"');
+    expect(mobileCapabilities).toContain(
+      'href="/solutions/common/embodied-intelligence"',
+    );
+    expect(mobileCapabilities).toContain('href="/solutions/common"');
+    expect(mobileCapabilities).toContain('href="/solutions/industries"');
     expect(homepage).not.toContain('光泰AI应用工厂<br');
 
     for (const page of contentPages) {
@@ -85,6 +97,22 @@ describe('rendered corporate site', () => {
     expect(homepage).not.toContain('class="brand-mark"');
   });
 
+  it('renders the required regulatory filing links in the shared footer', async () => {
+    const homepage = await readFile(resolve('dist/index.html'), 'utf8');
+    const footer = homepage.match(/<footer\b[\s\S]*?<\/footer>/)?.[0] ?? '';
+    const icpIndex = footer.indexOf('津ICP备2026009921号');
+    const publicSecurityIndex = footer.indexOf('津公网安备 12011102001938号');
+
+    expect(footer).toContain('class="footer-legal"');
+    expect(footer).toContain('天津光泰光电科技（集团）有限公司 版权所有');
+    expect(footer).not.toContain('官网内容以正式发布为准');
+    expect(publicSecurityIndex).toBeGreaterThan(icpIndex);
+    expect(footer).toContain(
+      'href="https://beian.mps.gov.cn/#/query/webSearch?code=12011102001938"',
+    );
+    expect(footer).toContain('href="https://beian.miit.gov.cn/"');
+  });
+
   it('orders AI, embodied partners, and systems integration on the homepage', async () => {
     const homepage = await readFile(resolve('dist/index.html'), 'utf8');
     const aiFactory = homepage.indexOf('GUANGTAI AI FACTORY');
@@ -99,6 +127,18 @@ describe('rendered corporate site', () => {
     expect(homepage).toContain('系统集成与工程交付');
     expect(homepage).toContain('href="/solutions/common"');
     expect(homepage).toContain('href="/solutions/industries"');
+  });
+
+  it('renders the compact mobile delivery, scenario, project, and partner flow from real data', async () => {
+    const homepage = await readFile(resolve('dist/index.html'), 'utf8');
+
+    expect(homepage).toContain('id="mobile-delivery"');
+    expect(homepage).toContain('data-mobile-scenario');
+    expect(homepage).toContain('data-mobile-projects');
+    expect(homepage).toContain('data-mobile-partners');
+    expect(homepage).toContain('需求与场景定义');
+    expect(homepage).toContain('平台与系统建设');
+    expect(homepage).toContain('运营与持续优化');
   });
 
   it('renders chapter signposts for the homepage business narrative', async () => {
@@ -139,6 +179,17 @@ describe('rendered corporate site', () => {
     expect(aboutHtml).toContain('role="tablist"');
     expect(aboutHtml).toContain('role="tab"');
     expect(aboutHtml).toContain('role="tabpanel"');
+    expect(aboutHtml).toContain('data-mobile-capability-accordion');
+    expect(
+      aboutHtml.match(/data-mobile-capability-trigger="\d+"/g),
+    ).toHaveLength(4);
+    expect(aboutHtml.match(/data-mobile-capability-panel="\d+"/g)).toHaveLength(
+      4,
+    );
+    expect(aboutHtml).toContain('aria-expanded="true"');
+    expect(aboutHtml).toContain(
+      'aria-controls="about-capability-1-mobile-panel"',
+    );
   });
 
   it('keeps the AI factory experience control visibly unavailable', async () => {
@@ -157,10 +208,16 @@ describe('rendered corporate site', () => {
 
   it('renders the contact project form without an unconfigured project CTA', async () => {
     const contactHtml = await readFile(routeFile('/contact'), 'utf8');
+    const homepage = await readFile(resolve('dist/index.html'), 'utf8');
 
     expect(contactHtml).toContain('data-project-contact-form');
+    expect(contactHtml).toContain('data-field-error');
+    expect(contactHtml).toContain('novalidate');
     expect(contactHtml).toContain('联系渠道尚未配置');
     expect(contactHtml).not.toContain('START A PROJECT');
+    expect(homepage.match(/class="footer-group"/g)).toHaveLength(3);
+    expect(homepage).toContain('data-footer-contact');
+    expect(homepage).not.toContain('法律声明');
   });
 
   it('uses the shared project contact CTA on the homepage', async () => {
@@ -200,6 +257,17 @@ describe('rendered corporate site', () => {
     expect(firstGroup).not.toContain('href="/guangtai-ai-factory"');
     expect(factoryLink).toBeGreaterThan(primaryNavigationStart);
     expect(factoryLink).toBeLessThan(solutionsMenuStart);
+  });
+
+  it('renders four mobile solution family controls and a project contact action', async () => {
+    const homepage = await readFile(resolve('dist/index.html'), 'utf8');
+
+    expect(homepage.match(/data-solution-group-trigger="\d+"/g)).toHaveLength(
+      4,
+    );
+    expect(homepage.match(/data-solution-group-panel="\d+"/g)).toHaveLength(4);
+    expect(homepage).toContain('class="mobile-nav-contact"');
+    expect(homepage).toContain('>提交项目需求<');
   });
 
   it('renders all internal page links to known routes', async () => {

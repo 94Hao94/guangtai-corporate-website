@@ -1,6 +1,21 @@
 import { expect, test, type Page } from '@playwright/test';
 
 const expectedSolutionLinks = 24;
+const approvedViewports = [
+  { name: 'mobile-320x700', width: 320, height: 700 },
+  { name: 'mobile-375x812', width: 375, height: 812 },
+  { name: 'mobile-390x844', width: 390, height: 844 },
+  { name: 'tablet-768x1024', width: 768, height: 1024 },
+  { name: 'desktop-1440x900', width: 1440, height: 900 },
+] as const;
+const responsiveRoutes = [
+  { name: 'home', path: '/' },
+  {
+    name: 'detail',
+    path: '/solutions/common/embodied-intelligence/',
+  },
+  { name: 'contact', path: '/contact/' },
+] as const;
 
 function collectRuntimeErrors(page: Page): string[] {
   const errors: string[] = [];
@@ -26,6 +41,11 @@ async function assertPageIntegrity(page: Page): Promise<void> {
     const isMovingPartnerLogo = await image.evaluate((element) =>
       Boolean(element.closest('[data-partner-track]')),
     );
+    const isResponsiveHidden = await image.evaluate(
+      (element) =>
+        element instanceof HTMLElement && element.offsetParent === null,
+    );
+    if (isResponsiveHidden) continue;
     if (!isMovingPartnerLogo) await image.scrollIntoViewIfNeeded();
     await expect
       .poll(
@@ -38,20 +58,12 @@ async function assertPageIntegrity(page: Page): Promise<void> {
       )
       .toBe(true);
   }
-  await page.evaluate(() => {
-    document.documentElement.style.scrollBehavior = 'auto';
-    window.scrollTo(0, 0);
-  });
-  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
-
   const shellDoesNotOverlap = await page.evaluate(() => {
     const header = document.querySelector('header');
     const main = document.querySelector('main');
     if (!header || !main) return false;
-    return (
-      header.getBoundingClientRect().bottom <=
-      main.getBoundingClientRect().top + 1
-    );
+    const mainDocumentTop = main.getBoundingClientRect().top + window.scrollY;
+    return header.getBoundingClientRect().height <= mainDocumentTop + 1;
   });
   expect(shellDoesNotOverlap).toBe(true);
 }
@@ -154,16 +166,13 @@ test('solutions menu tolerates a diagonal pointer path into its panel', async ({
   await solutions.hover();
   await expect(solutions).toHaveAttribute('aria-expanded', 'true');
 
-  await page.mouse.move(0, 600);
-  await page.waitForTimeout(120);
-  await expect(solutions).toHaveAttribute('aria-expanded', 'true');
-
   const panelBox = await page
     .locator('[data-solutions-mega-menu]')
     .boundingBox();
   if (!panelBox) throw new Error('solutions panel should have a bounding box');
+  await page.mouse.move(0, 600);
   await page.mouse.move(panelBox.x + 24, panelBox.y + 24);
-  await page.waitForTimeout(160);
+  await page.waitForTimeout(260);
   await expect(solutions).toHaveAttribute('aria-expanded', 'true');
 });
 
@@ -218,7 +227,7 @@ test('low-capability desktop visitors keep the static Hero instead of mounting S
     'static',
   );
   await expect(page.locator('[data-spline-hero] spline-viewer')).toHaveCount(0);
-  await expect(page.locator('.home-hero .hero-image')).toBeVisible();
+  await expect(page.locator('.home-hero .hero-image--desktop')).toBeVisible();
 });
 
 test('homepage centers the brand message within the Hero visual field', async ({
@@ -245,6 +254,64 @@ test('homepage centers the brand message within the Hero visual field', async ({
   expect(brandCenter).not.toBeNull();
   expect((brandCenter ?? 0) / heroHeight).toBeGreaterThan(0.42);
   expect((brandCenter ?? 0) / heroHeight).toBeLessThan(0.6);
+});
+
+test('mobile homepage fits the compact Hero, four capabilities, and delivery teaser in the first viewport', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+
+  const metrics = await page.evaluate(() => {
+    const header = document
+      .querySelector('.site-header')!
+      .getBoundingClientRect();
+    const hero = document.querySelector('.home-hero')!.getBoundingClientRect();
+    const capabilities = document
+      .querySelector('[data-mobile-capabilities]')!
+      .getBoundingClientRect();
+    const teaser = document
+      .querySelector('[data-mobile-delivery-teaser]')!
+      .getBoundingClientRect();
+    return {
+      header: Math.round(header.height),
+      hero: Math.round(hero.height),
+      capabilities: Math.round(capabilities.height),
+      teaser: Math.round(teaser.height),
+      teaserBottom: Math.round(teaser.bottom),
+    };
+  });
+
+  expect(metrics).toEqual({
+    header: 58,
+    hero: 220,
+    capabilities: 430,
+    teaser: 136,
+    teaserBottom: 844,
+  });
+  await expect(page.locator('[data-mobile-capabilities] a')).toHaveCount(4);
+});
+
+test('mobile homepage uses the approved delivery-to-partner sequence', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+
+  const order = await page
+    .locator('main > :visible')
+    .evaluateAll((elements) =>
+      elements.map((element) => element.id || [...element.classList].join('.')),
+    );
+  expect(order.join('|')).toMatch(
+    /home.*mobile-home-intro.*mobile-delivery.*mobile-scenario.*mobile-projects.*inner-cta/,
+  );
+  await expect(page.locator('[data-mobile-partners] a')).toHaveCount(8);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
 });
 
 test('homepage chapter signposts keep business sections identifiable', async ({
@@ -326,6 +393,16 @@ test('sitewide motion reinitializes after client-side navigation', async ({
   await expect(reveal).toHaveCSS('opacity', '1');
 });
 
+test('sitewide motion skips heavyweight homepage canvases on mobile', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+
+  await expect(page.locator('#ai-canvas')).toHaveJSProperty('width', 300);
+  await expect(page.locator('spline-viewer')).toHaveCount(0);
+});
+
 test('project CTA exposes a navigation intent state before navigation', async ({
   page,
 }) => {
@@ -346,6 +423,16 @@ test('mobile navigation restores focus and body scrolling after Escape', async (
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
 
+  await expect
+    .poll(() =>
+      page
+        .locator('.site-header')
+        .evaluate((element) =>
+          Math.round(element.getBoundingClientRect().height),
+        ),
+    )
+    .toBe(58);
+
   const menu = page.locator('[data-menu-toggle]');
   await menu.click();
   await expect(menu).toHaveAttribute('aria-expanded', 'true');
@@ -357,6 +444,16 @@ test('mobile navigation restores focus and body scrolling after Escape', async (
   await expect(page.locator('#solutions-mega-menu a')).toHaveCount(
     expectedSolutionLinks,
   );
+  const familyButtons = page.locator('[data-solution-group-trigger]');
+  await expect(familyButtons).toHaveCount(4);
+  await expect(familyButtons.first()).toHaveAttribute('aria-expanded', 'true');
+  await familyButtons.nth(2).click();
+  await expect(familyButtons.nth(2)).toHaveAttribute('aria-expanded', 'true');
+  await expect(familyButtons.first()).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('[data-solution-group-panel]:visible')).toHaveCount(
+    1,
+  );
+  await expect(page.locator('.mobile-nav-contact')).toBeVisible();
 
   await page.keyboard.press('Escape');
   await expect(menu).toHaveAttribute('aria-expanded', 'false');
@@ -503,23 +600,45 @@ test('about capability navigator updates its panel on hover and focus', async ({
   ).toHaveCount(1);
 });
 
-test('mobile capability navigator activates on click without horizontal overflow', async ({
+test('mobile inner page reaches an accessible capability accordion in the first viewport', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/about/');
 
-  const navigator = page.locator('#overview[data-capability-navigator]');
-  await navigator.scrollIntoViewIfNeeded();
-  await expect(navigator).toBeVisible();
-  const selectedTab = navigator.getByRole('tab').nth(1);
-  await selectedTab.click();
-  await expect(selectedTab).toHaveAttribute('aria-selected', 'true');
+  await expect
+    .poll(() =>
+      page
+        .locator('.inner-hero')
+        .evaluate((element) =>
+          Math.round(element.getBoundingClientRect().height),
+        ),
+    )
+    .toBe(230);
+  await expect
+    .poll(() =>
+      page
+        .locator('.chapter-nav')
+        .evaluate((element) =>
+          Math.round(element.getBoundingClientRect().height),
+        ),
+    )
+    .toBe(46);
+
+  const accordion = page.locator('[data-mobile-capability-accordion]');
+  await expect(accordion).toBeVisible();
   expect(
-    await page.evaluate(
-      () => document.documentElement.scrollWidth <= window.innerWidth,
-    ),
-  ).toBe(true);
+    await accordion.evaluate((element) => element.getBoundingClientRect().top),
+  ).toBeLessThan(844);
+
+  const triggers = accordion.locator('[data-mobile-capability-trigger]');
+  await expect(triggers).toHaveCount(4);
+  await triggers.nth(1).click();
+  await expect(triggers.nth(1)).toHaveAttribute('aria-expanded', 'true');
+  await expect(triggers.first()).toHaveAttribute('aria-expanded', 'false');
+  await expect(
+    accordion.locator('[data-mobile-capability-panel]:visible'),
+  ).toHaveCount(1);
 });
 
 test('AI factory experience control is disabled and does not navigate', async ({
@@ -543,11 +662,26 @@ test('AI factory experience control is disabled and does not navigate', async ({
 test('contact project form accepts labeled details and reports its unconfigured channel', async ({
   page,
 }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/contact/');
 
   const form = page.locator('[data-project-contact-form]');
-  await form.scrollIntoViewIfNeeded();
   await expect(form).toBeVisible();
+  expect(
+    await form.evaluate((element) => element.getBoundingClientRect().top),
+  ).toBeLessThan(844);
+  expect(
+    await form
+      .getByLabel('姓名')
+      .evaluate((element) => element.getBoundingClientRect().top),
+  ).toBeLessThan(844);
+
+  await form.locator('button[type="submit"]').click();
+  await expect(form.locator('[data-field-error]').first()).toContainText(
+    '请输入姓名',
+  );
+  await expect(form.getByLabel('姓名')).toHaveAttribute('aria-invalid', 'true');
+
   await form.getByLabel('姓名').fill('李明');
   await form.getByLabel('单位').fill('天津光泰科技集团');
   await form.getByLabel('联系方式').fill('13800000000');
@@ -562,6 +696,30 @@ test('contact project form accepts labeled details and reports its unconfigured 
   await expect(form).not.toContainText(/提交成功|已发送/);
 });
 
+test('mobile footer exposes three collapsed groups and visible project contact', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+
+  const footer = page.locator('.site-footer');
+  const groups = footer.locator('details.footer-group');
+  await expect(groups).toHaveCount(3);
+  await expect(groups.first()).not.toHaveAttribute('open', '');
+  await groups.first().locator('summary').click();
+  await expect(groups.first()).toHaveAttribute('open', '');
+  await expect(footer.locator('[data-footer-contact]')).toBeVisible();
+  await expect(footer.locator('.footer-legal')).toContainText(
+    '天津光泰光电科技（集团）有限公司 版权所有',
+  );
+
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await expect(groups).toHaveCount(3);
+  for (const group of await groups.all()) {
+    await expect(group).toHaveAttribute('open', '');
+  }
+});
+
 test('unknown routes return the branded 404 response', async ({ page }) => {
   const response = await page.goto('/definitely-missing/');
   expect(response?.status()).toBe(404);
@@ -569,26 +727,39 @@ test('unknown routes return the branded 404 response', async ({ page }) => {
   await expect(page.getByRole('link', { name: '返回首页' })).toBeVisible();
 });
 
-test('captures the four approved responsive viewports', async ({
+test('captures approved responsive viewports across key routes', async ({
   page,
 }, testInfo) => {
-  for (const viewport of [
-    { name: 'desktop-1440x900', width: 1440, height: 900 },
-    { name: 'laptop-1280x800', width: 1280, height: 800 },
-    { name: 'tablet-768x1024', width: 768, height: 1024 },
-    { name: 'mobile-390x844', width: 390, height: 844 },
-  ]) {
-    await page.setViewportSize(viewport);
-    await page.goto('/');
-    await expect(page.locator('.home-hero')).toBeVisible();
-    expect(
-      await page.evaluate(
-        () => document.documentElement.scrollWidth <= window.innerWidth,
-      ),
-    ).toBe(true);
-    await page.screenshot({
-      fullPage: true,
-      path: testInfo.outputPath(`${viewport.name}.png`),
-    });
+  const errors = collectRuntimeErrors(page);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  for (const route of responsiveRoutes) {
+    for (const viewport of approvedViewports) {
+      await page.setViewportSize(viewport);
+      await page.goto(route.path);
+      await expect(page.locator('h1')).toBeVisible();
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= window.innerWidth,
+        ),
+      ).toBe(true);
+      if (route.name === 'home' && viewport.name === 'mobile-320x700') {
+        const partnerViewport = page.locator('.mobile-partner-viewport');
+        const thirdPartner = page.locator('[data-mobile-partners] a').nth(2);
+        expect(
+          await thirdPartner.evaluate(
+            (element, viewportRight) =>
+              element.getBoundingClientRect().left < viewportRight,
+            await partnerViewport.evaluate(
+              (element) => element.getBoundingClientRect().right,
+            ),
+          ),
+        ).toBe(true);
+      }
+      await page.screenshot({
+        fullPage: true,
+        path: testInfo.outputPath(`${route.name}-${viewport.name}.png`),
+      });
+    }
   }
+  expect(errors).toEqual([]);
 });

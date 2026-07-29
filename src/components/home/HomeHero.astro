@@ -7,11 +7,19 @@ const hero = resolveImage('/assets/hero-humanoid-ai-campus.png');
 
 <section id="home" class="home-hero">
   <Image
-    class="hero-image"
+    class="hero-image hero-image--desktop"
     src={hero}
     alt=""
     widths={[768, 1280, 1920]}
     sizes="100vw"
+    loading="eager"
+  />
+  <Image
+    class="hero-image hero-image--mobile"
+    src={hero}
+    alt=""
+    width={780}
+    height={440}
     loading="eager"
   />
   <div class="hero-wash" aria-hidden="true"></div><DataNetwork />
@@ -23,6 +31,7 @@ const hero = resolveImage('/assets/hero-humanoid-ai-campus.png');
   >
   </div>
   <div class="hero-copy">
+    <p class="hero-mobile-eyebrow">AI APPLICATION &amp; DIGITAL SOLUTIONS</p>
     <h1>光启未来 智领时代</h1>
     <div class="hero-context">
       <p class="hero-description">

@@ -1,0 +1,23 @@
+---
+import { mobileDeliverySteps } from '../../data/home';
+---
+
+<section
+  id="mobile-delivery"
+  class="mobile-delivery"
+  aria-labelledby="mobile-delivery-title"
+>
+  <p class="mobile-section-kicker">DELIVERY PATH</p>
+  <h2 id="mobile-delivery-title">把技术能力变成可验收的项目</h2>
+  <ol>
+    {
+      mobileDeliverySteps.map(([title, copy], index) => (
+        <li>
+          <span>0{index + 1}</span>
+          <h3>{title}</h3>
+          <p>{copy}</p>
+        </li>
+      ))
+    }
+  </ol>
+</section>

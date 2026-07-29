@@ -16,7 +16,9 @@
   const initializeDataNetwork = (): void => {
     window.dataNetworkCleanup?.();
     const canvas = document.querySelector<HTMLCanvasElement>('#ai-canvas');
-    window.dataNetworkCleanup = canvas ? initDataNetwork(canvas) : undefined;
+    const isMobile = window.matchMedia('(max-width: 700px)').matches;
+    window.dataNetworkCleanup =
+      !isMobile && canvas ? initDataNetwork(canvas) : undefined;
   };
 
   if (!window.dataNetworkLifecycleReady) {
