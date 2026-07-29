@@ -227,7 +227,7 @@ test('low-capability desktop visitors keep the static Hero instead of mounting S
     'static',
   );
   await expect(page.locator('[data-spline-hero] spline-viewer')).toHaveCount(0);
-  await expect(page.locator('.home-hero .hero-image')).toBeVisible();
+  await expect(page.locator('.home-hero .hero-image--desktop')).toBeVisible();
 });
 
 test('homepage centers the brand message within the Hero visual field', async ({
