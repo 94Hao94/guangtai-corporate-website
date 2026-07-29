@@ -34,6 +34,11 @@ describe('rendered corporate site', () => {
       /\.hero-copy a\s*\{[\s\S]*?pointer-events: auto;/,
     );
     expect(heroTemplate).toContain('scene.splinecode?v=robot-v2');
+    expect(heroTemplate).toContain('canAutoMountSplineHero');
+    expect(heroTemplate).toMatch(/viewer\.addEventListener\(\s*'load'/);
+    expect(heroTemplate).not.toMatch(
+      /replaceChildren\(viewer\);\s*host\.closest\('\.home-hero'\)\?\.classList\.add\('is-spline-mounted'\)/,
+    );
   });
 
   it('renders home and all 29 MVP routes with page metadata', async () => {
