@@ -97,6 +97,22 @@ describe('rendered corporate site', () => {
     expect(homepage).not.toContain('class="brand-mark"');
   });
 
+  it('renders the required regulatory filing links in the shared footer', async () => {
+    const homepage = await readFile(resolve('dist/index.html'), 'utf8');
+    const footer = homepage.match(/<footer\b[\s\S]*?<\/footer>/)?.[0] ?? '';
+    const icpIndex = footer.indexOf('津ICP备2026009921号');
+    const publicSecurityIndex = footer.indexOf('津公网安备 12011102001938号');
+
+    expect(footer).toContain('class="footer-legal"');
+    expect(footer).toContain('天津光泰光电科技（集团）有限公司 版权所有');
+    expect(footer).not.toContain('官网内容以正式发布为准');
+    expect(publicSecurityIndex).toBeGreaterThan(icpIndex);
+    expect(footer).toContain(
+      'href="https://beian.mps.gov.cn/#/query/webSearch?code=12011102001938"',
+    );
+    expect(footer).toContain('href="https://beian.miit.gov.cn/"');
+  });
+
   it('orders AI, embodied partners, and systems integration on the homepage', async () => {
     const homepage = await readFile(resolve('dist/index.html'), 'utf8');
     const aiFactory = homepage.indexOf('GUANGTAI AI FACTORY');
@@ -201,7 +217,7 @@ describe('rendered corporate site', () => {
     expect(contactHtml).not.toContain('START A PROJECT');
     expect(homepage.match(/class="footer-group"/g)).toHaveLength(3);
     expect(homepage).toContain('data-footer-contact');
-    expect(homepage).not.toMatch(/ICP备案|法律声明/);
+    expect(homepage).not.toContain('法律声明');
   });
 
   it('uses the shared project contact CTA on the homepage', async () => {

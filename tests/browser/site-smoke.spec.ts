@@ -709,7 +709,9 @@ test('mobile footer exposes three collapsed groups and visible project contact',
   await groups.first().locator('summary').click();
   await expect(groups.first()).toHaveAttribute('open', '');
   await expect(footer.locator('[data-footer-contact]')).toBeVisible();
-  await expect(footer.locator('small')).toContainText('天津光泰科技集团');
+  await expect(footer.locator('.footer-legal')).toContainText(
+    '天津光泰光电科技（集团）有限公司 版权所有',
+  );
 
   await page.setViewportSize({ width: 1440, height: 900 });
   await expect(groups).toHaveCount(3);
