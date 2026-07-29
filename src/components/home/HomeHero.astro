@@ -2,13 +2,22 @@
 import { Image } from 'astro:assets';
 import { resolveImage } from '../../lib/images';
 import DataNetwork from './DataNetwork.astro';
-const hero = resolveImage('/assets/hero-humanoid-ai-campus.png');
+const heroBackground = resolveImage('/assets/hero-guangtai-campus-ai-v1.png');
+const heroFallback = resolveImage('/assets/hero-humanoid-ai-campus.png');
 ---
 
 <section id="home" class="home-hero">
   <Image
-    class="hero-image hero-image--desktop"
-    src={hero}
+    class="hero-image hero-image--background"
+    src={heroBackground}
+    alt=""
+    widths={[768, 1280, 1920]}
+    sizes="100vw"
+    loading="lazy"
+  />
+  <Image
+    class="hero-image hero-image--desktop hero-image--fallback"
+    src={heroFallback}
     alt=""
     widths={[768, 1280, 1920]}
     sizes="100vw"
@@ -16,7 +25,7 @@ const hero = resolveImage('/assets/hero-humanoid-ai-campus.png');
   />
   <Image
     class="hero-image hero-image--mobile"
-    src={hero}
+    src={heroFallback}
     alt=""
     width={780}
     height={440}
@@ -84,10 +93,11 @@ const hero = resolveImage('/assets/hero-humanoid-ai-campus.png');
     try {
       await import('@splinetool/viewer');
       const viewer = document.createElement('spline-viewer');
+      viewer.setAttribute('loading', 'eager');
       viewer.setAttribute('url', scene);
       viewer.setAttribute('aria-label', '可交互的机器人 3D 模型');
       viewer.addEventListener(
-        'load',
+        'load-complete',
         () => {
           host.closest('.home-hero')?.classList.add('has-spline');
           host.closest('.home-hero')?.classList.add('is-spline-mounted');

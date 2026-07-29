@@ -35,7 +35,10 @@ describe('rendered corporate site', () => {
     );
     expect(heroTemplate).toContain('scene.splinecode?v=robot-v2');
     expect(heroTemplate).toContain('canAutoMountSplineHero');
-    expect(heroTemplate).toMatch(/viewer\.addEventListener\(\s*'load'/);
+    expect(heroTemplate).toMatch(
+      /viewer\.addEventListener\(\s*'load-complete'/,
+    );
+    expect(heroTemplate).toContain("viewer.setAttribute('loading', 'eager')");
     expect(heroTemplate).not.toMatch(
       /replaceChildren\(viewer\);\s*host\.closest\('\.home-hero'\)\?\.classList\.add\('is-spline-mounted'\)/,
     );
@@ -59,6 +62,8 @@ describe('rendered corporate site', () => {
     expect(homepage).toContain('天津光泰科技集团有限公司');
     expect(homepage).toContain('href="/about">了解更多');
     expect(homepage).toContain('hero-image hero-image--desktop');
+    expect(homepage).toContain('hero-image--fallback');
+    expect(homepage).toContain('hero-image hero-image--background');
     expect(homepage).toContain('hero-image hero-image--mobile');
     const mobileCapabilities =
       homepage.match(
@@ -101,7 +106,7 @@ describe('rendered corporate site', () => {
     const homepage = await readFile(resolve('dist/index.html'), 'utf8');
     const footer = homepage.match(/<footer\b[\s\S]*?<\/footer>/)?.[0] ?? '';
     const icpIndex = footer.indexOf('津ICP备2026009921号');
-    const publicSecurityIndex = footer.indexOf('津公网安备 12011102001938号');
+    const publicSecurityIndex = footer.indexOf('津公网安备12011102001938号');
 
     expect(footer).toContain('class="footer-legal"');
     expect(footer).toContain('天津光泰光电科技（集团）有限公司 版权所有');
@@ -110,6 +115,10 @@ describe('rendered corporate site', () => {
     expect(footer).toContain(
       'href="https://beian.mps.gov.cn/#/query/webSearch?code=12011102001938"',
     );
+    expect(footer).toContain(
+      'class="footer-filing-link footer-filing-link--public-security"',
+    );
+    expect(footer).toContain('src="/filing/public-security.png"');
     expect(footer).toContain('href="https://beian.miit.gov.cn/"');
   });
 

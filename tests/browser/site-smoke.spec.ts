@@ -230,6 +230,77 @@ test('low-capability desktop visitors keep the static Hero instead of mounting S
   await expect(page.locator('.home-hero .hero-image--desktop')).toBeVisible();
 });
 
+test('capable desktop marks the Hero mounted when Spline completes on the first visit', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'hardwareConcurrency', {
+      configurable: true,
+      value: 8,
+    });
+    Object.defineProperty(navigator, 'deviceMemory', {
+      configurable: true,
+      value: 8,
+    });
+  });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+
+  const viewer = page.locator('[data-spline-hero] spline-viewer');
+  await expect(viewer).toHaveCount(1, { timeout: 15_000 });
+  await viewer.dispatchEvent('load-complete');
+
+  await expect(page.locator('.home-hero')).toHaveClass(/is-spline-mounted/);
+});
+
+test('capable desktop requests the Spline scene eagerly on the first visit', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'hardwareConcurrency', {
+      configurable: true,
+      value: 8,
+    });
+    Object.defineProperty(navigator, 'deviceMemory', {
+      configurable: true,
+      value: 8,
+    });
+  });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+
+  const viewer = page.locator('[data-spline-hero] spline-viewer');
+  await expect(viewer).toHaveCount(1, { timeout: 15_000 });
+  await expect(viewer).toHaveAttribute('loading', 'eager');
+});
+
+test('Spline completion hides only the static robot while preserving its background', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'hardwareConcurrency', {
+      configurable: true,
+      value: 8,
+    });
+    Object.defineProperty(navigator, 'deviceMemory', {
+      configurable: true,
+      value: 8,
+    });
+  });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+
+  const viewer = page.locator('[data-spline-hero] spline-viewer');
+  await expect(viewer).toHaveCount(1, { timeout: 15_000 });
+  await viewer.dispatchEvent('load-complete');
+
+  await expect(page.locator('.hero-image--fallback')).toHaveCSS('opacity', '0');
+  await expect(page.locator('.hero-image--background')).toHaveCSS(
+    'opacity',
+    '1',
+  );
+});
+
 test('homepage centers the brand message within the Hero visual field', async ({
   page,
 }) => {

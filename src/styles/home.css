@@ -53,7 +53,7 @@
   height: 100%;
   transform: none;
 }
-.home-hero.is-spline-mounted .hero-image--desktop {
+.home-hero.is-spline-mounted .hero-image--fallback {
   opacity: 0;
   transition: opacity 0.45s ease;
 }
@@ -508,6 +508,7 @@
     height: 220px;
     min-height: 220px;
   }
+  .hero-image--background,
   .hero-image--desktop,
   .hero-context,
   .hero-actions,
