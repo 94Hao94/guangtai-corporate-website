@@ -53,7 +53,7 @@ describe('rendered corporate site', () => {
     const homepage = await readFile(resolve('dist/index.html'), 'utf8');
     expect(homepage).toContain('<h1>光启未来 智领时代</h1>');
     expect(homepage).toContain(
-      '以AI应用工厂为平台底座，融合软件开发、系统集成、空间智能与具身设备。',
+      '成立于2013年，总部位于天津，面向教育、政府、医疗、金融及企事业单位提供数智化建设与服务。',
     );
     expect(homepage).toContain(
       'data-spline-scene="https://prod.spline.design/JCd7StIa9lqPaRfw/scene.splinecode?v=robot-v2"',
@@ -97,7 +97,7 @@ describe('rendered corporate site', () => {
     const favicon = homepage.match(/<link\b[^>]*\brel="icon"[^>]*>/)?.[0] ?? '';
 
     expect(favicon).toContain('href="/brand/guangtai-logo-gray-square.png"');
-    expect(header).toContain('src="/brand/guangtai-logo-color.png"');
+    expect(header).toContain('src="/brand/lumitai-logo.png"');
     expect(footer).toContain('src="/brand/guangtai-logo-white-square.png"');
     expect(homepage).not.toContain('class="brand-mark"');
   });

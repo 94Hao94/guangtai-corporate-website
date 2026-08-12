@@ -73,6 +73,16 @@ test('desktop navigation is keyboard operable and closes with Escape', async ({
 }) => {
   test.slow();
   const errors = collectRuntimeErrors(page);
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'hardwareConcurrency', {
+      configurable: true,
+      value: 4,
+    });
+    Object.defineProperty(navigator, 'deviceMemory', {
+      configurable: true,
+      value: 4,
+    });
+  });
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
 
@@ -410,6 +420,16 @@ test('homepage chapter signposts keep business sections identifiable', async ({
 test('homepage reveal animations initialize after returning through the client router', async ({
   page,
 }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'hardwareConcurrency', {
+      configurable: true,
+      value: 4,
+    });
+    Object.defineProperty(navigator, 'deviceMemory', {
+      configurable: true,
+      value: 4,
+    });
+  });
   await page.goto('/');
 
   /** Returns to the homepage through the client router after visiting the AI factory page. */
@@ -650,7 +670,7 @@ test('about capability navigator updates its panel on hover and focus', async ({
     'aria-labelledby',
     hoveredTabId ?? '',
   );
-  await expect(visiblePanel).toContainText('软件定制、AI编程与系统集成');
+  await expect(visiblePanel).toContainText('光泰AI应用工厂');
   await expect(
     navigator.locator('[role="tab"][aria-selected="true"]'),
   ).toHaveCount(1);
@@ -665,7 +685,7 @@ test('about capability navigator updates its panel on hover and focus', async ({
     'aria-labelledby',
     focusedTabId ?? '',
   );
-  await expect(visiblePanel).toContainText('音视频、安全、基础设施与空间智能');
+  await expect(visiblePanel).toContainText('具身智能应用体系');
   await expect(
     navigator.locator('[role="tab"][aria-selected="true"]'),
   ).toHaveCount(1);
