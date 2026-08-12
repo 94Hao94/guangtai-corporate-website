@@ -631,67 +631,33 @@ test('visual breadcrumbs are reserved for nested pages and stay close to the Her
   await expect(breadcrumbs).not.toHaveCSS('position', 'fixed');
 });
 
-test('about capability navigator updates its panel on hover and focus', async ({
+test('about page presents a readable full-width company profile', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/about/');
 
-  const navigator = page.locator('#overview[data-capability-navigator]');
-  const tabs = navigator.getByRole('tab');
-  const panels = navigator.locator('[data-capability-panel]');
-  const visiblePanel = navigator.locator('[role="tabpanel"]:visible');
-  await expect(tabs).toHaveCount(4);
-  await expect(panels).toHaveCount(4);
-  await expect(visiblePanel).toHaveCount(1);
-  const tabAttributes = await tabs.evaluateAll((elements) =>
-    elements.map((element) => ({
-      id: element.id,
-      controls: element.getAttribute('aria-controls'),
-      text: element.textContent?.trim() ?? '',
-    })),
+  const profile = page.locator('#overview[data-about-profile]');
+  await expect(profile).toBeVisible();
+  await expect(profile.getByRole('heading', { level: 2 })).toHaveText(
+    '让技术能力真正进入业务现场',
   );
-  for (const [index, tab] of tabAttributes.entries()) {
-    expect(tab.text).toContain(`0${index + 1}`);
-    expect(tab.id).not.toBe('');
-    expect(tab.controls).not.toBeNull();
-    expect(tab.controls).not.toBe('');
-  }
-  expect(new Set(tabAttributes.map((tab) => tab.id)).size).toBe(4);
-  expect(new Set(tabAttributes.map((tab) => tab.controls)).size).toBe(4);
+  await expect(profile.locator('[data-about-fact]')).toHaveCount(4);
+  await expect(page.locator('[data-about-capability]')).toHaveCount(4);
+  await expect(page.locator('[data-capability-navigator]')).toHaveCount(0);
+  await expect(page.getByRole('tab')).toHaveCount(0);
 
-  const hoveredTab = tabs.nth(1);
-  const hoveredTabId = await hoveredTab.getAttribute('id');
-  const hoveredTabControls = await hoveredTab.getAttribute('aria-controls');
-  await hoveredTab.hover();
-  await expect(hoveredTab).toHaveAttribute('aria-selected', 'true');
-  await expect(visiblePanel).toHaveAttribute('id', hoveredTabControls ?? '');
-  await expect(visiblePanel).toHaveAttribute(
-    'aria-labelledby',
-    hoveredTabId ?? '',
+  const profileWidth = await profile.evaluate(
+    (element) => element.getBoundingClientRect().width,
   );
-  await expect(visiblePanel).toContainText('光泰AI应用工厂');
-  await expect(
-    navigator.locator('[role="tab"][aria-selected="true"]'),
-  ).toHaveCount(1);
-
-  const focusedTab = tabs.nth(2);
-  const focusedTabId = await focusedTab.getAttribute('id');
-  const focusedTabControls = await focusedTab.getAttribute('aria-controls');
-  await focusedTab.focus();
-  await expect(focusedTab).toHaveAttribute('aria-selected', 'true');
-  await expect(visiblePanel).toHaveAttribute('id', focusedTabControls ?? '');
-  await expect(visiblePanel).toHaveAttribute(
-    'aria-labelledby',
-    focusedTabId ?? '',
-  );
-  await expect(visiblePanel).toContainText('具身智能应用体系');
-  await expect(
-    navigator.locator('[role="tab"][aria-selected="true"]'),
-  ).toHaveCount(1);
+  const storyWidth = await profile
+    .locator('.about-profile__story')
+    .evaluate((element) => element.getBoundingClientRect().width);
+  expect(storyWidth).toBeLessThan(profileWidth);
+  expect(storyWidth).toBeGreaterThan(640);
 });
 
-test('mobile inner page reaches an accessible capability accordion in the first viewport', async ({
+test('mobile about page uses two-column facts and single-column capability cards', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -716,20 +682,31 @@ test('mobile inner page reaches an accessible capability accordion in the first 
     )
     .toBe(46);
 
-  const accordion = page.locator('[data-mobile-capability-accordion]');
-  await expect(accordion).toBeVisible();
+  const profile = page.locator('#overview[data-about-profile]');
+  await expect(profile).toBeVisible();
   expect(
-    await accordion.evaluate((element) => element.getBoundingClientRect().top),
+    await profile.evaluate((element) => element.getBoundingClientRect().top),
   ).toBeLessThan(844);
+  await expect(page.locator('[data-mobile-capability-accordion]')).toHaveCount(
+    0,
+  );
 
-  const triggers = accordion.locator('[data-mobile-capability-trigger]');
-  await expect(triggers).toHaveCount(4);
-  await triggers.nth(1).click();
-  await expect(triggers.nth(1)).toHaveAttribute('aria-expanded', 'true');
-  await expect(triggers.first()).toHaveAttribute('aria-expanded', 'false');
-  await expect(
-    accordion.locator('[data-mobile-capability-panel]:visible'),
-  ).toHaveCount(1);
+  const facts = profile.locator('.about-profile__facts');
+  const factColumns = await facts.evaluate(
+    (element) =>
+      getComputedStyle(element).gridTemplateColumns.split(' ').length,
+  );
+  expect(factColumns).toBe(2);
+
+  const capabilities = page.locator('.about-capabilities__grid');
+  await capabilities.scrollIntoViewIfNeeded();
+  const capabilityColumns = await capabilities.evaluate(
+    (element) =>
+      getComputedStyle(element).gridTemplateColumns.split(' ').length,
+  );
+  expect(capabilityColumns).toBe(1);
+  await expect(page.locator('[data-about-capability]')).toHaveCount(4);
+  await expect(page.locator('body')).not.toHaveCSS('overflow-x', 'scroll');
 });
 
 test('AI factory experience control is disabled and does not navigate', async ({

@@ -176,29 +176,20 @@ describe('rendered corporate site', () => {
     );
   });
 
-  it('renders an accessible capability navigator on the about page', async () => {
+  it('renders a readable company profile without the capability navigator on the about page', async () => {
     const aboutHtml = await readFile(routeFile('/about'), 'utf8');
 
     expect(aboutHtml).toMatch(
-      /<section[^>]+id="overview"[^>]+data-capability-navigator/,
+      /<section[^>]+id="overview"[^>]+data-about-profile/,
     );
-    expect(aboutHtml).not.toMatch(
-      /<section[^>]+id="capabilities"[^>]+data-capability-navigator/,
-    );
-    expect(aboutHtml).toContain('role="tablist"');
-    expect(aboutHtml).toContain('role="tab"');
-    expect(aboutHtml).toContain('role="tabpanel"');
-    expect(aboutHtml).toContain('data-mobile-capability-accordion');
-    expect(
-      aboutHtml.match(/data-mobile-capability-trigger="\d+"/g),
-    ).toHaveLength(4);
-    expect(aboutHtml.match(/data-mobile-capability-panel="\d+"/g)).toHaveLength(
-      4,
-    );
-    expect(aboutHtml).toContain('aria-expanded="true"');
-    expect(aboutHtml).toContain(
-      'aria-controls="about-capability-1-mobile-panel"',
-    );
+    expect(aboutHtml).toContain('让技术能力真正进入业务现场');
+    expect(aboutHtml).toContain('id="capabilities"');
+    expect(aboutHtml.match(/data-about-fact/g)).toHaveLength(4);
+    expect(aboutHtml.match(/data-about-capability/g)).toHaveLength(4);
+    expect(aboutHtml).not.toContain('data-capability-navigator');
+    expect(aboutHtml).not.toContain('role="tablist"');
+    expect(aboutHtml).not.toContain('data-mobile-capability-accordion');
+    expect(aboutHtml).toContain('天津光泰科技集团成立于2013年，总部位于天津');
   });
 
   it('keeps the AI factory experience control visibly unavailable', async () => {

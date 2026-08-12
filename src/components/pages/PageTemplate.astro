@@ -5,6 +5,7 @@ import ContactCta from '../site/ContactCta.astro';
 import type { SitePage } from '../../lib/page-schema';
 import { resolveImage } from '../../lib/images';
 import CapabilityNavigator from './CapabilityNavigator.astro';
+import AboutProfile from './AboutProfile.astro';
 import ContactForm from './ContactForm.astro';
 import DeliverySection from './DeliverySection.astro';
 import FactoryExperienceCta from './FactoryExperienceCta.astro';
@@ -67,6 +68,8 @@ const isFactory = page.path === '/guangtai-ai-factory';
           </div>
         </>
       </section>
+    ) : isAbout ? (
+      <AboutProfile page={page} />
     ) : (
       <CapabilityNavigator page={page} />
     )
