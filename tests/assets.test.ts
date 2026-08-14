@@ -25,6 +25,15 @@ async function pageAssetPaths(): Promise<string[]> {
 }
 
 describe('MVP asset migration', () => {
+  it('keeps the Baidu site verification file at the public root', async () => {
+    const verification = await readFile(
+      resolve('public/baidu_verify_codeva-NEJM3vvrz6.html'),
+      'utf8',
+    );
+
+    expect(verification).toBe('8cf64d84f5f06c47aece9dfac0214064');
+  });
+
   it('keeps the production sitemap discoverable to search crawlers', async () => {
     const robots = await readFile(resolve('public/robots.txt'), 'utf8');
 
