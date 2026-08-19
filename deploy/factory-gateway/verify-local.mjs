@@ -1,4 +1,3 @@
-import { readFile } from 'node:fs/promises';
 import process from 'node:process';
 
 /**
@@ -96,7 +95,11 @@ function expectStatus(response, expected, step) {
  */
 async function main() {
   const origin = process.env.VERIFY_ORIGIN || 'http://127.0.0.1:8088';
-  const password = (await readFile(0, 'utf8')).replace(/\r?\n$/, '');
+  const chunks = [];
+  for await (const chunk of process.stdin) chunks.push(chunk);
+  const password = Buffer.concat(chunks)
+    .toString('utf8')
+    .replace(/\r?\n$/, '');
   const ledger = await verifyGatewayFlow({
     origin,
     password,
