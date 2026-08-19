@@ -237,6 +237,15 @@ test('production startup validates required values without echoing secrets', () 
   assert.equal(config.host, '127.0.0.1');
   assert.equal(config.sessionSecret.length, 32);
 
+  const containerConfig = readGatewayConfig({
+    FACTORY_ACCESS_PASSWORD_HASH: passwordRecord,
+    FACTORY_SESSION_SECRET: secret,
+    FACTORY_PUBLIC_ORIGIN: PUBLIC_ORIGIN,
+    HOST: '0.0.0.0',
+    PORT: '5180',
+  });
+  assert.equal(containerConfig.host, '0.0.0.0');
+
   assert.throws(
     () => readGatewayConfig({ FACTORY_SESSION_SECRET: secret }),
     (error) => {

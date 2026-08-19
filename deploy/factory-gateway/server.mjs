@@ -23,8 +23,10 @@ export function readGatewayConfig(env = process.env) {
   const host = env.HOST || DEFAULT_HOST;
   const port = Number(env.PORT || DEFAULT_PORT);
 
-  if (!['127.0.0.1', '::1', 'localhost'].includes(host)) {
-    throw new Error('HOST must resolve to the loopback interface.');
+  if (!['127.0.0.1', '0.0.0.0', '::1', 'localhost'].includes(host)) {
+    throw new Error(
+      'HOST must be a supported container or loopback interface.',
+    );
   }
   if (!Number.isInteger(port) || port < 1 || port > 65_535) {
     throw new Error('PORT must be an integer between 1 and 65535.');

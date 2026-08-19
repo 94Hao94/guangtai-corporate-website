@@ -159,8 +159,8 @@ export async function startAccessServer({
 }) {
   if (typeof handler !== 'function')
     throw new TypeError('handler is required.');
-  if (!['127.0.0.1', '::1', 'localhost'].includes(host)) {
-    throw new RangeError('Gateway host must be loopback.');
+  if (!['127.0.0.1', '0.0.0.0', '::1', 'localhost'].includes(host)) {
+    throw new RangeError('Gateway host is unsupported.');
   }
   if (!Number.isInteger(port) || port < 0 || port > 65_535) {
     throw new RangeError('Gateway port is invalid.');

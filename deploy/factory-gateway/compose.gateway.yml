@@ -1,0 +1,25 @@
+name: guangtai-factory-access
+
+services:
+  gateway:
+    build:
+      context: .
+    image: guangtai-factory-access:local
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: '5180'
+      FACTORY_ACCESS_PASSWORD_HASH: ${FACTORY_ACCESS_PASSWORD_HASH:?Set the salted scrypt password record}
+      FACTORY_SESSION_SECRET: ${FACTORY_SESSION_SECRET:?Set a 32-byte base64url session secret}
+      FACTORY_PUBLIC_ORIGIN: ${FACTORY_PUBLIC_ORIGIN:-https://www.tjgtkj.cn}
+    ports:
+      - '127.0.0.1:${FACTORY_GATEWAY_PORT:-5180}:5180'
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=16m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    init: true
+    restart: unless-stopped
