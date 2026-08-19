@@ -192,18 +192,19 @@ describe('rendered corporate site', () => {
     expect(aboutHtml).toContain('天津光泰科技集团成立于2013年，总部位于天津');
   });
 
-  it('keeps the AI factory experience control visibly unavailable', async () => {
+  it('renders the AI factory experience link as the protected entry', async () => {
     const factoryHtml = await readFile(
       routeFile('/guangtai-ai-factory'),
       'utf8',
     );
-    const experienceButton =
-      factoryHtml.match(/<button\b[^>]*>\s*前去体验\s*<\/button>/)?.[0] ?? '';
+    const experienceLink =
+      factoryHtml.match(/<a\b[^>]*>\s*前去体验\s*<\/a>/)?.[0] ?? '';
 
-    expect(experienceButton).not.toBe('');
-    expect(experienceButton).toMatch(/\sdisabled(?:\s|=|>)/);
-    expect(experienceButton).toContain('aria-disabled="true"');
-    expect(experienceButton).not.toContain('href=');
+    expect(experienceLink).not.toBe('');
+    expect(experienceLink).toContain('href="/ai-factory/"');
+    expect(experienceLink).not.toContain('aria-disabled');
+    expect(experienceLink).not.toMatch(/\sdisabled(?:\s|=|>)/);
+    expect(factoryHtml).toContain('输入访问密码并通过安全验证后进入应用工厂。');
   });
 
   it('renders the contact project form without an unconfigured project CTA', async () => {
@@ -272,7 +273,11 @@ describe('rendered corporate site', () => {
 
   it('renders all internal page links to known routes', async () => {
     const contentPages = await pages();
-    const routes = new Set(['/', ...contentPages.map((page) => page.path)]);
+    const routes = new Set([
+      '/',
+      '/ai-factory/',
+      ...contentPages.map((page) => page.path),
+    ]);
     const files = [
       resolve('dist/index.html'),
       ...contentPages.map((page) => routeFile(page.path)),

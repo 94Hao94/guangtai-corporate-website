@@ -709,7 +709,7 @@ test('mobile about page uses two-column facts and single-column capability cards
   await expect(page.locator('body')).not.toHaveCSS('overflow-x', 'scroll');
 });
 
-test('AI factory experience control is disabled and does not navigate', async ({
+test('AI factory experience link targets the protected entry', async ({
   page,
 }) => {
   await page.goto('/guangtai-ai-factory/');
@@ -717,14 +717,15 @@ test('AI factory experience control is disabled and does not navigate', async ({
   const experienceSection = page.locator('.factory-experience');
   await experienceSection.scrollIntoViewIfNeeded();
   await expect(experienceSection).toBeVisible();
-  const experienceButton = page.getByRole('button', { name: '前去体验' });
-  await expect(experienceButton).toBeDisabled();
-  await expect(experienceButton).toHaveAttribute('aria-disabled', 'true');
-  await expect(experienceButton).not.toHaveAttribute('href');
-
-  const initialUrl = page.url();
-  await experienceButton.click({ force: true });
-  await expect(page).toHaveURL(initialUrl);
+  const experienceLink = page.getByRole('link', { name: '前去体验' });
+  await expect(experienceLink).toBeVisible();
+  await expect(experienceLink).toHaveAttribute('href', '/ai-factory/');
+  await experienceLink.focus();
+  await expect(experienceLink).toBeFocused();
+  await Promise.all([
+    page.waitForURL(/\/ai-factory\/$/),
+    experienceLink.press('Enter'),
+  ]);
 });
 
 test('contact project form accepts labeled details and reports its unconfigured channel', async ({
