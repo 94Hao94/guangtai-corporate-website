@@ -20,7 +20,7 @@ const SECURITY_HEADERS = Object.freeze({
 
 /**
  * Creates the password gateway HTTP handler.
- * @param {{passwordRecord: string, sessionCodec: object, publicOrigin?: string, logger?: (entry: object) => void, now?: () => number}} config Gateway dependencies and policy.
+ * @param {{passwordRecord: string, sessionCodec: object, publicOrigin?: string, publicOrigins?: string[], logger?: (entry: object) => void, now?: () => number}} config Gateway dependencies and policy.
  * @returns {(req: import('node:http').IncomingMessage, res: import('node:http').ServerResponse) => Promise<void>} HTTP request handler.
  * @throws {TypeError|RangeError} When required gateway dependencies are invalid.
  */
@@ -28,6 +28,7 @@ export function createAccessHandler({
   passwordRecord,
   sessionCodec,
   publicOrigin = DEFAULT_PUBLIC_ORIGIN,
+  publicOrigins,
   logger = () => {},
   now = Date.now,
 }) {
@@ -37,12 +38,13 @@ export function createAccessHandler({
   if (!sessionCodec || typeof sessionCodec.verify !== 'function') {
     throw new TypeError('sessionCodec is required.');
   }
-  if (
-    typeof publicOrigin !== 'string' ||
-    !/^https:\/\/[^/]+$/.test(publicOrigin)
-  ) {
+  const allowedOrigins = normalizePublicOrigins(publicOrigin, publicOrigins);
+  if (!allowedOrigins) {
     throw new TypeError('publicOrigin must be an HTTPS origin.');
   }
+  const allowedHostnames = allowedOrigins.map(
+    (origin) => new URL(origin).hostname,
+  );
   if (typeof logger !== 'function')
     throw new TypeError('logger must be a function.');
   if (typeof now !== 'function') throw new TypeError('now must be a function.');
@@ -103,7 +105,23 @@ export function createAccessHandler({
     }
 
     async function handleLogin(request, response, clientAddress) {
-      if (!isAllowedOrigin(request.headers.origin, publicOrigin)) {
+      if (
+        !isAllowedOrigin(
+          request.headers.origin,
+          allowedOrigins,
+          allowedHostnames,
+          request.headers,
+        )
+      ) {
+        logger({
+          event: 'origin_denied',
+          origin: safeOriginForLog(request.headers.origin),
+          host: safeOriginForLog(request.headers.host),
+          fetchSite: safeOriginForLog(request.headers['sec-fetch-site']),
+          fetchMode: safeOriginForLog(request.headers['sec-fetch-mode']),
+          fetchDest: safeOriginForLog(request.headers['sec-fetch-dest']),
+          fetchUser: safeOriginForLog(request.headers['sec-fetch-user']),
+        });
         return sendText(response, 403, 'origin_forbidden\n');
       }
 
@@ -223,13 +241,66 @@ function requestAddress(req) {
 }
 
 /**
- * Checks an optional Origin header against the configured public origin.
+ * Checks an optional Origin header against the configured public origins.
  * @param {string|undefined} origin Candidate Origin.
- * @param {string} expected Expected HTTPS origin.
+ * @param {string[]} expected Allowed HTTPS origins.
+ * @param {string[]} expectedHostnames Allowed HTTPS hostnames.
+ * @param {import('node:http').IncomingHttpHeaders} headers Request headers.
  * @returns {boolean} True when absent or exact.
  */
-function isAllowedOrigin(origin, expected) {
-  return !origin || origin === expected;
+function isAllowedOrigin(origin, expected, expectedHostnames, headers) {
+  if (!origin || expected.includes(origin)) return true;
+  return (
+    origin === 'null' &&
+    expectedHostnames.includes(requestHostname(headers.host)) &&
+    headers['sec-fetch-site'] === 'same-origin' &&
+    headers['sec-fetch-mode'] === 'navigate' &&
+    headers['sec-fetch-dest'] === 'document' &&
+    (!headers['sec-fetch-user'] || headers['sec-fetch-user'] === '?1')
+  );
+}
+
+/**
+ * Extracts a lowercase hostname from an HTTP Host header.
+ * @param {string|undefined} host Request Host header.
+ * @returns {string} Parsed hostname, or an empty string when invalid.
+ */
+function requestHostname(host) {
+  try {
+    return new URL(`https://${String(host || '')}`).hostname.toLowerCase();
+  } catch {
+    return '';
+  }
+}
+
+/**
+ * Normalizes the primary origin and optional aliases into a validated allowlist.
+ * @param {string} primary Primary HTTPS origin.
+ * @param {string[]|undefined} aliases Additional HTTPS origins.
+ * @returns {string[]|null} Unique origins, or null when an origin is invalid.
+ */
+function normalizePublicOrigins(primary, aliases) {
+  const candidates = [primary, ...(aliases || [])];
+  if (
+    candidates.some(
+      (origin) =>
+        typeof origin !== 'string' || !/^https:\/\/[^/]+$/.test(origin),
+    )
+  ) {
+    return null;
+  }
+  return [...new Set(candidates)];
+}
+
+/**
+ * Returns a bounded Origin value suitable for a structured denial log.
+ * @param {string|string[]|undefined} origin Rejected request Origin header.
+ * @returns {string} Bounded value without control characters.
+ */
+function safeOriginForLog(origin) {
+  return String(origin || 'missing')
+    .replace(/[\u0000-\u001f\u007f]/g, '')
+    .slice(0, 200);
 }
 
 /**

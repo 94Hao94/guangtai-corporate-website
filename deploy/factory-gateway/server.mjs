@@ -10,7 +10,7 @@ const DEFAULT_ORIGIN = 'https://www.tjgtkj.cn';
 /**
  * Reads and validates gateway environment configuration without exposing values.
  * @param {NodeJS.ProcessEnv} env Process environment.
- * @returns {{host: string, port: number, publicOrigin: string, passwordRecord: string, sessionSecret: Buffer}} Validated configuration.
+ * @returns {{host: string, port: number, publicOrigin: string, publicOrigins: string[], passwordRecord: string, sessionSecret: Buffer}} Validated configuration.
  * @throws {Error} When a required value is missing or invalid.
  */
 export function readGatewayConfig(env = process.env) {
@@ -20,6 +20,10 @@ export function readGatewayConfig(env = process.env) {
   );
   const encodedSecret = requireEnvironmentValue(env, 'FACTORY_SESSION_SECRET');
   const publicOrigin = env.FACTORY_PUBLIC_ORIGIN || DEFAULT_ORIGIN;
+  const publicOrigins = String(env.FACTORY_PUBLIC_ORIGINS || publicOrigin)
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
   const host = env.HOST || DEFAULT_HOST;
   const port = Number(env.PORT || DEFAULT_PORT);
 
@@ -31,12 +35,22 @@ export function readGatewayConfig(env = process.env) {
   if (!Number.isInteger(port) || port < 1 || port > 65_535) {
     throw new Error('PORT must be an integer between 1 and 65535.');
   }
-  if (!/^https:\/\/[^/]+$/.test(publicOrigin)) {
+  if (
+    !/^https:\/\/[^/]+$/.test(publicOrigin) ||
+    publicOrigins.some((origin) => !/^https:\/\/[^/]+$/.test(origin))
+  ) {
     throw new Error('FACTORY_PUBLIC_ORIGIN must be an HTTPS origin.');
   }
 
   const sessionSecret = decodeSessionSecret(encodedSecret);
-  return { host, port, publicOrigin, passwordRecord, sessionSecret };
+  return {
+    host,
+    port,
+    publicOrigin,
+    publicOrigins,
+    passwordRecord,
+    sessionSecret,
+  };
 }
 
 /**
@@ -52,6 +66,7 @@ export async function startFromEnvironment(env = process.env) {
     passwordRecord: config.passwordRecord,
     sessionCodec,
     publicOrigin: config.publicOrigin,
+    publicOrigins: config.publicOrigins,
     logger: logEvent,
   });
   const server = await startAccessServer({

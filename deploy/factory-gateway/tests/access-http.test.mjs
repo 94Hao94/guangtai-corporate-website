@@ -25,6 +25,7 @@ function createFixture() {
     }),
     sessionCodec,
     publicOrigin: PUBLIC_ORIGIN,
+    publicOrigins: [PUBLIC_ORIGIN, 'https://tjgtkj.cn', 'https://127.0.0.1'],
     logger: (entry) => logs.push(entry),
   });
   return { handler, logs, password: FIXTURE_PASSWORD };
@@ -75,6 +76,49 @@ async function postForm(fixture, path, fields, headers = {}) {
       ...headers,
     },
     body: formBody(fields),
+  });
+}
+
+/**
+ * Sends a URL-encoded request through Node's raw HTTP client so Host and
+ * Fetch Metadata headers reach the gateway unchanged.
+ * @param {{baseUrl: string}} fixture Running gateway fixture.
+ * @param {string} path Gateway path.
+ * @param {Record<string, string>} fields URL-encoded form fields.
+ * @param {Record<string, string>} headers Exact request headers.
+ * @returns {Promise<{status: number, body: string, headers: Headers}>} Captured response.
+ * @throws {Error} When the underlying HTTP request fails.
+ */
+async function postRawForm(fixture, path, fields, headers = {}) {
+  const target = new URL(path, fixture.baseUrl);
+  const body = formBody(fields);
+  return new Promise((resolve, reject) => {
+    const requestStream = http.request(
+      {
+        hostname: target.hostname,
+        port: target.port,
+        path: `${target.pathname}${target.search}`,
+        method: 'POST',
+        headers: {
+          'content-type': 'application/x-www-form-urlencoded',
+          'content-length': Buffer.byteLength(body),
+          ...headers,
+        },
+      },
+      (response) => {
+        const chunks = [];
+        response.on('data', (chunk) => chunks.push(chunk));
+        response.on('end', () =>
+          resolve({
+            status: response.statusCode || 0,
+            body: Buffer.concat(chunks).toString('utf8'),
+            headers: new Headers(response.headers),
+          }),
+        );
+      },
+    );
+    requestStream.on('error', reject);
+    requestStream.end(body);
   });
 }
 
@@ -164,6 +208,21 @@ test('login rejects external origins and fixed external return targets', async (
       { origin: 'https://evil.example' },
     );
     assert.equal(externalOrigin.status, 403);
+    assert.equal(fixture.logs.at(-1).event, 'origin_denied');
+    assert.equal(fixture.logs.at(-1).origin, 'https://evil.example');
+    assert.equal(
+      JSON.stringify(fixture.logs.at(-1)).includes('password'),
+      false,
+    );
+    assert.equal(JSON.stringify(fixture.logs.at(-1)).includes('cookie'), false);
+
+    const bareDomainOrigin = await postForm(
+      fixture,
+      '/login',
+      { password: fixture.password },
+      { origin: 'https://tjgtkj.cn' },
+    );
+    assert.equal(bareDomainOrigin.status, 303);
 
     const login = await postForm(
       fixture,
@@ -174,6 +233,62 @@ test('login rejects external origins and fixed external return targets', async (
     );
     assert.equal(login.status, 303);
     assert.equal(login.headers.get('location'), '/ai-factory/');
+  } finally {
+    await stopFixture(fixture);
+  }
+});
+
+test('Chrome null origins require the deployed same-origin navigation metadata', async () => {
+  const fixture = await startFixture();
+  try {
+    const accepted = await postRawForm(
+      fixture,
+      '/login',
+      { password: fixture.password },
+      {
+        origin: 'null',
+        host: 'www.tjgtkj.cn',
+        'sec-fetch-site': 'same-origin',
+        'sec-fetch-mode': 'navigate',
+        'sec-fetch-dest': 'document',
+        'sec-fetch-user': '?1',
+      },
+    );
+    assert.equal(accepted.status, 303);
+
+    for (const headers of [
+      {
+        origin: 'null',
+        host: 'evil.example',
+        'sec-fetch-site': 'same-origin',
+        'sec-fetch-mode': 'navigate',
+        'sec-fetch-dest': 'document',
+        'sec-fetch-user': '?1',
+      },
+      {
+        origin: 'null',
+        host: 'www.tjgtkj.cn',
+        'sec-fetch-site': 'cross-site',
+        'sec-fetch-mode': 'navigate',
+        'sec-fetch-dest': 'document',
+        'sec-fetch-user': '?1',
+      },
+      {
+        origin: 'null',
+        host: 'www.tjgtkj.cn',
+        'sec-fetch-site': 'same-origin',
+        'sec-fetch-mode': 'cors',
+        'sec-fetch-dest': 'empty',
+      },
+    ]) {
+      const rejected = await postRawForm(
+        fixture,
+        '/login',
+        { password: fixture.password },
+        headers,
+      );
+      assert.equal(rejected.status, 403);
+    }
   } finally {
     await stopFixture(fixture);
   }
@@ -230,12 +345,14 @@ test('production startup validates required values without echoing secrets', () 
     FACTORY_ACCESS_PASSWORD_HASH: passwordRecord,
     FACTORY_SESSION_SECRET: secret,
     FACTORY_PUBLIC_ORIGIN: PUBLIC_ORIGIN,
+    FACTORY_PUBLIC_ORIGINS: `${PUBLIC_ORIGIN},https://tjgtkj.cn`,
     HOST: '127.0.0.1',
     PORT: '5180',
   });
   assert.equal(config.port, 5180);
   assert.equal(config.host, '127.0.0.1');
   assert.equal(config.sessionSecret.length, 32);
+  assert.deepEqual(config.publicOrigins, [PUBLIC_ORIGIN, 'https://tjgtkj.cn']);
 
   const containerConfig = readGatewayConfig({
     FACTORY_ACCESS_PASSWORD_HASH: passwordRecord,
