@@ -1,5 +1,5 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", ".worktrees", "网站", "核心产品"]
+  "exclude": ["dist", ".worktrees", "output", "网站", "核心产品"]
 }

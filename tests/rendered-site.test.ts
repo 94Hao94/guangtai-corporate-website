@@ -176,20 +176,33 @@ describe('rendered corporate site', () => {
     );
   });
 
-  it('renders a readable company profile without the capability navigator on the about page', async () => {
+  it('renders the complete company profile before evidence and innovation', async () => {
     const aboutHtml = await readFile(routeFile('/about'), 'utf8');
+    const overview =
+      aboutHtml.match(/<section[^>]+id="overview"[\s\S]+?<\/section>/)?.[0] ??
+      '';
 
-    expect(aboutHtml).toMatch(
-      /<section[^>]+id="overview"[^>]+data-about-profile/,
-    );
-    expect(aboutHtml).toContain('让技术能力真正进入业务现场');
-    expect(aboutHtml).toContain('id="capabilities"');
+    expect(overview).toContain('data-about-profile');
+    expect(overview).toContain('扎实交付，是智能创新的底座');
+    expect(overview.match(/data-about-paragraph/g)).toHaveLength(4);
+    expect(overview).toContain('拥有127项软著专利');
+    expect(overview).toContain('集团自2023年起布局AI行业应用');
+    expect(overview).toContain('自2024年起，集团布局具身智能');
+    expect(overview).toContain('让智能真正进入业务现场');
+    expect(aboutHtml).toContain('id="evidence"');
+    expect(aboutHtml).toContain('id="innovation"');
     expect(aboutHtml.match(/data-about-fact/g)).toHaveLength(4);
-    expect(aboutHtml.match(/data-about-capability/g)).toHaveLength(4);
+    expect(aboutHtml.match(/data-about-credential/g)).toHaveLength(6);
+    expect(aboutHtml.match(/data-about-innovation/g)).toHaveLength(2);
     expect(aboutHtml).not.toContain('data-capability-navigator');
+    expect(aboutHtml).not.toContain('data-about-capability');
     expect(aboutHtml).not.toContain('role="tablist"');
     expect(aboutHtml).not.toContain('data-mobile-capability-accordion');
-    expect(aboutHtml).toContain('天津光泰科技集团成立于2013年，总部位于天津');
+    expect(aboutHtml).not.toContain('完整性说明');
+    expect(aboutHtml).not.toContain('与 Word 文档一致');
+    expect(aboutHtml).toContain('href="#overview">公司简介');
+    expect(aboutHtml).toContain('href="#evidence">企业实力');
+    expect(aboutHtml).toContain('href="#innovation">创新布局');
   });
 
   it('renders the AI factory experience link as the protected entry', async () => {

@@ -6,34 +6,11 @@ interface Props {
 }
 
 const { page } = Astro.props;
-const facts = [
-  {
-    value: '2013',
-    label: '成立时间',
-    copy: '持续服务数智化建设与技术落地',
-  },
-  {
-    value: '天津',
-    label: '集团总部',
-    copy: '服务京津冀并辐射全国',
-  },
-  {
-    value: '全流程',
-    label: '交付能力',
-    copy: '覆盖咨询、设计、实施与持续运营',
-  },
-  {
-    value: '多行业',
-    label: '服务场景',
-    copy: '面向教育、政府、医疗、金融及企事业单位',
-  },
-];
-const capabilityDescriptions = [
-  '从咨询规划、方案设计到实施联调、培训运维，形成贯穿项目生命周期的交付闭环。',
-  '将客户业务知识、工作流程和现有系统转化为可运行、可评估、可持续迭代的行业智能应用。',
-  '连接人形、四足与轮式设备，让智能能力进入实训科研、巡检、导览和运维现场。',
-  '覆盖软件开发、系统集成、音视频、综合安防、数据中心、信创适配与智能空间建设。',
-];
+const profile = page.companyProfile;
+
+if (!profile) {
+  throw new Error('The about page requires companyProfile content.');
+}
 ---
 
 <section
@@ -43,19 +20,40 @@ const capabilityDescriptions = [
   data-reveal
   aria-labelledby="about-profile-title"
 >
-  <header class="about-profile__header">
+  <header class="about-section-header about-profile__header">
     <p>01 / COMPANY PROFILE</p>
-    <h2 id="about-profile-title">让技术能力真正进入业务现场</h2>
+    <h2 id="about-profile-title">{profile.heading}</h2>
   </header>
 
-  <div class="about-profile__story">
-    <p class="about-profile__lead">{page.intro}</p>
-    <p>{page.positioning}</p>
-  </div>
-
-  <dl class="about-profile__facts" aria-label="企业概览">
+  <div class="about-profile__story" data-about-full-copy>
     {
-      facts.map((fact) => (
+      profile.paragraphs.map((paragraph, index) => (
+        <p
+          class:list={[index === 0 && 'about-profile__lead']}
+          data-about-paragraph
+        >
+          {paragraph}
+        </p>
+      ))
+    }
+  </div>
+</section>
+
+<section
+  id="evidence"
+  class="about-evidence inner-section"
+  data-reveal
+  aria-labelledby="about-evidence-title"
+>
+  <header class="about-section-header">
+    <p>02 / ENTERPRISE EVIDENCE</p>
+    <h2 id="about-evidence-title">企业实力</h2>
+    <span>以长期技术积累、专业资质与全流程交付能力支撑项目落地。</span>
+  </header>
+
+  <dl class="about-evidence__facts" aria-label="企业事实">
+    {
+      profile.facts.map((fact) => (
         <div data-about-fact>
           <dt>{fact.label}</dt>
           <dd>
@@ -66,31 +64,40 @@ const capabilityDescriptions = [
       ))
     }
   </dl>
+
+  <ul class="about-evidence__credentials" aria-label="企业资质">
+    {
+      profile.credentials.map((credential) => (
+        <li data-about-credential>{credential}</li>
+      ))
+    }
+  </ul>
 </section>
 
 <section
-  id="capabilities"
-  class="about-capabilities inner-section"
+  id="innovation"
+  class="about-innovation inner-section"
   data-reveal
-  aria-labelledby="about-capabilities-title"
+  aria-labelledby="about-innovation-title"
 >
-  <header class="about-capabilities__header">
-    <p>02 / CORE CAPABILITIES</p>
-    <h2 id="about-capabilities-title">从技术能力到项目结果</h2>
-    <span
-      >围绕客户真实业务目标，组织平台、软件、系统、空间与设备的协同交付。</span
-    >
+  <header class="about-section-header">
+    <p>03 / INNOVATION PATH</p>
+    <h2 id="about-innovation-title">从AI应用到具身智能</h2>
+    <span>以工程交付为基础，让智能能力进入教学、管理、服务与运营现场。</span>
   </header>
 
-  <div class="about-capabilities__grid">
+  <div class="about-innovation__grid">
     {
-      page.capabilities.map((capability, index) => (
-        <article data-about-capability>
-          <span>{String(index + 1).padStart(2, '0')}</span>
-          <h3>{capability}</h3>
-          <p>
-            {capabilityDescriptions[index] ?? capabilityDescriptions.at(-1)}
-          </p>
+      profile.innovation.map((item, index) => (
+        <article class:list={[index === 1 && 'is-light']} data-about-innovation>
+          <span>{item.since}</span>
+          <h3>{item.title}</h3>
+          <p>{item.copy}</p>
+          <ul aria-label={`${item.title}关键词`}>
+            {item.tags.map((tag) => (
+              <li>{tag}</li>
+            ))}
+          </ul>
         </article>
       ))
     }

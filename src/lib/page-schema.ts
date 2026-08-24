@@ -1,5 +1,30 @@
 import { z } from 'astro/zod';
 
+const companyProfileSchema = z.object({
+  heading: z.string().min(1),
+  paragraphs: z.array(z.string().min(1)).length(4),
+  facts: z
+    .array(
+      z.object({
+        value: z.string().min(1),
+        label: z.string().min(1),
+        copy: z.string().min(1),
+      }),
+    )
+    .length(4),
+  credentials: z.array(z.string().min(1)).min(1),
+  innovation: z
+    .array(
+      z.object({
+        since: z.string().min(1),
+        title: z.string().min(1),
+        copy: z.string().min(1),
+        tags: z.array(z.string().min(1)).min(1),
+      }),
+    )
+    .length(2),
+});
+
 export const pageSchema = z.object({
   id: z.string().min(1),
   path: z.string().startsWith('/'),
@@ -18,6 +43,7 @@ export const pageSchema = z.object({
     z.string().startsWith('/assets/'),
     z.string().startsWith('/assets/'),
   ]),
+  companyProfile: companyProfileSchema.optional(),
   capabilities: z.array(z.string().min(1)).min(1),
   scenarios: z.array(z.string().min(1)).min(1),
   delivery: z.array(z.string().min(1)).min(1),

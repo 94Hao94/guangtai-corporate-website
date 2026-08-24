@@ -22,6 +22,12 @@ const { page, ancestors, children, related } = Astro.props;
 const isAbout = page.path === '/about';
 const isContact = page.path === '/contact';
 const isFactory = page.path === '/guangtai-ai-factory';
+const aboutChapterItems = [
+  { href: '#overview' as const, label: '公司简介' },
+  { href: '#evidence' as const, label: '企业实力' },
+  { href: '#innovation' as const, label: '创新布局' },
+  { href: '#delivery' as const, label: '交付路径' },
+];
 ---
 
 <main
@@ -33,6 +39,7 @@ const isFactory = page.path === '/guangtai-ai-factory';
   data-page-motion
 >
   <InnerHero page={page} ancestors={ancestors} /><ChapterNav
+    items={isAbout ? aboutChapterItems : undefined}
     showMatrix={children.length > 0}
     showScenarios={!isAbout && !isFactory && !isContact}
     showDelivery={isAbout || (!isFactory && !isContact)}

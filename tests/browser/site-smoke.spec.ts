@@ -631,7 +631,7 @@ test('visual breadcrumbs are reserved for nested pages and stay close to the Her
   await expect(breadcrumbs).not.toHaveCSS('position', 'fixed');
 });
 
-test('about page presents a readable full-width company profile', async ({
+test('about page presents the complete profile before supporting evidence', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -640,10 +640,16 @@ test('about page presents a readable full-width company profile', async ({
   const profile = page.locator('#overview[data-about-profile]');
   await expect(profile).toBeVisible();
   await expect(profile.getByRole('heading', { level: 2 })).toHaveText(
-    '让技术能力真正进入业务现场',
+    '扎实交付，是智能创新的底座',
   );
-  await expect(profile.locator('[data-about-fact]')).toHaveCount(4);
-  await expect(page.locator('[data-about-capability]')).toHaveCount(4);
+  await expect(profile.locator('[data-about-paragraph]')).toHaveCount(4);
+  await expect(profile).toContainText('拥有127项软著专利');
+  await expect(profile).toContainText('集团自2023年起布局AI行业应用');
+  await expect(profile).toContainText('自2024年起，集团布局具身智能');
+  await expect(page.locator('#evidence [data-about-fact]')).toHaveCount(4);
+  await expect(page.locator('[data-about-credential]')).toHaveCount(6);
+  await expect(page.locator('[data-about-innovation]')).toHaveCount(2);
+  await expect(page.locator('[data-about-capability]')).toHaveCount(0);
   await expect(page.locator('[data-capability-navigator]')).toHaveCount(0);
   await expect(page.getByRole('tab')).toHaveCount(0);
 
@@ -654,10 +660,11 @@ test('about page presents a readable full-width company profile', async ({
     .locator('.about-profile__story')
     .evaluate((element) => element.getBoundingClientRect().width);
   expect(storyWidth).toBeLessThan(profileWidth);
-  expect(storyWidth).toBeGreaterThan(640);
+  expect(storyWidth).toBeGreaterThan(700);
+  expect(storyWidth).toBeLessThan(900);
 });
 
-test('mobile about page uses two-column facts and single-column capability cards', async ({
+test('mobile about page keeps full copy, two-column facts, and single-column innovation', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -684,6 +691,7 @@ test('mobile about page uses two-column facts and single-column capability cards
 
   const profile = page.locator('#overview[data-about-profile]');
   await expect(profile).toBeVisible();
+  await expect(profile.locator('[data-about-paragraph]')).toHaveCount(4);
   expect(
     await profile.evaluate((element) => element.getBoundingClientRect().top),
   ).toBeLessThan(844);
@@ -691,21 +699,22 @@ test('mobile about page uses two-column facts and single-column capability cards
     0,
   );
 
-  const facts = profile.locator('.about-profile__facts');
+  const facts = page.locator('.about-evidence__facts');
   const factColumns = await facts.evaluate(
     (element) =>
       getComputedStyle(element).gridTemplateColumns.split(' ').length,
   );
   expect(factColumns).toBe(2);
 
-  const capabilities = page.locator('.about-capabilities__grid');
-  await capabilities.scrollIntoViewIfNeeded();
-  const capabilityColumns = await capabilities.evaluate(
+  const innovation = page.locator('.about-innovation__grid');
+  await innovation.scrollIntoViewIfNeeded();
+  const innovationColumns = await innovation.evaluate(
     (element) =>
       getComputedStyle(element).gridTemplateColumns.split(' ').length,
   );
-  expect(capabilityColumns).toBe(1);
-  await expect(page.locator('[data-about-capability]')).toHaveCount(4);
+  expect(innovationColumns).toBe(1);
+  await expect(page.locator('[data-about-innovation]')).toHaveCount(2);
+  await expect(page.locator('[data-about-capability]')).toHaveCount(0);
   await expect(page.locator('body')).not.toHaveCSS('overflow-x', 'scroll');
 });
 
