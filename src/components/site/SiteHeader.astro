@@ -6,14 +6,18 @@ interface Props {
 }
 const { pages } = Astro.props;
 const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+// Higher-education AI is listed here as well as in its own industry group.
+const aiGroupPaths = [
+  '/solutions/common/ai',
+  '/solutions/industries/higher-education/ai',
+  '/solutions/common/embodied-intelligence',
+];
 const solutionGroups = [
   {
     title: 'AI 与具身智能',
     eyebrow: 'AI & EMBODIED',
-    pages: pages.filter(
-      (page) =>
-        page.path === '/solutions/common/ai' ||
-        page.path === '/solutions/common/embodied-intelligence',
+    pages: aiGroupPaths.flatMap(
+      (path) => pages.find((page) => page.path === path) ?? [],
     ),
   },
   {

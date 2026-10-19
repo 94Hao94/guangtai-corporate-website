@@ -1,0 +1,55 @@
+---
+import type { SitePage } from '../../lib/page-schema';
+
+interface Props {
+  highlight: NonNullable<SitePage['highlight']>;
+}
+const { highlight } = Astro.props;
+---
+
+<section id="highlight" class="inner-highlight inner-section" data-reveal>
+  <div class="inner-heading">
+    <p>{highlight.eyebrow}</p><h2>{highlight.title}</h2>
+  </div><p class="inner-highlight__intro">{highlight.intro}</p><div
+    class="inner-highlight__grid"
+    style={`--highlight-columns: ${highlight.items.length}; --highlight-tablet-columns: ${highlight.items.length === 3 ? 3 : 2}`}
+  >
+    {
+      highlight.items.map((item, index) => (
+        <article>
+          <>
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <h3>{item.title}</h3>
+            <p>{item.copy}</p>
+          </>
+        </article>
+      ))
+    }
+  </div>
+  {
+    highlight.steps && (
+      <ol class="inner-highlight__steps" aria-label="交付路径">
+        {highlight.steps.map((step) => (
+          <li>{step}</li>
+        ))}
+      </ol>
+    )
+  }
+  {
+    highlight.outcomes && (
+      <div class="inner-highlight__outcomes">
+        <h3>{highlight.outcomes.title}</h3>
+        <ul>
+          {highlight.outcomes.items.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+  {
+    highlight.closing && (
+      <p class="inner-highlight__closing">{highlight.closing}</p>
+    )
+  }
+</section>

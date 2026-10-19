@@ -8,9 +8,10 @@ interface Props {
 const { page } = Astro.props;
 const items = page.capabilities.map((title, index) => ({
   copy:
-    index === 0
+    page.capabilityDetails?.[index] ??
+    (index === 0
       ? page.positioning
-      : `围绕${page.scenarios[index] ?? page.scenarios.at(-1) ?? '真实业务场景'}，将能力组织为可验证、可交付、可持续运营的实施路径。`,
+      : `围绕${page.scenarios[index] ?? page.scenarios.at(-1) ?? '真实业务场景'}，将能力组织为可验证、可交付、可持续运营的实施路径。`),
   headline: index === 0 ? page.intro : title,
   id: `${page.id}-capability-${index + 1}`,
   number: String(index + 1).padStart(2, '0'),

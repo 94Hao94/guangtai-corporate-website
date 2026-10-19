@@ -10,6 +10,7 @@ import ContactForm from './ContactForm.astro';
 import DeliverySection from './DeliverySection.astro';
 import FactoryExperienceCta from './FactoryExperienceCta.astro';
 import InnerHero from './InnerHero.astro';
+import PageHighlight from './PageHighlight.astro';
 import RelatedPages from './RelatedPages.astro';
 import ScenarioSection from './ScenarioSection.astro';
 interface Props {
@@ -40,6 +41,7 @@ const aboutChapterItems = [
 >
   <InnerHero page={page} ancestors={ancestors} /><ChapterNav
     items={isAbout ? aboutChapterItems : undefined}
+    highlightLabel={page.highlight?.navLabel}
     showMatrix={children.length > 0}
     showScenarios={!isAbout && !isFactory && !isContact}
     showDelivery={isAbout || (!isFactory && !isContact)}
@@ -81,6 +83,7 @@ const aboutChapterItems = [
       <CapabilityNavigator page={page} />
     )
   }
+  {page.highlight && <PageHighlight highlight={page.highlight} />}
   {
     children.length > 0 && (
       <section id="matrix" class="inner-matrix inner-section" data-reveal>
