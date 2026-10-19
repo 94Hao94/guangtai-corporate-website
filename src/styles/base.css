@@ -30,7 +30,9 @@ img {
 }
 h1,
 h2,
-h3,
+h3 {
+  text-wrap: balance;
+}
 p {
   text-wrap: pretty;
 }
@@ -38,12 +40,25 @@ p {
   outline: 3px solid var(--cyan);
   outline-offset: 4px;
 }
+/* 白底上的独立配图统一加图片框，避免深色图边缘生硬。 */
+.factory-visual,
+.embodied-image,
+.scenario-image {
+  --frame-pad: clamp(0.6rem, 1.1vw, 1rem);
+  padding: var(--frame-pad);
+  border: 1px solid var(--line);
+  background: var(--ink-04);
+}
 .page-width {
   width: var(--page);
   margin-inline: auto;
 }
 .section-pad {
   padding: var(--section-space) max(48px, calc((100vw - 1440px) / 2));
+}
+/* 相邻白底区块只保留一份间距，避免出现双倍空白。 */
+.section-pad:not(.solutions) {
+  padding-bottom: calc(var(--section-space) / 2);
 }
 .eyebrow {
   display: flex;
@@ -96,18 +111,15 @@ p {
 .button:hover,
 .button:focus-visible,
 .inner-hero-button:hover,
-.inner-hero-button:focus-visible,
-.home-cta > a:hover,
-.home-cta > a:focus-visible {
+.inner-hero-button:focus-visible {
   transform: translateY(-0.14rem);
 }
 .button-primary:hover,
 .button-primary:focus-visible {
-  box-shadow: 0 0.7rem 1.35rem rgba(3, 61, 103, 0.22);
+  box-shadow: 0 0.7rem 1.35rem rgba(0, 32, 72, 0.22);
 }
 .button:active,
-.inner-hero-button:active,
-.home-cta > a:active {
+.inner-hero-button:active {
   transform: scale(0.98);
 }
 .button-primary {
