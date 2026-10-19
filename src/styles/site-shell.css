@@ -22,8 +22,8 @@
   object-fit: contain;
 }
 .brand-logo--header {
-  height: 2.85rem;
-  max-width: min(15.5rem, 42vw);
+  height: 4.5rem;
+  max-width: min(17rem, 42vw);
 }
 .brand-logo--footer {
   height: 6.25rem;
@@ -429,7 +429,7 @@
     padding-inline: 18px;
   }
   .brand-logo--header {
-    height: 2.4rem;
+    height: 3.4rem;
     max-width: 13rem;
   }
   .primary-nav {

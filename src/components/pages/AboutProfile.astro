@@ -1,0 +1,105 @@
+---
+import type { SitePage } from '../../lib/page-schema';
+
+interface Props {
+  page: SitePage;
+}
+
+const { page } = Astro.props;
+const profile = page.companyProfile;
+
+if (!profile) {
+  throw new Error('The about page requires companyProfile content.');
+}
+---
+
+<section
+  id="overview"
+  class="about-profile inner-section"
+  data-about-profile
+  data-reveal
+  aria-labelledby="about-profile-title"
+>
+  <header class="about-section-header about-profile__header">
+    <p>01 / COMPANY PROFILE</p>
+    <h2 id="about-profile-title">{profile.heading}</h2>
+  </header>
+
+  <div class="about-profile__story" data-about-full-copy>
+    {
+      profile.paragraphs.map((paragraph, index) => (
+        <p
+          class:list={[index === 0 && 'about-profile__lead']}
+          data-about-paragraph
+        >
+          {paragraph}
+        </p>
+      ))
+    }
+  </div>
+</section>
+
+<section
+  id="evidence"
+  class="about-evidence inner-section"
+  data-reveal
+  aria-labelledby="about-evidence-title"
+>
+  <header class="about-section-header">
+    <p>02 / ENTERPRISE EVIDENCE</p>
+    <h2 id="about-evidence-title">企业实力</h2>
+    <span>以长期技术积累、专业资质与全流程交付能力支撑项目落地。</span>
+  </header>
+
+  <dl class="about-evidence__facts" aria-label="企业事实">
+    {
+      profile.facts.map((fact) => (
+        <div data-about-fact>
+          <dt>{fact.label}</dt>
+          <dd>
+            <strong>{fact.value}</strong>
+            <span>{fact.copy}</span>
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+
+  <ul class="about-evidence__credentials" aria-label="企业资质">
+    {
+      profile.credentials.map((credential) => (
+        <li data-about-credential>{credential}</li>
+      ))
+    }
+  </ul>
+</section>
+
+<section
+  id="innovation"
+  class="about-innovation inner-section"
+  data-reveal
+  aria-labelledby="about-innovation-title"
+>
+  <header class="about-section-header">
+    <p>03 / INNOVATION PATH</p>
+    <h2 id="about-innovation-title">从AI应用到具身智能</h2>
+    <span>以工程交付为基础，让智能能力进入教学、管理、服务与运营现场。</span>
+  </header>
+
+  <div class="about-innovation__grid">
+    {
+      profile.innovation.map((item, index) => (
+        <article class:list={[index === 1 && 'is-light']} data-about-innovation>
+          <span>{item.since}</span>
+          <h3>{item.title}</h3>
+          <p>{item.copy}</p>
+          <ul aria-label={`${item.title}关键词`}>
+            {item.tags.map((tag) => (
+              <li>{tag}</li>
+            ))}
+          </ul>
+        </article>
+      ))
+    }
+  </div>
+</section>

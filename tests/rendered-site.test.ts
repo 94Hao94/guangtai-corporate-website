@@ -53,7 +53,7 @@ describe('rendered corporate site', () => {
     const homepage = await readFile(resolve('dist/index.html'), 'utf8');
     expect(homepage).toContain('<h1>光启未来 智领时代</h1>');
     expect(homepage).toContain(
-      '以AI应用工厂为平台底座，融合软件开发、系统集成、空间智能与具身设备。',
+      '成立于2013年，总部位于天津，面向教育、政府、医疗、金融及企事业单位提供数智化建设与服务。',
     );
     expect(homepage).toContain(
       'data-spline-scene="https://prod.spline.design/JCd7StIa9lqPaRfw/scene.splinecode?v=robot-v2"',
@@ -97,7 +97,7 @@ describe('rendered corporate site', () => {
     const favicon = homepage.match(/<link\b[^>]*\brel="icon"[^>]*>/)?.[0] ?? '';
 
     expect(favicon).toContain('href="/brand/guangtai-logo-gray-square.png"');
-    expect(header).toContain('src="/brand/guangtai-logo-color.png"');
+    expect(header).toContain('src="/brand/lumitai-logo.png"');
     expect(footer).toContain('src="/brand/guangtai-logo-white-square.png"');
     expect(homepage).not.toContain('class="brand-mark"');
   });
@@ -176,43 +176,48 @@ describe('rendered corporate site', () => {
     );
   });
 
-  it('renders an accessible capability navigator on the about page', async () => {
+  it('renders the complete company profile before evidence and innovation', async () => {
     const aboutHtml = await readFile(routeFile('/about'), 'utf8');
+    const overview =
+      aboutHtml.match(/<section[^>]+id="overview"[\s\S]+?<\/section>/)?.[0] ??
+      '';
 
-    expect(aboutHtml).toMatch(
-      /<section[^>]+id="overview"[^>]+data-capability-navigator/,
-    );
-    expect(aboutHtml).not.toMatch(
-      /<section[^>]+id="capabilities"[^>]+data-capability-navigator/,
-    );
-    expect(aboutHtml).toContain('role="tablist"');
-    expect(aboutHtml).toContain('role="tab"');
-    expect(aboutHtml).toContain('role="tabpanel"');
-    expect(aboutHtml).toContain('data-mobile-capability-accordion');
-    expect(
-      aboutHtml.match(/data-mobile-capability-trigger="\d+"/g),
-    ).toHaveLength(4);
-    expect(aboutHtml.match(/data-mobile-capability-panel="\d+"/g)).toHaveLength(
-      4,
-    );
-    expect(aboutHtml).toContain('aria-expanded="true"');
-    expect(aboutHtml).toContain(
-      'aria-controls="about-capability-1-mobile-panel"',
-    );
+    expect(overview).toContain('data-about-profile');
+    expect(overview).toContain('扎实交付，是智能创新的底座');
+    expect(overview.match(/data-about-paragraph/g)).toHaveLength(4);
+    expect(overview).toContain('拥有127项软著专利');
+    expect(overview).toContain('集团自2023年起布局AI行业应用');
+    expect(overview).toContain('自2024年起，集团布局具身智能');
+    expect(overview).toContain('让智能真正进入业务现场');
+    expect(aboutHtml).toContain('id="evidence"');
+    expect(aboutHtml).toContain('id="innovation"');
+    expect(aboutHtml.match(/data-about-fact/g)).toHaveLength(4);
+    expect(aboutHtml.match(/data-about-credential/g)).toHaveLength(6);
+    expect(aboutHtml.match(/data-about-innovation/g)).toHaveLength(2);
+    expect(aboutHtml).not.toContain('data-capability-navigator');
+    expect(aboutHtml).not.toContain('data-about-capability');
+    expect(aboutHtml).not.toContain('role="tablist"');
+    expect(aboutHtml).not.toContain('data-mobile-capability-accordion');
+    expect(aboutHtml).not.toContain('完整性说明');
+    expect(aboutHtml).not.toContain('与 Word 文档一致');
+    expect(aboutHtml).toContain('href="#overview">公司简介');
+    expect(aboutHtml).toContain('href="#evidence">企业实力');
+    expect(aboutHtml).toContain('href="#innovation">创新布局');
   });
 
-  it('keeps the AI factory experience control visibly unavailable', async () => {
+  it('renders the AI factory experience link as the protected entry', async () => {
     const factoryHtml = await readFile(
       routeFile('/guangtai-ai-factory'),
       'utf8',
     );
-    const experienceButton =
-      factoryHtml.match(/<button\b[^>]*>\s*前去体验\s*<\/button>/)?.[0] ?? '';
+    const experienceLink =
+      factoryHtml.match(/<a\b[^>]*>\s*前去体验\s*<\/a>/)?.[0] ?? '';
 
-    expect(experienceButton).not.toBe('');
-    expect(experienceButton).toMatch(/\sdisabled(?:\s|=|>)/);
-    expect(experienceButton).toContain('aria-disabled="true"');
-    expect(experienceButton).not.toContain('href=');
+    expect(experienceLink).not.toBe('');
+    expect(experienceLink).toContain('href="/ai-factory/"');
+    expect(experienceLink).not.toContain('aria-disabled');
+    expect(experienceLink).not.toMatch(/\sdisabled(?:\s|=|>)/);
+    expect(factoryHtml).toContain('输入访问密码并通过安全验证后进入应用工厂。');
   });
 
   it('renders the contact project form without an unconfigured project CTA', async () => {
@@ -281,7 +286,11 @@ describe('rendered corporate site', () => {
 
   it('renders all internal page links to known routes', async () => {
     const contentPages = await pages();
-    const routes = new Set(['/', ...contentPages.map((page) => page.path)]);
+    const routes = new Set([
+      '/',
+      '/ai-factory/',
+      ...contentPages.map((page) => page.path),
+    ]);
     const files = [
       resolve('dist/index.html'),
       ...contentPages.map((page) => routeFile(page.path)),

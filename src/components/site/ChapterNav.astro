@@ -1,22 +1,27 @@
 ---
 interface Props {
+  items?: Array<{ href: `#${string}`; label: string }>;
   showCapabilities?: boolean;
   showMatrix?: boolean;
   showScenarios?: boolean;
   showDelivery?: boolean;
 }
 const {
+  items,
   showCapabilities = true,
   showMatrix = false,
   showScenarios = true,
   showDelivery = true,
 } = Astro.props;
+const chapterItems = items ?? [
+  { href: '#overview', label: '方案概述' },
+  ...(showMatrix ? [{ href: '#matrix', label: '场景矩阵' }] : []),
+  ...(showCapabilities ? [{ href: '#capabilities', label: '核心能力' }] : []),
+  ...(showScenarios ? [{ href: '#scenarios', label: '应用场景' }] : []),
+  ...(showDelivery ? [{ href: '#delivery', label: '实施路径' }] : []),
+];
 ---
 
 <nav class="chapter-nav" aria-label="页内导航">
-  <a href="#overview">方案概述</a>{
-    showMatrix && <a href="#matrix">场景矩阵</a>
-  }{showCapabilities && <a href="#capabilities">核心能力</a>}{
-    showScenarios && <a href="#scenarios">应用场景</a>
-  }{showDelivery && <a href="#delivery">实施路径</a>}
+  {chapterItems.map((item) => <a href={item.href}>{item.label}</a>)}
 </nav>

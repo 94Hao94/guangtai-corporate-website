@@ -173,6 +173,166 @@
 .mobile-capability-accordion {
   display: none;
 }
+.about-profile {
+  background: #fff;
+}
+.about-section-header {
+  max-width: 58rem;
+}
+.about-section-header > p {
+  margin: 0 0 1rem;
+  color: var(--family);
+  font: 700 0.7rem var(--font-mono);
+  letter-spacing: 0.15em;
+}
+.about-section-header h2 {
+  max-width: 16ch;
+  margin: 0;
+  font-size: clamp(2.7rem, 5vw, 5rem);
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+}
+.about-section-header > span {
+  display: block;
+  max-width: 42rem;
+  margin-top: 1.5rem;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+.about-profile__story {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 54rem;
+  margin-top: clamp(2.5rem, 5vw, 4.5rem);
+}
+.about-profile__story p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.03rem;
+  line-height: 1.95;
+}
+.about-profile__story .about-profile__lead {
+  color: var(--text);
+  font-size: clamp(1.14rem, 1.65vw, 1.4rem);
+  font-weight: 600;
+  line-height: 1.82;
+}
+.about-evidence {
+  background: var(--family-soft);
+}
+.about-evidence__facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  margin: clamp(2.5rem, 5vw, 4.5rem) 0 0;
+  background: var(--line);
+  border-block: 1px solid var(--line);
+}
+.about-evidence__facts > div {
+  min-width: 0;
+  padding: 1.5rem clamp(1rem, 2.4vw, 2rem);
+  background: #fff;
+}
+.about-evidence__facts dt {
+  color: var(--muted);
+  font: 700 0.65rem var(--font-mono);
+  letter-spacing: 0.12em;
+}
+.about-evidence__facts dd {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1.25rem 0 0;
+}
+.about-evidence__facts strong {
+  color: var(--family);
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  line-height: 1;
+}
+.about-evidence__facts span {
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.65;
+}
+.about-evidence__credentials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.about-evidence__credentials li {
+  padding: 0.6rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--family) 26%, var(--line));
+  border-radius: 999px;
+  background: #fff;
+  color: var(--text);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+.about-innovation {
+  background: #fff;
+}
+.about-innovation__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: clamp(2.5rem, 5vw, 4.5rem);
+}
+.about-innovation__grid article {
+  min-height: 20rem;
+  padding: clamp(1.5rem, 3vw, 2.75rem);
+  border: 1px solid #123f59;
+  background: #052f4b;
+  color: #fff;
+}
+.about-innovation__grid article.is-light {
+  border-color: var(--line);
+  background: var(--family-soft);
+  color: var(--text);
+}
+.about-innovation__grid article > span {
+  color: #4edaf2;
+  font: 700 0.7rem var(--font-mono);
+  letter-spacing: 0.12em;
+}
+.about-innovation__grid article.is-light > span {
+  color: var(--family);
+}
+.about-innovation__grid h3 {
+  max-width: 15ch;
+  margin: clamp(2.5rem, 5vw, 4.5rem) 0 1rem;
+  font-size: clamp(1.45rem, 2.4vw, 2.25rem);
+  line-height: 1.25;
+}
+.about-innovation__grid p {
+  max-width: 34rem;
+  margin: 0;
+  color: #c6dbe5;
+  line-height: 1.8;
+}
+.about-innovation__grid article.is-light p {
+  color: var(--muted);
+}
+.about-innovation__grid ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.about-innovation__grid li {
+  padding: 0.45rem 0.65rem;
+  border: 1px solid rgb(255 255 255 / 24%);
+  color: #dcecf2;
+  font-size: 0.76rem;
+}
+.about-innovation__grid article.is-light li {
+  border-color: color-mix(in srgb, var(--family) 28%, var(--line));
+  color: var(--text);
+}
 .inner-heading {
   max-width: 52rem;
   margin-bottom: 3rem;
@@ -328,18 +488,33 @@
 .factory-experience span {
   color: #acc5d6;
 }
-.factory-experience button,
+.factory-experience a,
 .contact-form-action button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 3.25rem;
   padding: 0 1.35rem;
   border: 1px solid var(--cyan);
   color: var(--blue-950);
   background: var(--cyan);
   font: 700 0.9rem var(--font-sans);
+  text-decoration: none;
 }
-.factory-experience button:disabled {
-  cursor: not-allowed;
-  opacity: 0.62;
+.factory-experience a {
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease;
+}
+.factory-experience a:hover {
+  color: var(--cyan);
+  background: transparent;
+  transform: translateY(-2px);
+}
+.factory-experience a:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 4px;
 }
 .contact-form-section {
   background: var(--family-soft);
@@ -659,6 +834,9 @@
   .delivery-steps {
     grid-template-columns: repeat(2, 1fr);
   }
+  .about-evidence__facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 @media (max-width: 700px) {
   .inner-hero {
@@ -784,6 +962,73 @@
     font-size: 13px;
     line-height: 1.65;
   }
+  .about-section-header h2 {
+    max-width: 12ch;
+    font-size: 32px;
+    line-height: 1.15;
+  }
+  .about-profile__story {
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .about-profile__story p {
+    font-size: 15px;
+    line-height: 1.85;
+  }
+  .about-profile__story .about-profile__lead {
+    font-size: 16px;
+    line-height: 1.85;
+  }
+  .about-evidence__facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 2.5rem;
+  }
+  .about-evidence__facts > div {
+    min-height: 10.5rem;
+    padding: 1.25rem 1rem;
+  }
+  .about-evidence__facts dd {
+    margin-top: 1rem;
+  }
+  .about-evidence__facts strong {
+    font-size: 26px;
+  }
+  .about-evidence__facts span {
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .about-section-header > span {
+    margin-top: 1rem;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .about-evidence__credentials {
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+  .about-evidence__credentials li {
+    padding: 0.5rem 0.7rem;
+    font-size: 12px;
+  }
+  .about-innovation__grid {
+    grid-template-columns: 1fr;
+    margin-top: 2rem;
+  }
+  .about-innovation__grid article {
+    min-height: 0;
+    padding: 1.5rem;
+  }
+  .about-innovation__grid h3 {
+    margin: 2rem 0 0.75rem;
+    font-size: 22px;
+  }
+  .about-innovation__grid p {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .about-innovation__grid ul {
+    margin-top: 1.5rem;
+  }
   .matrix-grid,
   .related-grid,
   .scenario-grid,
@@ -812,7 +1057,7 @@
     grid-template-columns: 1fr;
     padding-inline: 1.125rem;
   }
-  .factory-experience button {
+  .factory-experience a {
     width: fit-content;
   }
   .contact-intro {

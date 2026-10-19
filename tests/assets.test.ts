@@ -25,6 +25,29 @@ async function pageAssetPaths(): Promise<string[]> {
 }
 
 describe('MVP asset migration', () => {
+  it('keeps the Baidu site verification file at the public root', async () => {
+    const verification = await readFile(
+      resolve('public/baidu_verify_codeva-NEJM3vvrz6.html'),
+      'utf8',
+    );
+
+    expect(verification).toBe('8cf64d84f5f06c47aece9dfac0214064');
+  });
+
+  it('keeps the production sitemap discoverable to search crawlers', async () => {
+    const robots = await readFile(resolve('public/robots.txt'), 'utf8');
+
+    expect(robots).toBe(
+      [
+        'User-agent: *',
+        'Allow: /',
+        '',
+        'Sitemap: https://www.tjgtkj.cn/sitemap-index.xml',
+        '',
+      ].join('\n'),
+    );
+  });
+
   it('resolves every content and homepage image through Astro', async () => {
     const paths = new Set([...homeAssetPaths, ...(await pageAssetPaths())]);
     for (const path of paths) {

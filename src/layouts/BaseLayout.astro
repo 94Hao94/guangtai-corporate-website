@@ -24,6 +24,14 @@ const organization = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: '天津光泰科技集团',
+  description:
+    '天津光泰科技集团成立于2013年，总部位于天津，提供软件开发、系统集成、AI应用工厂、具身智能与数智化建设服务。',
+  foundingDate: '2013',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: '天津',
+    addressCountry: 'CN',
+  },
   url: new URL('/', Astro.site ?? Astro.url.origin).href,
 };
 ---

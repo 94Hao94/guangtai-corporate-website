@@ -73,6 +73,16 @@ test('desktop navigation is keyboard operable and closes with Escape', async ({
 }) => {
   test.slow();
   const errors = collectRuntimeErrors(page);
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'hardwareConcurrency', {
+      configurable: true,
+      value: 4,
+    });
+    Object.defineProperty(navigator, 'deviceMemory', {
+      configurable: true,
+      value: 4,
+    });
+  });
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
 
@@ -410,6 +420,16 @@ test('homepage chapter signposts keep business sections identifiable', async ({
 test('homepage reveal animations initialize after returning through the client router', async ({
   page,
 }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'hardwareConcurrency', {
+      configurable: true,
+      value: 4,
+    });
+    Object.defineProperty(navigator, 'deviceMemory', {
+      configurable: true,
+      value: 4,
+    });
+  });
   await page.goto('/');
 
   /** Returns to the homepage through the client router after visiting the AI factory page. */
@@ -611,67 +631,40 @@ test('visual breadcrumbs are reserved for nested pages and stay close to the Her
   await expect(breadcrumbs).not.toHaveCSS('position', 'fixed');
 });
 
-test('about capability navigator updates its panel on hover and focus', async ({
+test('about page presents the complete profile before supporting evidence', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/about/');
 
-  const navigator = page.locator('#overview[data-capability-navigator]');
-  const tabs = navigator.getByRole('tab');
-  const panels = navigator.locator('[data-capability-panel]');
-  const visiblePanel = navigator.locator('[role="tabpanel"]:visible');
-  await expect(tabs).toHaveCount(4);
-  await expect(panels).toHaveCount(4);
-  await expect(visiblePanel).toHaveCount(1);
-  const tabAttributes = await tabs.evaluateAll((elements) =>
-    elements.map((element) => ({
-      id: element.id,
-      controls: element.getAttribute('aria-controls'),
-      text: element.textContent?.trim() ?? '',
-    })),
+  const profile = page.locator('#overview[data-about-profile]');
+  await expect(profile).toBeVisible();
+  await expect(profile.getByRole('heading', { level: 2 })).toHaveText(
+    '扎实交付，是智能创新的底座',
   );
-  for (const [index, tab] of tabAttributes.entries()) {
-    expect(tab.text).toContain(`0${index + 1}`);
-    expect(tab.id).not.toBe('');
-    expect(tab.controls).not.toBeNull();
-    expect(tab.controls).not.toBe('');
-  }
-  expect(new Set(tabAttributes.map((tab) => tab.id)).size).toBe(4);
-  expect(new Set(tabAttributes.map((tab) => tab.controls)).size).toBe(4);
+  await expect(profile.locator('[data-about-paragraph]')).toHaveCount(4);
+  await expect(profile).toContainText('拥有127项软著专利');
+  await expect(profile).toContainText('集团自2023年起布局AI行业应用');
+  await expect(profile).toContainText('自2024年起，集团布局具身智能');
+  await expect(page.locator('#evidence [data-about-fact]')).toHaveCount(4);
+  await expect(page.locator('[data-about-credential]')).toHaveCount(6);
+  await expect(page.locator('[data-about-innovation]')).toHaveCount(2);
+  await expect(page.locator('[data-about-capability]')).toHaveCount(0);
+  await expect(page.locator('[data-capability-navigator]')).toHaveCount(0);
+  await expect(page.getByRole('tab')).toHaveCount(0);
 
-  const hoveredTab = tabs.nth(1);
-  const hoveredTabId = await hoveredTab.getAttribute('id');
-  const hoveredTabControls = await hoveredTab.getAttribute('aria-controls');
-  await hoveredTab.hover();
-  await expect(hoveredTab).toHaveAttribute('aria-selected', 'true');
-  await expect(visiblePanel).toHaveAttribute('id', hoveredTabControls ?? '');
-  await expect(visiblePanel).toHaveAttribute(
-    'aria-labelledby',
-    hoveredTabId ?? '',
+  const profileWidth = await profile.evaluate(
+    (element) => element.getBoundingClientRect().width,
   );
-  await expect(visiblePanel).toContainText('软件定制、AI编程与系统集成');
-  await expect(
-    navigator.locator('[role="tab"][aria-selected="true"]'),
-  ).toHaveCount(1);
-
-  const focusedTab = tabs.nth(2);
-  const focusedTabId = await focusedTab.getAttribute('id');
-  const focusedTabControls = await focusedTab.getAttribute('aria-controls');
-  await focusedTab.focus();
-  await expect(focusedTab).toHaveAttribute('aria-selected', 'true');
-  await expect(visiblePanel).toHaveAttribute('id', focusedTabControls ?? '');
-  await expect(visiblePanel).toHaveAttribute(
-    'aria-labelledby',
-    focusedTabId ?? '',
-  );
-  await expect(visiblePanel).toContainText('音视频、安全、基础设施与空间智能');
-  await expect(
-    navigator.locator('[role="tab"][aria-selected="true"]'),
-  ).toHaveCount(1);
+  const storyWidth = await profile
+    .locator('.about-profile__story')
+    .evaluate((element) => element.getBoundingClientRect().width);
+  expect(storyWidth).toBeLessThan(profileWidth);
+  expect(storyWidth).toBeGreaterThan(700);
+  expect(storyWidth).toBeLessThan(900);
 });
 
-test('mobile inner page reaches an accessible capability accordion in the first viewport', async ({
+test('mobile about page keeps full copy, two-column facts, and single-column innovation', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -696,23 +689,36 @@ test('mobile inner page reaches an accessible capability accordion in the first 
     )
     .toBe(46);
 
-  const accordion = page.locator('[data-mobile-capability-accordion]');
-  await expect(accordion).toBeVisible();
+  const profile = page.locator('#overview[data-about-profile]');
+  await expect(profile).toBeVisible();
+  await expect(profile.locator('[data-about-paragraph]')).toHaveCount(4);
   expect(
-    await accordion.evaluate((element) => element.getBoundingClientRect().top),
+    await profile.evaluate((element) => element.getBoundingClientRect().top),
   ).toBeLessThan(844);
+  await expect(page.locator('[data-mobile-capability-accordion]')).toHaveCount(
+    0,
+  );
 
-  const triggers = accordion.locator('[data-mobile-capability-trigger]');
-  await expect(triggers).toHaveCount(4);
-  await triggers.nth(1).click();
-  await expect(triggers.nth(1)).toHaveAttribute('aria-expanded', 'true');
-  await expect(triggers.first()).toHaveAttribute('aria-expanded', 'false');
-  await expect(
-    accordion.locator('[data-mobile-capability-panel]:visible'),
-  ).toHaveCount(1);
+  const facts = page.locator('.about-evidence__facts');
+  const factColumns = await facts.evaluate(
+    (element) =>
+      getComputedStyle(element).gridTemplateColumns.split(' ').length,
+  );
+  expect(factColumns).toBe(2);
+
+  const innovation = page.locator('.about-innovation__grid');
+  await innovation.scrollIntoViewIfNeeded();
+  const innovationColumns = await innovation.evaluate(
+    (element) =>
+      getComputedStyle(element).gridTemplateColumns.split(' ').length,
+  );
+  expect(innovationColumns).toBe(1);
+  await expect(page.locator('[data-about-innovation]')).toHaveCount(2);
+  await expect(page.locator('[data-about-capability]')).toHaveCount(0);
+  await expect(page.locator('body')).not.toHaveCSS('overflow-x', 'scroll');
 });
 
-test('AI factory experience control is disabled and does not navigate', async ({
+test('AI factory experience link targets the protected entry', async ({
   page,
 }) => {
   await page.goto('/guangtai-ai-factory/');
@@ -720,14 +726,15 @@ test('AI factory experience control is disabled and does not navigate', async ({
   const experienceSection = page.locator('.factory-experience');
   await experienceSection.scrollIntoViewIfNeeded();
   await expect(experienceSection).toBeVisible();
-  const experienceButton = page.getByRole('button', { name: '前去体验' });
-  await expect(experienceButton).toBeDisabled();
-  await expect(experienceButton).toHaveAttribute('aria-disabled', 'true');
-  await expect(experienceButton).not.toHaveAttribute('href');
-
-  const initialUrl = page.url();
-  await experienceButton.click({ force: true });
-  await expect(page).toHaveURL(initialUrl);
+  const experienceLink = page.getByRole('link', { name: '前去体验' });
+  await expect(experienceLink).toBeVisible();
+  await expect(experienceLink).toHaveAttribute('href', '/ai-factory/');
+  await experienceLink.focus();
+  await expect(experienceLink).toBeFocused();
+  await Promise.all([
+    page.waitForURL(/\/ai-factory\/$/),
+    experienceLink.press('Enter'),
+  ]);
 });
 
 test('contact project form accepts labeled details and reports its unconfigured channel', async ({
