@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const expectedSolutionLinks = 24;
+const expectedSolutionLinks = 25;
 const approvedViewports = [
   { name: 'mobile-320x700', width: 320, height: 700 },
   { name: 'mobile-375x812', width: 375, height: 812 },

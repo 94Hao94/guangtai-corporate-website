@@ -266,11 +266,53 @@ describe('rendered corporate site', () => {
     expect(nextGroupStart).toBeGreaterThan(groupStart);
     expect(solutionRoutes).toEqual([
       '/solutions/common/ai',
+      '/solutions/industries/higher-education/ai',
       '/solutions/common/embodied-intelligence',
     ]);
     expect(firstGroup).not.toContain('href="/guangtai-ai-factory"');
     expect(factoryLink).toBeGreaterThan(primaryNavigationStart);
     expect(factoryLink).toBeLessThan(solutionsMenuStart);
+  });
+
+  it('presents AI empowerment and LLM delivery as two homepage factory offerings', async () => {
+    const homepage = await readFile(resolve('dist/index.html'), 'utf8');
+    const offeringsStart = homepage.indexOf('class="factory-offerings"');
+    const offerings = homepage.slice(
+      offeringsStart,
+      homepage.indexOf('</section>', offeringsStart),
+    );
+
+    expect(offeringsStart).toBeGreaterThan(-1);
+    expect(offerings).toContain('AI 赋能');
+    expect(offerings).toContain('提示词工程');
+    expect(offerings).toContain('智能体搭建');
+    expect(offerings).toContain('工作流重塑');
+    expect(offerings).toContain('大模型应用落地开发');
+    expect(offerings).toContain('href="/solutions/common/ai"');
+    expect(offerings).toContain('href="/guangtai-ai-factory#highlight"');
+  });
+
+  it('renders the LLM delivery highlight on the AI factory page', async () => {
+    const html = await readFile(routeFile('/guangtai-ai-factory'), 'utf8');
+    const highlightStart = html.indexOf('id="highlight"');
+    const highlight = html.slice(
+      highlightStart,
+      html.indexOf('</section>', highlightStart),
+    );
+
+    expect(html).toContain('href="#highlight"');
+    expect(highlightStart).toBeGreaterThan(html.indexOf('id="overview"'));
+    expect(highlight).toContain('大模型应用落地开发');
+    for (const title of [
+      '行业知识库',
+      '场景智能体',
+      '业务系统集成',
+      '部署与持续优化',
+    ]) {
+      expect(highlight).toContain(title);
+    }
+    expect(highlight.match(/<li[^>]*>/g)).toHaveLength(5);
+    expect(highlight).toContain('经得起使用和评估');
   });
 
   it('renders four mobile solution family controls and a project contact action', async () => {

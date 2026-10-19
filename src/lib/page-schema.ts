@@ -25,6 +25,24 @@ const companyProfileSchema = z.object({
     .length(2),
 });
 
+const pageHighlightSchema = z.object({
+  navLabel: z.string().min(1),
+  eyebrow: z.string().min(1),
+  title: z.string().min(1),
+  intro: z.string().min(1),
+  items: z
+    .array(
+      z.object({
+        title: z.string().min(1),
+        copy: z.string().min(1),
+      }),
+    )
+    .min(3)
+    .max(4),
+  steps: z.array(z.string().min(1)).min(2).optional(),
+  closing: z.string().min(1).optional(),
+});
+
 export const pageSchema = z.object({
   id: z.string().min(1),
   path: z.string().startsWith('/'),
@@ -44,6 +62,7 @@ export const pageSchema = z.object({
     z.string().startsWith('/assets/'),
   ]),
   companyProfile: companyProfileSchema.optional(),
+  highlight: pageHighlightSchema.optional(),
   capabilities: z.array(z.string().min(1)).min(1),
   scenarios: z.array(z.string().min(1)).min(1),
   delivery: z.array(z.string().min(1)).min(1),

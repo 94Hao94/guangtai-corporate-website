@@ -47,6 +47,32 @@ export const factoryLayers = [
   ['工程交付层', 'AI编程、插件工具、API网关、日志评估、私有化部署'],
 ] as const;
 
+export const factoryOfferings = [
+  {
+    title: 'AI 赋能',
+    lead: '让 AI 从会用工具，走向解决真实问题',
+    points: [
+      '提示词工程：围绕岗位、课程和业务任务形成可复用的使用方法',
+      '智能体搭建：将知识、工具和流程组合成岗位助手或教学助手',
+      '工作流重塑：把 AI 接入资料处理、会议办公、教学服务和运维流程',
+    ],
+    action: '查看 AI 赋能',
+    href: '/solutions/common/ai',
+  },
+  {
+    title: '大模型应用落地开发',
+    lead: '把模型、知识、工具和业务系统连接成可运行的应用',
+    points: [
+      '行业知识库与 RAG',
+      '面向教学、管理、服务和运维的场景智能体',
+      '既有系统、数据和工具接入',
+      '权限、日志、评估、私有化部署与持续优化',
+    ],
+    action: '查看大模型落地开发',
+    href: '/guangtai-ai-factory#highlight',
+  },
+] as const;
+
 export const embodiedItems = [
   ['人形机器人', '展示交互、教学实训、复合任务和科研验证'],
   ['四足机器人', '楼宇、机房、园区与特殊空间智能巡检'],
