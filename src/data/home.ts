@@ -8,24 +8,11 @@ export const homeAssetPaths = [
   '/assets/k12-campus.png',
 ] as const;
 
-export const mobileCapabilities = [
+export const capabilityIndex = [
   ['01', 'AI 应用工厂', '/guangtai-ai-factory'],
   ['02', '具身智能', '/solutions/common/embodied-intelligence'],
   ['03', '系统集成', '/solutions/common'],
   ['04', '行业场景', '/solutions/industries'],
-] as const;
-
-export const mobileDeliverySteps = [
-  ['需求与场景定义', '明确目标、使用角色、既有系统与验收边界。'],
-  ['平台与系统建设', '组合 AI、软件、设备与空间能力，完成实施联调。'],
-  ['运营与持续优化', '以真实使用反馈持续评估、迭代和优化。'],
-] as const;
-
-export const mobileScenarioLinks = [
-  ['AI 与具身智能', '/solutions/common/ai'],
-  ['通用方案', '/solutions/common'],
-  ['高校场景', '/solutions/industries/higher-education'],
-  ['中小学场景', '/solutions/industries/k12'],
 ] as const;
 
 export const projectTypes = [

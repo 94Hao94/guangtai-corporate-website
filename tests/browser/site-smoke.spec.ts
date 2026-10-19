@@ -337,7 +337,7 @@ test('homepage centers the brand message within the Hero visual field', async ({
   expect((brandCenter ?? 0) / heroHeight).toBeLessThan(0.6);
 });
 
-test('mobile homepage fits the compact Hero, four capabilities, and delivery teaser in the first viewport', async ({
+test('mobile homepage fits the compact Hero and four capabilities in the first viewport', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -348,32 +348,25 @@ test('mobile homepage fits the compact Hero, four capabilities, and delivery tea
       .querySelector('.site-header')!
       .getBoundingClientRect();
     const hero = document.querySelector('.home-hero')!.getBoundingClientRect();
-    const capabilities = document
-      .querySelector('[data-mobile-capabilities]')!
-      .getBoundingClientRect();
-    const teaser = document
-      .querySelector('[data-mobile-delivery-teaser]')!
+    const index = document
+      .querySelector('[data-capability-index]')!
       .getBoundingClientRect();
     return {
       header: Math.round(header.height),
       hero: Math.round(hero.height),
-      capabilities: Math.round(capabilities.height),
-      teaser: Math.round(teaser.height),
-      teaserBottom: Math.round(teaser.bottom),
+      indexFitsFirstViewport: index.bottom <= 844,
     };
   });
 
   expect(metrics).toEqual({
     header: 58,
     hero: 220,
-    capabilities: 430,
-    teaser: 136,
-    teaserBottom: 844,
+    indexFitsFirstViewport: true,
   });
-  await expect(page.locator('[data-mobile-capabilities] a')).toHaveCount(4);
+  await expect(page.locator('[data-capability-index] a')).toHaveCount(4);
 });
 
-test('mobile homepage uses the approved delivery-to-partner sequence', async ({
+test('mobile homepage reuses the desktop section sequence', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -385,9 +378,9 @@ test('mobile homepage uses the approved delivery-to-partner sequence', async ({
       elements.map((element) => element.id || [...element.classList].join('.')),
     );
   expect(order.join('|')).toMatch(
-    /home.*mobile-home-intro.*mobile-delivery.*mobile-scenario.*mobile-projects.*inner-cta/,
+    /home.*capability-index.*ai-factory.*embodied-ai.*solutions.*practice.*inner-cta/,
   );
-  await expect(page.locator('[data-mobile-partners] a')).toHaveCount(8);
+  await expect(page.locator('[data-partner-marquee] a')).toHaveCount(8);
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
@@ -402,12 +395,11 @@ test('homepage chapter signposts keep business sections identifiable', async ({
   await page.goto('/');
 
   const chapters = page.locator('[data-home-chapter]');
-  await expect(chapters).toHaveCount(7);
+  await expect(chapters).toHaveCount(4);
   await expect(chapters.nth(0)).toContainText('01 / AI 应用工厂');
   await expect(chapters.nth(1)).toContainText('02 / 具身智能');
-  await expect(chapters.nth(2)).toContainText('02.1 / 具身生态伙伴');
-  await expect(chapters.nth(3)).toContainText('03 / 系统集成与行业场景');
-  await expect(chapters.nth(6)).toContainText('04 / 项目实践');
+  await expect(chapters.nth(2)).toContainText('03 / 系统集成与行业场景');
+  await expect(chapters.nth(3)).toContainText('04 / 工程与项目实践');
 
   await page.setViewportSize({ width: 390, height: 844 });
   expect(
@@ -821,8 +813,8 @@ test('captures approved responsive viewports across key routes', async ({
         ),
       ).toBe(true);
       if (route.name === 'home' && viewport.name === 'mobile-320x700') {
-        const partnerViewport = page.locator('.mobile-partner-viewport');
-        const thirdPartner = page.locator('[data-mobile-partners] a').nth(2);
+        const partnerViewport = page.locator('.partner-viewport');
+        const thirdPartner = page.locator('[data-partner-marquee] a').nth(2);
         expect(
           await thirdPartner.evaluate(
             (element, viewportRight) =>

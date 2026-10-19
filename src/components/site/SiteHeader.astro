@@ -46,6 +46,16 @@ const solutionGroups = [
   },
 ];
 const defaultSolution = solutionGroups.flatMap((group) => group.pages)[0];
+const navLinks = [
+  { href: '/', label: '首页' },
+  { href: '/guangtai-ai-factory', label: 'AI应用工厂' },
+];
+const trailingNavLinks = [
+  { href: '/cases', label: '案例与客户' },
+  { href: '/about', label: '关于光泰' },
+  { href: '/contact', label: '联系我们' },
+];
+const inSolutions = pathname.startsWith('/solutions');
 ---
 
 <header class="site-header" data-site-header transition:persist="site-header">
@@ -57,7 +67,17 @@ const defaultSolution = solutionGroups.flatMap((group) => group.pages)[0];
     />
   </a>
   <nav class="primary-nav" aria-label="主导航" data-primary-nav>
-    <a href="/guangtai-ai-factory">AI应用工厂</a>
+    {
+      navLinks.map((link) => (
+        <a
+          href={link.href}
+          data-nav-link
+          aria-current={pathname === link.href ? 'page' : undefined}
+        >
+          {link.label}
+        </a>
+      ))
+    }
     <div class="solutions-menu" data-solutions-menu>
       <button
         class="solutions-trigger"
@@ -65,7 +85,12 @@ const defaultSolution = solutionGroups.flatMap((group) => group.pages)[0];
         aria-expanded="false"
         aria-controls="solutions-mega-menu"
         data-solutions-trigger
-        >解决方案 <span aria-hidden="true">⌄</span></button
+        data-current={inSolutions ? 'true' : undefined}
+        >解决方案<svg
+          class="solutions-chevron"
+          viewBox="0 0 12 12"
+          aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"></path></svg
+        ></button
       >
       <div class="mega-menu" id="solutions-mega-menu" data-solutions-mega-menu>
         <div class="mega-group-grid">
@@ -116,9 +141,17 @@ const defaultSolution = solutionGroups.flatMap((group) => group.pages)[0];
         </aside>
       </div>
     </div>
-    <a href="/cases">案例与客户</a><a href="/about">关于光泰</a><a
-      href="/contact">联系我们</a
-    >
+    {
+      trailingNavLinks.map((link) => (
+        <a
+          href={link.href}
+          data-nav-link
+          aria-current={pathname === link.href ? 'page' : undefined}
+        >
+          {link.label}
+        </a>
+      ))
+    }
     <a class="mobile-nav-contact" href="/contact"
       >提交项目需求 <span aria-hidden="true">↗</span></a
     >
@@ -251,6 +284,18 @@ const defaultSolution = solutionGroups.flatMap((group) => group.pages)[0];
           if (link.pathname === pathname)
             link.setAttribute('aria-current', 'page');
         });
+      header
+        .querySelectorAll<HTMLAnchorElement>('[data-nav-link]')
+        .forEach((link) => {
+          const current =
+            (link.pathname.replace(/\/$/, '') || '/') === pathname;
+          if (current) link.setAttribute('aria-current', 'page');
+          else link.removeAttribute('aria-current');
+        });
+      solutionsTrigger?.toggleAttribute(
+        'data-current',
+        pathname.startsWith('/solutions'),
+      );
     };
 
     menuToggle?.addEventListener('click', () => {

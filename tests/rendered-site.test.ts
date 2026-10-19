@@ -65,16 +65,15 @@ describe('rendered corporate site', () => {
     expect(homepage).toContain('hero-image--fallback');
     expect(homepage).toContain('hero-image hero-image--background');
     expect(homepage).toContain('hero-image hero-image--mobile');
-    const mobileCapabilities =
-      homepage.match(
-        /<section[^>]+data-mobile-capabilities[\s\S]*?<\/section>/,
-      )?.[0] ?? '';
-    expect(mobileCapabilities).toContain('href="/guangtai-ai-factory"');
-    expect(mobileCapabilities).toContain(
+    const capabilityIndex =
+      homepage.match(/<nav[^>]+data-capability-index[\s\S]*?<\/nav>/)?.[0] ??
+      '';
+    expect(capabilityIndex).toContain('href="/guangtai-ai-factory"');
+    expect(capabilityIndex).toContain(
       'href="/solutions/common/embodied-intelligence"',
     );
-    expect(mobileCapabilities).toContain('href="/solutions/common"');
-    expect(mobileCapabilities).toContain('href="/solutions/industries"');
+    expect(capabilityIndex).toContain('href="/solutions/common"');
+    expect(capabilityIndex).toContain('href="/solutions/industries"');
     expect(homepage).not.toContain('光泰AI应用工厂<br');
 
     for (const page of contentPages) {
@@ -124,10 +123,10 @@ describe('rendered corporate site', () => {
 
   it('orders AI, embodied partners, and systems integration on the homepage', async () => {
     const homepage = await readFile(resolve('dist/index.html'), 'utf8');
-    const aiFactory = homepage.indexOf('GUANGTAI AI FACTORY');
-    const embodied = homepage.indexOf('EMBODIED INTELLIGENCE');
+    const aiFactory = homepage.indexOf('让 AI 成为可运行的行业智能体');
+    const embodied = homepage.indexOf('让AI走进真实空间');
     const partners = homepage.indexOf('与具身智能伙伴，共同进入真实场景');
-    const integration = homepage.indexOf('SYSTEM INTEGRATION &amp; INDUSTRIES');
+    const integration = homepage.indexOf('走向每一个真实场景');
 
     expect(aiFactory).toBeGreaterThan(-1);
     expect(embodied).toBeGreaterThan(aiFactory);
@@ -138,26 +137,31 @@ describe('rendered corporate site', () => {
     expect(homepage).toContain('href="/solutions/industries"');
   });
 
-  it('renders the compact mobile delivery, scenario, project, and partner flow from real data', async () => {
+  it('serves one responsive homepage instead of a separate mobile content tree', async () => {
     const homepage = await readFile(resolve('dist/index.html'), 'utf8');
 
-    expect(homepage).toContain('id="mobile-delivery"');
-    expect(homepage).toContain('data-mobile-scenario');
-    expect(homepage).toContain('data-mobile-projects');
-    expect(homepage).toContain('data-mobile-partners');
-    expect(homepage).toContain('需求与场景定义');
-    expect(homepage).toContain('平台与系统建设');
-    expect(homepage).toContain('运营与持续优化');
+    expect(homepage).not.toMatch(
+      /data-mobile-(capabilities|scenario|projects|partners)|id="mobile-delivery"/,
+    );
+    expect(homepage).toContain('高校场景解决方案');
+    expect(homepage).toContain('中小学场景解决方案');
+    expect(homepage).toContain('href="/solutions/industries/higher-education"');
+    expect(homepage).toContain('href="/solutions/industries/k12"');
+    expect(homepage).toContain(
+      'href="/solutions/industries/higher-education/ai#highlight"',
+    );
+    expect(homepage).toContain('工程能力');
+    expect(homepage).toContain('典型项目');
+    expect(homepage).toContain('校园AI智能体');
   });
 
   it('renders chapter signposts for the homepage business narrative', async () => {
     const homepage = await readFile(resolve('dist/index.html'), 'utf8');
 
     expect(homepage).toContain('01 / AI 应用工厂');
-    expect(homepage).toContain('02.1 / 具身生态伙伴');
-    expect(homepage).toContain('03.1 / 教育行业场景');
-    expect(homepage).toContain('03.2 / 工程与技术');
-    expect(homepage).toContain('04 / 项目实践');
+    expect(homepage).toContain('02 / 具身智能');
+    expect(homepage).toContain('03 / 系统集成与行业场景');
+    expect(homepage).toContain('04 / 工程与项目实践');
   });
 
   it('renders visual breadcrumbs only for nested pages while preserving breadcrumb JSON-LD', async () => {
@@ -375,10 +379,10 @@ describe('rendered corporate site', () => {
 
   it('links the homepage higher-education card to industry integration', async () => {
     const homepage = await readFile(resolve('dist/index.html'), 'utf8');
-    const educationStart = homepage.indexOf('class="education section-pad');
+    const solutionsStart = homepage.indexOf('id="solutions"');
     const education = homepage.slice(
-      educationStart,
-      homepage.indexOf('</section>', educationStart),
+      solutionsStart,
+      homepage.indexOf('</section>', solutionsStart),
     );
 
     expect(education).toContain('增强学生的 AI 素养');
