@@ -12,6 +12,7 @@ const { highlight } = Astro.props;
     <p>{highlight.eyebrow}</p><h2>{highlight.title}</h2>
   </div><p class="inner-highlight__intro">{highlight.intro}</p><div
     class="inner-highlight__grid"
+    style={`--highlight-columns: ${highlight.items.length}; --highlight-tablet-columns: ${highlight.items.length === 3 ? 3 : 2}`}
   >
     {
       highlight.items.map((item, index) => (
@@ -32,6 +33,18 @@ const { highlight } = Astro.props;
           <li>{step}</li>
         ))}
       </ol>
+    )
+  }
+  {
+    highlight.outcomes && (
+      <div class="inner-highlight__outcomes">
+        <h3>{highlight.outcomes.title}</h3>
+        <ul>
+          {highlight.outcomes.items.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </div>
     )
   }
   {

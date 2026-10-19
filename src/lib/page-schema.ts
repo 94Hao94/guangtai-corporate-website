@@ -40,6 +40,12 @@ const pageHighlightSchema = z.object({
     .min(3)
     .max(4),
   steps: z.array(z.string().min(1)).min(2).optional(),
+  outcomes: z
+    .object({
+      title: z.string().min(1),
+      items: z.array(z.string().min(1)).min(2),
+    })
+    .optional(),
   closing: z.string().min(1).optional(),
 });
 

@@ -57,7 +57,7 @@ export const factoryOfferings = [
       '工作流重塑：把 AI 接入资料处理、会议办公、教学服务和运维流程',
     ],
     action: '查看 AI 赋能',
-    href: '/solutions/common/ai',
+    href: '/solutions/common/ai#highlight',
   },
   {
     title: '大模型应用落地开发',

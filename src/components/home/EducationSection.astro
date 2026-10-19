@@ -7,8 +7,12 @@ const cards = [
     image: '/assets/higher-teaching.png',
     english: 'HIGHER EDUCATION',
     title: '高校场景解决方案',
-    text: '围绕教学、科研、管理和服务，以AI应用工厂统一连接数据、空间、系统与设备。',
+    text: '围绕教学、科研、管理和服务，以AI应用工厂统一连接数据、空间、系统与设备。探索校企协同与企业导师授课，增强学生的 AI 素养，并将 AI 能力融入教学、科研与实践项目。',
     href: '/solutions/industries/higher-education',
+    extra: {
+      label: '了解高校 AI 赋能与产教融合 →',
+      href: '/solutions/industries/higher-education/ai#highlight',
+    },
   },
   {
     image: '/assets/k12-campus.png',
@@ -46,7 +50,12 @@ const cards = [
                 <span>{card.english}</span>
                 <h3>{card.title}</h3>
                 <p>{card.text}</p>
-                <a href={card.href}>查看场景 →</a>
+                <div class="education-card-links">
+                  <a href={card.href}>查看场景 →</a>
+                  {card.extra && (
+                    <a href={card.extra.href}>{card.extra.label}</a>
+                  )}
+                </div>
               </>
             </div>
           </>

@@ -288,7 +288,7 @@ describe('rendered corporate site', () => {
     expect(offerings).toContain('智能体搭建');
     expect(offerings).toContain('工作流重塑');
     expect(offerings).toContain('大模型应用落地开发');
-    expect(offerings).toContain('href="/solutions/common/ai"');
+    expect(offerings).toContain('href="/solutions/common/ai#highlight"');
     expect(offerings).toContain('href="/guangtai-ai-factory#highlight"');
   });
 
@@ -313,6 +313,60 @@ describe('rendered corporate site', () => {
     }
     expect(highlight.match(/<li[^>]*>/g)).toHaveLength(5);
     expect(highlight).toContain('经得起使用和评估');
+  });
+
+  it('presents AI empowerment methods on the agents and workflows page', async () => {
+    const html = await readFile(routeFile('/solutions/common/ai'), 'utf8');
+    const highlightStart = html.indexOf('id="highlight"');
+    const highlight = html.slice(
+      highlightStart,
+      html.indexOf('</section>', highlightStart),
+    );
+
+    expect(html).toContain('href="#highlight"');
+    expect(highlightStart).toBeGreaterThan(html.indexOf('id="overview"'));
+    expect(highlight).toContain('AI 赋能：从会用工具到解决实际问题');
+    for (const title of ['提示词工程', '智能体搭建', '工作流重塑']) {
+      expect(highlight).toContain(title);
+    }
+    expect(highlight).toContain('让 AI 从演示走向日常应用。');
+    expect(highlight).not.toContain('企业 AI 培训');
+  });
+
+  it('frames higher-education industry integration as exploratory student AI literacy', async () => {
+    const html = await readFile(
+      routeFile('/solutions/industries/higher-education/ai'),
+      'utf8',
+    );
+    const highlightStart = html.indexOf('id="highlight"');
+    const highlight = html.slice(
+      highlightStart,
+      html.indexOf('</section>', highlightStart),
+    );
+
+    expect(highlight).toContain('产教融合，增强学生的 AI 素养');
+    expect(highlight).toContain('正在探索');
+    expect(highlight).toContain('企业导师');
+    for (const title of ['专题讲座', '实操工作坊', '项目实训']) {
+      expect(highlight).toContain(title);
+    }
+    expect(highlight.match(/<li[^>]*>/g)).toHaveLength(4);
+    expect(highlight).not.toMatch(/已与|签约|合作院校|名学生|就业率/);
+  });
+
+  it('links the homepage higher-education card to industry integration', async () => {
+    const homepage = await readFile(resolve('dist/index.html'), 'utf8');
+    const educationStart = homepage.indexOf('class="education section-pad');
+    const education = homepage.slice(
+      educationStart,
+      homepage.indexOf('</section>', educationStart),
+    );
+
+    expect(education).toContain('增强学生的 AI 素养');
+    expect(education).toContain(
+      'href="/solutions/industries/higher-education/ai#highlight"',
+    );
+    expect(education).toContain('了解高校 AI 赋能与产教融合');
   });
 
   it('renders four mobile solution family controls and a project contact action', async () => {
