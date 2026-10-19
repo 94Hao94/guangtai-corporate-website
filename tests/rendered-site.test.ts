@@ -354,6 +354,25 @@ describe('rendered corporate site', () => {
     expect(highlight).not.toMatch(/已与|签约|合作院校|名学生|就业率/);
   });
 
+  it('replaces templated capability copy with written details on every navigator page', async () => {
+    const navigatorPages = (await pages()).filter(
+      (page) => page.path !== '/about' && page.path !== '/contact',
+    );
+
+    expect(navigatorPages).toHaveLength(27);
+    for (const page of navigatorPages) {
+      const html = await readFile(routeFile(page.path), 'utf8');
+
+      expect(page.capabilityDetails, page.path).toHaveLength(
+        page.capabilities.length,
+      );
+      expect(html).not.toContain('将能力组织为可验证、可交付、可持续运营');
+      for (const detail of page.capabilityDetails ?? []) {
+        expect(html).toContain(detail);
+      }
+    }
+  });
+
   it('links the homepage higher-education card to industry integration', async () => {
     const homepage = await readFile(resolve('dist/index.html'), 'utf8');
     const educationStart = homepage.indexOf('class="education section-pad');

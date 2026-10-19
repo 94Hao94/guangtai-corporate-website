@@ -160,6 +160,13 @@
 .overview-capability-panel p {
   margin-top: 0;
 }
+.inner-intro-copy .overview-capability-panel h2 {
+  font-size: clamp(1.9rem, 2.8vw, 3rem);
+  line-height: 1.25;
+}
+.overview-capability-panel p {
+  max-width: 46rem;
+}
 .inner-intro-copy h2 {
   margin: 0 0 1.5rem;
   font-size: clamp(2.2rem, 4vw, 4.2rem);
