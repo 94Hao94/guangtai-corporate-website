@@ -5,13 +5,8 @@ import { resolveImage } from '../../lib/images';
 import HomeChapter from './HomeChapter.astro';
 ---
 
-<section class="factory section-pad">
-  <HomeChapter number="01" title="AI 应用工厂" english="GUANGTAI AI FACTORY" />
-  <div class="section-heading" data-reveal>
-    <p class="eyebrow">GUANGTAI AI FACTORY</p><h2>
-      让 AI 成为可运行的行业智能体
-    </h2>
-  </div><div class="factory-layout">
+<section id="ai-factory" class="factory section-pad">
+  <div class="factory-layout">
     <div class="factory-visual" data-reveal>
       <Image
         src={resolveImage('/assets/ai-factory.png')}
@@ -20,6 +15,14 @@ import HomeChapter from './HomeChapter.astro';
         sizes="(max-width: 900px) 100vw, 55vw"
       />
     </div><div class="factory-layers">
+      <HomeChapter
+        number="01"
+        title="AI 应用工厂"
+        english="GUANGTAI AI FACTORY"
+      />
+      <div class="section-heading" data-reveal>
+        <h2>让 AI 成为可运行的行业智能体</h2>
+      </div>
       {
         factoryLayers.map(([title, text], index) => (
           <article data-reveal>

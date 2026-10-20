@@ -2,8 +2,33 @@
 import { Image } from 'astro:assets';
 import { resolveImage } from '../../lib/images';
 import HomeChapter from './HomeChapter.astro';
-const common = resolveImage('/assets/visual-v2/common-delivery.jpg');
-const education = resolveImage('/assets/visual-v2/higher-campus-students.jpg');
+
+const panels = [
+  {
+    href: '/solutions/common',
+    image: '/assets/visual-v2/common-delivery.jpg',
+    alt: '通用工程交付与系统集成场景',
+    label: '01 / INTEGRATION',
+    title: '系统集成与工程交付',
+    text: '连接空间、设备、音视频、安全治理和基础设施，打通真实业务的运行链路。',
+  },
+  {
+    href: '/solutions/industries/higher-education',
+    image: '/assets/higher-teaching.png',
+    alt: '高校教学、科研与管理场景',
+    label: '02 / HIGHER EDUCATION',
+    title: '高校场景解决方案',
+    text: '以AI应用工厂连接教学、科研、管理和服务，探索校企协同，增强学生的 AI 素养。',
+  },
+  {
+    href: '/solutions/industries/k12',
+    image: '/assets/k12-campus.png',
+    alt: '中小学校园教学与安全场景',
+    label: '03 / K12 EDUCATION',
+    title: '中小学场景解决方案',
+    text: '围绕教学、安全、管理、生活服务与特色空间，构建可持续运营的校园能力。',
+  },
+];
 ---
 
 <section id="solutions" class="solutions section-pad">
@@ -13,37 +38,40 @@ const education = resolveImage('/assets/visual-v2/higher-campus-students.jpg');
     english="SYSTEM INTEGRATION & INDUSTRIES"
     tone="dark"
   />
-  <div class="section-heading light" data-reveal>
-    <p class="eyebrow">SYSTEM INTEGRATION &amp; INDUSTRIES</p><h2>
-      从系统集成，走向每一个真实场景
-    </h2><p>
-      连接空间、设备、网络与软件系统，形成可交付、可运营的行业解决方案。
-    </p>
+  <div class="solutions-head" data-reveal>
+    <h2>从系统集成，<br />走向每一个真实场景</h2>
+    <div>
+      <p>连接空间、设备、网络与软件系统，形成可交付、可运营的行业解决方案。</p>
+      <div class="solution-links">
+        <a class="text-link" href="/solutions/industries"
+          >全部行业解决方案 <span>→</span></a
+        ><a
+          class="text-link"
+          href="/solutions/industries/higher-education/ai#highlight"
+          >了解高校 AI 赋能与产教融合 <span>→</span></a
+        >
+      </div>
+    </div>
   </div>
   <div class="solution-split">
-    <a class="solution-panel" href="/solutions/common" data-reveal
-      ><Image
-        src={common}
-        alt="通用工程交付与系统集成场景"
-        widths={[720, 1100]}
-        sizes="(max-width: 760px) 100vw, 50vw"
-      /><div class="panel-shade"></div><div class="panel-copy">
-        <span>01 / INTEGRATION</span><h3>系统集成与工程交付</h3><p>
-          连接空间、设备、音视频、安全治理和基础设施，打通真实业务的运行链路。
-        </p><b>进入方案 →</b>
-      </div></a
-    >
-    <a class="solution-panel" href="/solutions/industries" data-reveal
-      ><Image
-        src={education}
-        alt="真实校园教育行业场景"
-        widths={[720, 1100]}
-        sizes="(max-width: 760px) 100vw, 50vw"
-      /><div class="panel-shade"></div><div class="panel-copy">
-        <span>02 / EDUCATION</span><h3>行业解决方案</h3><p>
-          面向高校与中小学，围绕教学、科研、管理、服务与安全落地。
-        </p><b>进入方案 →</b>
-      </div></a
-    >
+    {
+      panels.map((panel) => (
+        <a class="solution-panel" href={panel.href} data-reveal>
+          <Image
+            src={resolveImage(panel.image)}
+            alt={panel.alt}
+            widths={[600, 960]}
+            sizes="(max-width: 760px) 100vw, 33vw"
+          />
+          <div class="panel-shade" />
+          <div class="panel-copy">
+            <span>{panel.label}</span>
+            <h3>{panel.title}</h3>
+            <p>{panel.text}</p>
+            <b>进入方案 →</b>
+          </div>
+        </a>
+      ))
+    }
   </div>
 </section>

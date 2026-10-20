@@ -1,0 +1,15 @@
+---
+import { capabilityIndex } from '../../data/home';
+---
+
+<nav class="capability-index" aria-label="核心能力" data-capability-index>
+  {
+    capabilityIndex.map(([number, title, href]) => (
+      <a href={href}>
+        <span>{number}</span>
+        <strong>{title}</strong>
+        <i aria-hidden="true">↗</i>
+      </a>
+    ))
+  }
+</nav>

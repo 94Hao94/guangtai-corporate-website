@@ -1,0 +1,39 @@
+---
+import { projectTypes, technologyItems } from '../../data/home';
+import HomeChapter from './HomeChapter.astro';
+
+const columns = [
+  { label: '工程能力', items: technologyItems },
+  { label: '典型项目', items: projectTypes },
+];
+---
+
+<section id="practice" class="practice section-pad">
+  <HomeChapter number="04" title="工程与项目实践" english="PRACTICE" />
+  <div class="section-heading" data-reveal>
+    <h2>从原型验证到持续运营，把技术能力变成工程交付</h2><p>
+      以客户真实建设需求为起点，覆盖需求梳理、方案设计到交付运营的完整过程。
+    </p>
+  </div><div class="practice-columns">
+    {
+      columns.map((column) => (
+        <div class="practice-column" data-reveal>
+          <>
+            <h3>{column.label}</h3>
+            <ol>
+              {column.items.map(([title, text], index) => (
+                <li>
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                  <div>
+                    <strong>{title}</strong>
+                    <p>{text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </>
+        </div>
+      ))
+    }
+  </div>
+</section>

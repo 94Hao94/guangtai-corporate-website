@@ -24,7 +24,7 @@ const { page } = Astro.props;
         alt={`${page.title}应用场景`}
         widths={[720, 1100]}
         sizes="(max-width: 900px) 100vw, 50vw"
-      /><div><span>SCENE VIEW</span><b>{page.category}</b></div>
+      /><div><b>{page.category}</b></div>
     </div><div class="scenario-grid">
       {
         page.scenarios.map((item, index) => (
@@ -32,9 +32,6 @@ const { page } = Astro.props;
             <>
               <span>0{index + 1}</span>
               <h3>{item}</h3>
-              <p>
-                围绕目标、使用角色与既有基础进行场景化设计，并与整体平台和运营体系协同。
-              </p>
             </>
           </article>
         ))
